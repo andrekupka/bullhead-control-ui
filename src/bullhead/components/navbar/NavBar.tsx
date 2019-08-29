@@ -1,6 +1,6 @@
 import React from 'react';
 import {AppBar, Toolbar, Typography} from '@material-ui/core';
-import {ThemeToggleButton} from './ThemeToggleButton';
+import {ToggleThemeButton} from './ToggleThemeButton';
 
 export const NavBar = () => {
     return (
@@ -9,7 +9,7 @@ export const NavBar = () => {
               <Typography variant='h5' style={{flex: 1}}>
                   Bullhead UI
               </Typography>
-              <ThemeToggleButton/>
+              <ToggleThemeButton/>
           </Toolbar>
       </AppBar>
     );
