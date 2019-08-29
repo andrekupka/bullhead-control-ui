@@ -1,4 +1,4 @@
 import React from 'react';
-import {BullheadUI} from './bullhead/BullheadUI';
+import {BullheadUI} from './components/BullheadUI';
 
 export const App = () => <BullheadUI/>;
