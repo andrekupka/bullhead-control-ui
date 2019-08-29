@@ -1,8 +1,8 @@
 import {combineReducers} from 'redux';
-import {themeReducer} from './theme/themeReducer';
+import {reducer} from './theme/reducer';
 
 export const bullheadReducer = combineReducers({
-    theme: themeReducer
+    theme: reducer
 });
 
 export type BullheadState = ReturnType<typeof bullheadReducer>;
