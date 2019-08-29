@@ -1,6 +1,6 @@
 import React, {useMemo} from 'react';
 import {createMuiTheme, CssBaseline, MuiThemeProvider} from '@material-ui/core';
-import {NavBar} from './components/navbar/NavBar';
+import {NavigationBar} from './components/navigation/NavigationBar';
 import {BullheadState} from './state';
 import {connect} from 'react-redux';
 
@@ -17,11 +17,12 @@ const PureBullhead = (props: Props) => {
 
     return (
         <MuiThemeProvider theme={theme}>
-            <CssBaseline>
+            <div>
+                <CssBaseline/>
                 <div>
-                    <NavBar/>
+                    <NavigationBar/>
                 </div>
-            </CssBaseline>
+            </div>
         </MuiThemeProvider>
     );
 };
