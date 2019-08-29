@@ -1,9 +1,4 @@
 import React from 'react';
+import {BullheadUI} from './bullhead/BullheadUI';
 
-const App = () => {
-  return (
-      <div>Bullhead UI</div>
-  );
-};
-
-export default App;
+export const App = () => <BullheadUI/>;
