@@ -1,7 +1,7 @@
-import {UiActionTypes, SHOW_NAVIGATION_DRAWER_TYPE} from './types';
+import {UiActionTypes, SHOW_NAVIGATION} from './types';
 
-export const showNavigationDrawer = (show: boolean): UiActionTypes => ({
-    type: SHOW_NAVIGATION_DRAWER_TYPE,
+export const showNavigation = (show: boolean): UiActionTypes => ({
+    type: SHOW_NAVIGATION,
     payload: {
         show: show
     }

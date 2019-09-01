@@ -1,7 +1,7 @@
-export const SHOW_NAVIGATION_DRAWER_TYPE = 'SHOW_NAVIGATION_DRAWER';
+export const SHOW_NAVIGATION = '@ui/SHOW_NAVIGATION';
 
 export interface ShowNavigationDrawerAction {
-    type: typeof SHOW_NAVIGATION_DRAWER_TYPE,
+    type: typeof SHOW_NAVIGATION,
     payload: {
         show: boolean
     }

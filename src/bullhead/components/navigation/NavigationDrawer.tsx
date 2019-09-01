@@ -15,7 +15,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import SettingsEthernetIcon from '@material-ui/icons/SettingsEthernet';
 import {connect} from 'react-redux';
 import {LightBullState} from '../../state';
-import {showNavigationDrawer} from '../../state/ui/actions';
+import {showNavigation} from '../../state/ui/actions';
 import {UiActionTypes} from '../../state/ui/types';
 import {DRAWER_WIDTH} from '../shared/ui-constants';
 
@@ -78,7 +78,7 @@ const mapStateToProps = (state: LightBullState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<UiActionTypes>) => ({
-    closeNavigation: () => dispatch(showNavigationDrawer(false))
+    closeNavigation: () => dispatch(showNavigation(false))
 });
 
 export const NavigationDrawer = connect(

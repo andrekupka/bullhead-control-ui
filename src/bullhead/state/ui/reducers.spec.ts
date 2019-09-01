@@ -1,5 +1,5 @@
 import {uiReducer} from './reducer';
-import {showNavigationDrawer} from './actions';
+import {showNavigation} from './actions';
 
 describe('ui reducers', () => {
     it('should return closed navigation as initial state', () => {
@@ -14,7 +14,7 @@ describe('ui reducers', () => {
         it(description, () => {
             const state = uiReducer({
                 isNavigationOpen: initial
-            }, showNavigationDrawer(action));
+            }, showNavigation(action));
 
             expect(state).toEqual({
                 isNavigationOpen: expected

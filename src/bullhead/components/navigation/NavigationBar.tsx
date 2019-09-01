@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import React, {Dispatch, useState} from 'react';
 import {connect} from 'react-redux';
 import {LightBullState} from '../../state';
-import {showNavigationDrawer} from '../../state/ui/actions';
+import {showNavigation} from '../../state/ui/actions';
 import {UiActionTypes} from '../../state/ui/types';
 import {DRAWER_WIDTH} from '../shared/ui-constants';
 import {NavigationDrawer} from './NavigationDrawer';
@@ -68,7 +68,7 @@ const mapStateToProps = (state: LightBullState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<UiActionTypes>) => ({
-    showNavigation: () => dispatch(showNavigationDrawer(true))
+    showNavigation: () => dispatch(showNavigation(true))
 });
 
 export const NavigationBar = connect(

@@ -1,4 +1,4 @@
-import {SHOW_NAVIGATION_DRAWER_TYPE, UiActionTypes} from './types';
+import {SHOW_NAVIGATION, UiActionTypes} from './types';
 
 interface UiState {
     isNavigationOpen: boolean;
@@ -10,7 +10,7 @@ const INITIAL_STATE: UiState = {
 
 export const uiReducer = (state: UiState = INITIAL_STATE, action: UiActionTypes): UiState => {
     switch (action.type) {
-        case SHOW_NAVIGATION_DRAWER_TYPE:
+        case SHOW_NAVIGATION:
             return {
                 ...state,
                 isNavigationOpen: action.payload.show
