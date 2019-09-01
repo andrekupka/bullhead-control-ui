@@ -2,12 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import {Provider} from 'react-redux';
 import * as serviceWorker from './serviceWorker';
-import {Bullhead} from './bullhead/Bullhead';
+import {LightBull} from './bullhead/LightBull';
 import {store} from './bullhead/store';
 
 ReactDOM.render(
     <Provider store={store}>
-        <Bullhead/>
+        <LightBull/>
     </Provider>,
     document.getElementById('root')
 );
