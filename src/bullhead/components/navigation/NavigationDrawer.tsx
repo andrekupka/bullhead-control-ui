@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Dispatch} from 'react';
 import {
     createStyles,
     Divider,
@@ -13,13 +13,11 @@ import {
 } from '@material-ui/core';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import SettingsEthernetIcon from '@material-ui/icons/SettingsEthernet';
+import {connect} from 'react-redux';
+import {LightBullState} from '../../state';
+import {showNavigationDrawer} from '../../state/ui/actions';
+import {UiActionTypes} from '../../state/ui/types';
 import {DRAWER_WIDTH} from '../shared/ui-constants';
-
-interface Props {
-    isOpen: boolean;
-    close: () => void;
-}
-
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
     drawer: {
@@ -38,20 +36,25 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     }
 }));
 
-export const NavigationDrawer = (props: Props) => {
+interface Props {
+    isNavigationOpen: boolean;
+    closeNavigation: () => void;
+}
+
+const PureNavigationDrawer = (props: Props) => {
     const classes = useStyles();
 
     return (
         <Drawer variant="persistent"
                 anchor="left"
-                open={props.isOpen}
+                open={props.isNavigationOpen}
                 className={classes.drawer}
                 classes={{
                     paper: classes.drawerPaper
                 }}
         >
             <div className={classes.drawerHeader}>
-                <IconButton onClick={() => props.close()}>
+                <IconButton onClick={() => props.closeNavigation()}>
                     <ChevronLeftIcon/>
                 </IconButton>
             </div>
@@ -69,3 +72,16 @@ export const NavigationDrawer = (props: Props) => {
         </Drawer>
     );
 };
+
+const mapStateToProps = (state: LightBullState) => ({
+    isNavigationOpen: state.ui.isNavigationOpen
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<UiActionTypes>) => ({
+    closeNavigation: () => dispatch(showNavigationDrawer(false))
+});
+
+export const NavigationDrawer = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(PureNavigationDrawer);

@@ -1,12 +1,14 @@
 import {AppBar, createStyles, IconButton, makeStyles, Theme, Toolbar, Typography} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import classNames from 'classnames';
-import React, {useState} from 'react';
+import React, {Dispatch, useState} from 'react';
+import {connect} from 'react-redux';
+import {LightBullState} from '../../state';
+import {showNavigationDrawer} from '../../state/ui/actions';
+import {UiActionTypes} from '../../state/ui/types';
 import {DRAWER_WIDTH} from '../shared/ui-constants';
 import {NavigationDrawer} from './NavigationDrawer';
 import {ToggleThemeButton} from './ToggleThemeButton';
-
-const drawerWidth = 240;
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
     appBar: {
@@ -28,21 +30,25 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     }
 }));
 
-export const NavigationBar = () => {
-    const [showNavigation, setShowNavigation] = useState(false);
+interface Props {
+    isNavigationOpen: boolean;
+    showNavigation: () => void;
+}
+
+const PureNavigationBar = (props: Props) => {
     const classes = useStyles();
 
     return (
         <>
             <AppBar position='fixed'
                     color='inherit'
-                    className={classNames(classes.appBar, showNavigation && classes.appBarShift)}
+                    className={classNames(classes.appBar, props.isNavigationOpen && classes.appBarShift)}
             >
                 <Toolbar>
                     <IconButton edge='start'
                                 color='inherit'
-                                className={classNames(showNavigation && classes.hide)}
-                                onClick={() => setShowNavigation(true)}
+                                className={classNames(props.isNavigationOpen && classes.hide)}
+                                onClick={() => props.showNavigation()}
                     >
                         <MenuIcon/>
                     </IconButton>
@@ -52,7 +58,20 @@ export const NavigationBar = () => {
                     <ToggleThemeButton/>
                 </Toolbar>
             </AppBar>
-            <NavigationDrawer isOpen={showNavigation} close={() => setShowNavigation(false)}/>
+            <NavigationDrawer/>
         </>
     );
 };
+
+const mapStateToProps = (state: LightBullState) => ({
+    isNavigationOpen: state.ui.isNavigationOpen
+});
+
+const mapDispatchToProps = (dispatch: Dispatch<UiActionTypes>) => ({
+    showNavigation: () => dispatch(showNavigationDrawer(true))
+});
+
+export const NavigationBar = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(PureNavigationBar);

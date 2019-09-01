@@ -1,5 +1,6 @@
 import React, {useMemo} from 'react';
 import {createMuiTheme, CssBaseline, MuiThemeProvider} from '@material-ui/core';
+import {MainViewContainer} from './components/MainViewContainer';
 import {NavigationBar} from './components/navigation/NavigationBar';
 import {LightBullState} from './state';
 import {connect} from 'react-redux';
@@ -20,6 +21,7 @@ const PureLightBull = (props: Props) => {
             <div style={{display: 'flex'}}>
                 <CssBaseline/>
                 <NavigationBar/>
+                <MainViewContainer/>
             </div>
         </MuiThemeProvider>
     );
@@ -28,7 +30,6 @@ const PureLightBull = (props: Props) => {
 const mapStateToProps = (state: LightBullState) => ({
     isDark: state.theme.isDark
 });
-
 
 export const LightBull = connect(
     mapStateToProps

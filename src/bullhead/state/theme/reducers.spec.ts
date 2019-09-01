@@ -18,7 +18,7 @@ describe('theme reducer', () => {
         expect(state).toEqual({
             isDark: false
         });
-    })
+    });
 
     it('should toggle light to dark on TOGGLE_THEME action', () => {
         const state = themeReducer({

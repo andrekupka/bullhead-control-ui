@@ -1,8 +1,8 @@
-import React, {Dispatch} from 'react';
 import {IconButton} from '@material-ui/core';
 import {InvertColors} from '@material-ui/icons';
-import {toggleTheme} from '../../state/theme/actions';
+import React, {Dispatch} from 'react';
 import {connect} from 'react-redux';
+import {toggleTheme} from '../../state/theme/actions';
 import {ThemeActionTypes} from '../../state/theme/types';
 
 interface Props {
@@ -10,11 +10,11 @@ interface Props {
 }
 
 const PureToggleThemeButton = (props: Props) => {
-  return (
-      <IconButton color='inherit' onClick={() => props.onToggleTheme()}>
-          <InvertColors/>
-      </IconButton>
-  );
+    return (
+        <IconButton color='inherit' onClick={() => props.onToggleTheme()}>
+            <InvertColors/>
+        </IconButton>
+    );
 };
 
 const mapDispatchToProps = (dispatch: Dispatch<ThemeActionTypes>) => {
@@ -25,5 +25,5 @@ const mapDispatchToProps = (dispatch: Dispatch<ThemeActionTypes>) => {
 
 export const ToggleThemeButton = connect(
     null,
-    mapDispatchToProps,
+    mapDispatchToProps
 )(PureToggleThemeButton);
