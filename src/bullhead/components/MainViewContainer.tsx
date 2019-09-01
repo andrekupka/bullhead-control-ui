@@ -15,7 +15,7 @@ const useStyles = makeStyles<Theme, Props>((theme: Theme) => createStyles({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen
         }),
-        marginLeft: props => -props.navigationWidth,
+        marginLeft: props => props.isNavigationOpen ? 0 : -240,
         padding: theme.spacing(3)
     },
     contentShift: {
@@ -23,7 +23,6 @@ const useStyles = makeStyles<Theme, Props>((theme: Theme) => createStyles({
             easing: theme.transitions.easing.easeOut,
             duration: theme.transitions.duration.enteringScreen
         }),
-        marginLeft: 0
     },
     shiftToolbar: {
         paddingTop: theme.mixins.toolbar.minHeight
@@ -31,6 +30,7 @@ const useStyles = makeStyles<Theme, Props>((theme: Theme) => createStyles({
 }));
 
 const PureMainViewContainer = (props: Props) => {
+    console.log(props);
     const classes = useStyles(props);
 
     const mainClasses = classNames(
