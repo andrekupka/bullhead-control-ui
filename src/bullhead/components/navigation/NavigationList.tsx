@@ -1,4 +1,4 @@
-import {List, ListItem, ListItemIcon, ListItemText, useTheme} from '@material-ui/core';
+import {List, ListItem, ListItemIcon, ListItemText} from '@material-ui/core';
 import HomeIcon from '@material-ui/icons/Home';
 import SettingsIcon from '@material-ui/icons/Settings';
 import {Link, LinkGetProps} from '@reach/router';
