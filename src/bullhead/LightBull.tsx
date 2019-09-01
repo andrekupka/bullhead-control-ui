@@ -1,14 +1,15 @@
 import React, {useMemo} from 'react';
 import {createMuiTheme, CssBaseline, MuiThemeProvider} from '@material-ui/core';
-import {NavBar} from './components/navbar/NavBar';
-import {BullheadState} from './state';
+import {MainViewContainer} from './components/MainViewContainer';
+import {NavigationBar} from './components/navigation/NavigationBar';
+import {LightBullState} from './state';
 import {connect} from 'react-redux';
 
 interface Props {
     isDark: boolean;
 }
 
-const PureBullhead = (props: Props) => {
+const PureLightBull = (props: Props) => {
     const theme = useMemo(() => createMuiTheme({
         palette: {
             type: props.isDark ? 'dark' : 'light'
@@ -17,20 +18,19 @@ const PureBullhead = (props: Props) => {
 
     return (
         <MuiThemeProvider theme={theme}>
-            <CssBaseline>
-                <div>
-                    <NavBar/>
-                </div>
-            </CssBaseline>
+            <div style={{display: 'flex'}}>
+                <CssBaseline/>
+                <NavigationBar/>
+                <MainViewContainer/>
+            </div>
         </MuiThemeProvider>
     );
 };
 
-const mapStateToProps = (state: BullheadState) => ({
+const mapStateToProps = (state: LightBullState) => ({
     isDark: state.theme.isDark
 });
 
-
-export const Bullhead = connect(
+export const LightBull = connect(
     mapStateToProps
-)(PureBullhead);
+)(PureLightBull);
