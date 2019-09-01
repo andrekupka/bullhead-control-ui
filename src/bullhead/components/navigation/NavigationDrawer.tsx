@@ -15,17 +15,22 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import SettingsEthernetIcon from '@material-ui/icons/SettingsEthernet';
 import {connect} from 'react-redux';
 import {LightBullState} from '../../state';
-import {showNavigation} from '../../state/ui/actions';
-import {UiActionTypes} from '../../state/ui/types';
-import {DRAWER_WIDTH} from '../shared/ui-constants';
+import {showNavigation} from '../../state/navigation/actions';
+import {NavigationActionTypes} from '../../state/navigation/types';
 
-const useStyles = makeStyles((theme: Theme) => createStyles({
+interface Props {
+    isNavigationOpen: boolean;
+    navigationWidth: number;
+    closeNavigation: () => void;
+}
+
+const useStyles = makeStyles<Theme,Props>((theme: Theme) => createStyles({
     drawer: {
-        width: DRAWER_WIDTH,
+        width: props => props.navigationWidth,
         flexShrink: 0
     },
     drawerPaper: {
-        width: DRAWER_WIDTH
+        width: props => props.navigationWidth
     },
     drawerHeader: {
         display: 'flex',
@@ -36,13 +41,8 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     }
 }));
 
-interface Props {
-    isNavigationOpen: boolean;
-    closeNavigation: () => void;
-}
-
 const PureNavigationDrawer = (props: Props) => {
-    const classes = useStyles();
+    const classes = useStyles(props);
 
     return (
         <Drawer variant="persistent"
@@ -74,10 +74,10 @@ const PureNavigationDrawer = (props: Props) => {
 };
 
 const mapStateToProps = (state: LightBullState) => ({
-    isNavigationOpen: state.ui.isNavigationOpen
+    ...state.navigation
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<UiActionTypes>) => ({
+const mapDispatchToProps = (dispatch: Dispatch<NavigationActionTypes>) => ({
     closeNavigation: () => dispatch(showNavigation(false))
 });
 

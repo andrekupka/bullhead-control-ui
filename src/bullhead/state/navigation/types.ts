@@ -1,4 +1,4 @@
-export const SHOW_NAVIGATION = '@ui/SHOW_NAVIGATION';
+export const SHOW_NAVIGATION = '@navigation/SHOW_NAVIGATION';
 
 export interface ShowNavigationDrawerAction {
     type: typeof SHOW_NAVIGATION,
@@ -7,4 +7,4 @@ export interface ShowNavigationDrawerAction {
     }
 }
 
-export type UiActionTypes = ShowNavigationDrawerAction;
+export type NavigationActionTypes = ShowNavigationDrawerAction;

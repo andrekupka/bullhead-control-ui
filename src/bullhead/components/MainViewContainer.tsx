@@ -3,16 +3,20 @@ import classNames from 'classnames';
 import React from 'react';
 import {connect} from 'react-redux';
 import {LightBullState} from '../state';
-import {DRAWER_WIDTH} from './shared/ui-constants';
 
-const useStyles = makeStyles((theme: Theme) => createStyles({
+interface Props {
+    isNavigationOpen: boolean;
+    navigationWidth: number;
+}
+
+const useStyles = makeStyles<Theme, Props>((theme: Theme) => createStyles({
     content: {
         flexGrow: 1,
         transition: theme.transitions.create('margin', {
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen
         }),
-        marginLeft: -DRAWER_WIDTH,
+        marginLeft: props => -props.navigationWidth,
         padding: theme.spacing(3)
     },
     contentShift: {
@@ -23,16 +27,12 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
         marginLeft: 0
     },
     shiftToolbar: {
-        paddingTop: theme.mixins.toolbar.minHeight,
+        paddingTop: theme.mixins.toolbar.minHeight
     }
 }));
 
-interface Props {
-    isNavigationOpen: boolean;
-}
-
 const PureMainViewContainer = (props: Props) => {
-    const classes = useStyles();
+    const classes = useStyles(props);
 
     const mainClasses = classNames(
         classes.shiftToolbar,
@@ -48,7 +48,7 @@ const PureMainViewContainer = (props: Props) => {
 };
 
 const mapStateToProps = (state: LightBullState) => ({
-    isNavigationOpen: state.ui.isNavigationOpen
+    ...state.navigation
 });
 
 export const MainViewContainer = connect(

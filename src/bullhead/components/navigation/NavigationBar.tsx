@@ -1,16 +1,22 @@
 import {AppBar, createStyles, IconButton, makeStyles, Theme, Toolbar, Typography} from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import classNames from 'classnames';
-import React, {Dispatch, useState} from 'react';
+import React, {Dispatch} from 'react';
 import {connect} from 'react-redux';
 import {LightBullState} from '../../state';
-import {showNavigation} from '../../state/ui/actions';
-import {UiActionTypes} from '../../state/ui/types';
-import {DRAWER_WIDTH} from '../shared/ui-constants';
+import {showNavigation} from '../../state/navigation/actions';
+import {NavigationActionTypes} from '../../state/navigation/types';
 import {NavigationDrawer} from './NavigationDrawer';
 import {ToggleThemeButton} from './ToggleThemeButton';
 
-const useStyles = makeStyles((theme: Theme) => createStyles({
+interface Props {
+    isNavigationOpen: boolean;
+    navigationWidth: number;
+    showNavigation: () => void;
+}
+
+
+const useStyles = makeStyles<Theme, Props>((theme: Theme) => createStyles({
     appBar: {
         transition: theme.transitions.create(['margin', 'width'], {
             easing: theme.transitions.easing.sharp,
@@ -18,8 +24,8 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
         })
     },
     appBarShift: {
-        width: `calc(100% - ${DRAWER_WIDTH}px)`,
-        marginLeft: DRAWER_WIDTH,
+        width: props => `calc(100% - ${props.navigationWidth}px)`,
+        marginLeft: props => props.navigationWidth,
         transition: theme.transitions.create(['margin', 'width'], {
             easing: theme.transitions.easing.easeOut,
             duration: theme.transitions.duration.enteringScreen
@@ -30,13 +36,8 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     }
 }));
 
-interface Props {
-    isNavigationOpen: boolean;
-    showNavigation: () => void;
-}
-
 const PureNavigationBar = (props: Props) => {
-    const classes = useStyles();
+    const classes = useStyles(props);
 
     return (
         <>
@@ -64,10 +65,10 @@ const PureNavigationBar = (props: Props) => {
 };
 
 const mapStateToProps = (state: LightBullState) => ({
-    isNavigationOpen: state.ui.isNavigationOpen
+    ...state.navigation
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<UiActionTypes>) => ({
+const mapDispatchToProps = (dispatch: Dispatch<NavigationActionTypes>) => ({
     showNavigation: () => dispatch(showNavigation(true))
 });
 

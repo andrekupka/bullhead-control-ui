@@ -1,10 +1,10 @@
 import {combineReducers} from 'redux';
 import {themeReducer} from './theme/reducer';
-import {uiReducer} from './ui/reducer';
+import {navigationReducer} from './navigation/reducer';
 
 export const lightBullReducer = combineReducers({
     theme: themeReducer,
-    ui: uiReducer
+    navigation: navigationReducer
 });
 
 export type LightBullState = ReturnType<typeof lightBullReducer>;

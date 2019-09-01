@@ -1,23 +1,25 @@
-import {uiReducer} from './reducer';
+import {navigationReducer} from './reducer';
 import {showNavigation} from './actions';
 
-describe('ui reducers', () => {
+describe('navigation reducers', () => {
     it('should return closed navigation as initial state', () => {
-       const state = uiReducer(undefined, {});
+       const state = navigationReducer(undefined, {});
 
        expect(state).toEqual({
-           isNavigationOpen: false
+           isNavigationOpen: false,
+           navigationWidth: 240,
        });
     });
 
     const testShowNavigationAction = (description: string, action: boolean, initial: boolean, expected: boolean) => {
         it(description, () => {
-            const state = uiReducer({
-                isNavigationOpen: initial
+            const state = navigationReducer({
+                isNavigationOpen: initial,
+                navigationWidth: 240
             }, showNavigation(action));
 
-            expect(state).toEqual({
-                isNavigationOpen: expected
+            expect(state).toMatchObject({
+                isNavigationOpen: expected,
             });
         });
     };
