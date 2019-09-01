@@ -3,10 +3,9 @@ import classNames from 'classnames';
 import React from 'react';
 import {connect} from 'react-redux';
 import {LightBullState} from '../state';
+import {NavigationAware} from '../types/navigation/NavigationAware';
 
-interface Props {
-    isNavigationOpen: boolean;
-    navigationWidth: number;
+interface Props extends NavigationAware {
 }
 
 const useStyles = makeStyles<Theme, Props>((theme: Theme) => createStyles({

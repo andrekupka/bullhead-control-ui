@@ -1,8 +1,7 @@
+import {NavigationAware} from '../../types/navigation/NavigationAware';
 import {SHOW_NAVIGATION, NavigationActionTypes} from './types';
 
-interface NavigationState {
-    navigationWidth: number,
-    isNavigationOpen: boolean;
+interface NavigationState extends NavigationAware {
 }
 
 const INITIAL_STATE: NavigationState = {

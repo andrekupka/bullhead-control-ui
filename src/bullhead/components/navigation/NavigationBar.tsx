@@ -6,12 +6,11 @@ import {connect} from 'react-redux';
 import {LightBullState} from '../../state';
 import {showNavigation} from '../../state/navigation/actions';
 import {NavigationActionTypes} from '../../state/navigation/types';
+import {NavigationAware} from '../../types/navigation/NavigationAware';
 import {NavigationDrawer} from './NavigationDrawer';
 import {ToggleThemeButton} from './ToggleThemeButton';
 
-interface Props {
-    isNavigationOpen: boolean;
-    navigationWidth: number;
+interface Props extends NavigationAware {
     showNavigation: () => void;
 }
 
