@@ -5,6 +5,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {LightBullState} from '../state';
 import {NavigationAware} from '../types/navigation/NavigationAware';
+import {NotFound} from './common/NotFound';
 import {Home} from './home/Home';
 import {Route} from './Route';
 import {SystemView} from './system/SystemView';
@@ -26,29 +27,31 @@ const useStyles = makeStyles<Theme, Props>((theme: Theme) => createStyles({
         transition: theme.transitions.create('margin', {
             easing: theme.transitions.easing.easeOut,
             duration: theme.transitions.duration.enteringScreen
-        }),
+        })
     },
-    shiftToolbar: {
+    contentView: {
+        width: '100%',
         paddingTop: theme.mixins.toolbar.minHeight
     }
 }));
 
 const PureMainViewContainer = (props: Props) => {
-    console.log(props);
     const classes = useStyles(props);
 
     const mainClasses = classNames(
-        classes.shiftToolbar,
         classes.content,
         props.isNavigationOpen && classes.contentShift
     );
 
     return (
         <main className={mainClasses}>
-            <Router>
-                <Route component={Home} path='/'/>
-                <Route component={SystemView} path='/system'/>
-            </Router>
+            <div className={classes.contentView}>
+                <Router>
+                    <Route component={Home} path='/'/>
+                    <Route component={SystemView} path='/system'/>
+                    <NotFound default/>
+                </Router>
+            </div>
         </main>
     );
 };
