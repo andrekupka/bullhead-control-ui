@@ -1,6 +1,6 @@
-import {Button, createStyles, makeStyles, Paper, Theme, Typography} from '@material-ui/core';
-import {navigate, RouteComponentProps} from '@reach/router';
+import {Button, createStyles, makeStyles, Theme, Typography} from '@material-ui/core';
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
     contentAlign: {
@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     }
 }));
 
-export const NotFound = (_: RouteComponentProps) => {
+export const NotFound = () => {
     const classes = useStyles();
 
 
@@ -23,7 +23,9 @@ export const NotFound = (_: RouteComponentProps) => {
             <Typography className={classes.messagePadding} component='p'>
                 We're sorry, the page you requested could not be found.
             </Typography>
-            <Button variant='contained' color='primary' onClick={() => navigate('/')}>Go to Homepage</Button>
+            <Button variant='contained' color='primary' component={Link} to='/'>
+                Go to Homepage
+            </Button>
         </div>
     );
 };
