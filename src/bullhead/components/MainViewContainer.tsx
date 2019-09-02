@@ -1,9 +1,13 @@
 import {createStyles, makeStyles, Theme} from '@material-ui/core';
+import {Router} from '@reach/router';
 import classNames from 'classnames';
 import React from 'react';
 import {connect} from 'react-redux';
 import {LightBullState} from '../state';
 import {NavigationAware} from '../types/navigation/NavigationAware';
+import {Home} from './home/Home';
+import {Route} from './Route';
+import {SystemView} from './system/SystemView';
 
 interface Props extends NavigationAware {
 }
@@ -41,7 +45,10 @@ const PureMainViewContainer = (props: Props) => {
 
     return (
         <main className={mainClasses}>
-            <h1>Welcome at LightBull</h1>
+            <Router>
+                <Route component={Home} path='/'/>
+                <Route component={SystemView} path='/system'/>
+            </Router>
         </main>
     );
 };

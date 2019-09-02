@@ -1,23 +1,12 @@
-import React, {Dispatch} from 'react';
-import {
-    createStyles,
-    Divider,
-    Drawer,
-    IconButton,
-    List,
-    ListItem,
-    ListItemIcon,
-    ListItemText,
-    makeStyles,
-    Theme
-} from '@material-ui/core';
+import {createStyles, Divider, Drawer, IconButton, makeStyles, Theme} from '@material-ui/core';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import SettingsEthernetIcon from '@material-ui/icons/SettingsEthernet';
+import React, {Dispatch} from 'react';
 import {connect} from 'react-redux';
 import {LightBullState} from '../../state';
 import {showNavigation} from '../../state/navigation/actions';
 import {NavigationActionTypes} from '../../state/navigation/types';
 import {NavigationAware} from '../../types/navigation/NavigationAware';
+import {NavigationList} from './NavigationList';
 
 interface Props extends NavigationAware {
     closeNavigation: () => void;
@@ -58,16 +47,7 @@ const PureNavigationDrawer = (props: Props) => {
                 </IconButton>
             </div>
             <Divider/>
-            <List>
-                <ListItem button>
-                    <ListItemIcon>
-                        <SettingsEthernetIcon/>
-                    </ListItemIcon>
-                    <ListItemText>
-                        System
-                    </ListItemText>
-                </ListItem>
-            </List>
+            <NavigationList/>
         </Drawer>
     );
 };
