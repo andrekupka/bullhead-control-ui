@@ -7,6 +7,7 @@ import {LightBullState} from '../../state';
 import {signIn} from '../../state/authentication/actions';
 import {AuthenticationActionTypes} from '../../state/authentication/types';
 import {AuthenticationAware} from '../../types/navigation/AuthenticationAware';
+import {PasswordInput} from '../common/form/PasswordInput';
 
 interface Props extends AuthenticationAware, RouteProps {
     wrongPassword: boolean;
@@ -25,7 +26,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     },
     form: {
         width: '100%',
-        marginTop: theme.spacing(2),
+        marginTop: theme.spacing(2)
     },
     submit: {
         margin: theme.spacing(3, 0)
@@ -58,17 +59,16 @@ export const PureLoginView = (props: Props) => {
                     Sign In
                 </Typography>
                 <form className={classes.form} noValidate onSubmit={event => signIn(event)}>
-                    <TextField id='password'
-                               label='Password'
-                               type='password'
-                               variant='outlined'
-                               error={props.wrongPassword}
-                               helperText={errorMessage}
-                               required
-                               fullWidth
-                               autoFocus
-                               value={password}
-                               onChange={event => setPassword(event.target.value)}/>
+                    <PasswordInput id='password'
+                                   label='Password'
+                                   variant='outlined'
+                                   error={props.wrongPassword}
+                                   helperText={errorMessage}
+                                   required
+                                   fullWidth
+                                   autoFocus
+                                   value={password}
+                                   onChange={event => setPassword(event.target.value)}/>
                     <Button className={classes.submit}
                             variant='contained'
                             color='primary'
