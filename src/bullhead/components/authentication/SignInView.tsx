@@ -1,16 +1,23 @@
-import {Avatar, Button, Container, createStyles, makeStyles, TextField, Theme, Typography} from '@material-ui/core';
+import {Avatar, Button, Container, createStyles, makeStyles, Theme, Typography} from '@material-ui/core';
 import LockIcon from '@material-ui/icons/Lock';
-import React, {Dispatch, useState} from 'react';
+import React, {useState} from 'react';
 import {connect} from 'react-redux';
 import {Redirect, RouteProps} from 'react-router-dom';
 import {LightBullState} from '../../state';
 import {signIn} from '../../state/authentication/actions';
-import {AuthenticationActionTypes} from '../../state/authentication/types';
-import {AuthenticationAware} from '../../types/navigation/AuthenticationAware';
+import {AuthenticationError} from '../../state/authentication/types';
+import {AuthenticationAware} from '../../types/AuthenticationAware';
 import {PasswordInput} from '../common/form/PasswordInput';
+import {ThunkDispatch} from 'redux-thunk';
+
+const MESSAGES = new Map<AuthenticationError, string>();
+MESSAGES.set(AuthenticationError.WRONG_PASSWORD, 'Invalid password');
+MESSAGES.set(AuthenticationError.TIMEOUT, 'Server took too long to respond');
+MESSAGES.set(AuthenticationError.GENERAL_FAILURE, 'Unknown error');
 
 interface Props extends AuthenticationAware, RouteProps {
-    wrongPassword: boolean;
+    isAuthenticating: boolean;
+    authenticationError: AuthenticationError | undefined;
     signIn: (password: string) => void;
 }
 
@@ -47,7 +54,10 @@ export const PureLoginView = (props: Props) => {
         props.signIn(password);
     };
 
-    const errorMessage = props.wrongPassword ? 'Invalid password' : null;
+    const submitDisabled = props.isAuthenticating || password.length === 0;
+
+    const hasError = props.authenticationError !== undefined;
+    const errorMessage = props.authenticationError !== undefined ? MESSAGES.get(props.authenticationError) : null;
 
     return (
         <Container component='main' maxWidth='xs'>
@@ -62,8 +72,9 @@ export const PureLoginView = (props: Props) => {
                     <PasswordInput id='password'
                                    label='Password'
                                    variant='outlined'
-                                   error={props.wrongPassword}
+                                   error={hasError}
                                    helperText={errorMessage}
+                                   disabled={props.isAuthenticating}
                                    required
                                    fullWidth
                                    autoFocus
@@ -73,6 +84,7 @@ export const PureLoginView = (props: Props) => {
                             variant='contained'
                             color='primary'
                             type='submit'
+                            disabled={submitDisabled}
                             fullWidth>
                         Sign In
                     </Button>
@@ -83,11 +95,12 @@ export const PureLoginView = (props: Props) => {
 };
 
 const mapStateToProps = (state: LightBullState) => ({
-    wrongPassword: state.authentication.wrongPassword,
-    isAuthenticated: state.authentication.isAuthenticated
+    isAuthenticated: state.authentication.isAuthenticated,
+    isAuthenticating: state.authentication.isAuthenticating,
+    authenticationError: state.authentication.authenticationError
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<AuthenticationActionTypes>) => ({
+const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, any>) => ({
     signIn: (password: string) => dispatch(signIn(password))
 });
 

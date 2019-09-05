@@ -1,23 +1,45 @@
-import {AuthenticationAware} from '../../types/navigation/AuthenticationAware';
-import {AuthenticationActionTypes, SIGN_IN, SIGN_OUT} from './types';
+import {AuthenticationAware} from '../../types/AuthenticationAware';
+import {
+    AuthenticationActionTypes,
+    AuthenticationError,
+    SIGN_IN_FAILURE,
+    SIGN_IN_START,
+    SIGN_IN_SUCCESS,
+    SIGN_OUT
+} from './types';
+
 
 interface AuthenticationState extends AuthenticationAware {
-    wrongPassword: boolean;
+    isAuthenticating: boolean;
+    authenticationError?: AuthenticationError;
 }
 
 const INITIAL_STATE: AuthenticationState = {
     isAuthenticated: false,
-    wrongPassword: false,
+    isAuthenticating: false
 };
 
 export const authenticationReducer = (state: AuthenticationState = INITIAL_STATE, action: AuthenticationActionTypes): AuthenticationState => {
     switch (action.type) {
-        case SIGN_IN:
-            const isPasswordCorrect = action.payload.password == 'testpw';
+        case SIGN_IN_START:
             return {
                 ...state,
-                wrongPassword: !isPasswordCorrect,
-                isAuthenticated: isPasswordCorrect,
+                isAuthenticating: true,
+                authenticationError: undefined
+            };
+        case SIGN_IN_SUCCESS:
+            return {
+                ...state,
+                isAuthenticated: true,
+                isAuthenticating: false,
+                authenticationError: undefined
+            };
+        case SIGN_IN_FAILURE:
+            return {
+                ...state,
+                isAuthenticated: false,
+                isAuthenticating: false,
+                authenticationError: action.payload.error
             };
         case SIGN_OUT:
             return {

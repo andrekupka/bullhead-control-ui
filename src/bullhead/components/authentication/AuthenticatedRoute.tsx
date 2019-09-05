@@ -1,9 +1,8 @@
-import React, {FunctionComponent} from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
-import {Route, Redirect} from 'react-router-dom';
+import {Redirect, Route, RouteProps} from 'react-router-dom';
 import {LightBullState} from '../../state';
-import {AuthenticationAware} from '../../types/navigation/AuthenticationAware';
-import {RouteProps} from 'react-router-dom';
+import {AuthenticationAware} from '../../types/AuthenticationAware';
 
 interface Props extends AuthenticationAware, RouteProps {
 }
