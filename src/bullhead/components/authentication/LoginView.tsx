@@ -17,10 +17,12 @@ export const PureLoginView = (props: Props) => {
         return <Redirect to='/'/>;
     }
     return (
-        <div>
-            <h1>Login</h1>
-            <Button variant='contained' color='primary' onClick={() => props.authenticate()}>Login</Button>
-        </div>
+        <main>
+            <div>
+                <h1>Login</h1>
+                <Button variant='contained' color='primary' onClick={() => props.authenticate()}>Login</Button>
+            </div>
+        </main>
     );
 };
 

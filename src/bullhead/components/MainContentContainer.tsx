@@ -4,8 +4,6 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {LightBullState} from '../state';
 import {NavigationAware} from '../types/navigation/NavigationAware';
-import {AuthenticatedRoute} from './authentication/AuthenticatedRoute';
-import {LoginView} from './authentication/LoginView';
 import {NotFound} from './common/NotFound';
 import {Home} from './home/Home';
 import {SystemView} from './system/SystemView';
@@ -48,9 +46,8 @@ const PureMainViewContainer = (props: Props) => {
         <main className={mainClasses}>
             <div className={classes.contentView}>
                 <Switch>
-                    <Route path='/login' component={LoginView}/>
-                    <AuthenticatedRoute exact path='/' component={Home}/>
-                    <AuthenticatedRoute path='/system' component={SystemView}/>
+                    <Route exact path='/' component={Home}/>
+                    <Route path='/system' component={SystemView}/>
                     <Route component={NotFound}/>
                 </Switch>
             </div>
@@ -62,6 +59,6 @@ const mapStateToProps = (state: LightBullState) => ({
     ...state.navigation
 });
 
-export const MainViewContainer = connect(
+export const LightBullContentContainer = connect(
     mapStateToProps
 )(PureMainViewContainer);
