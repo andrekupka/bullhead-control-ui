@@ -1,19 +1,28 @@
-import {AuthenticationActionTypes, SET_AUTHENTICATED} from './types';
+import {AuthenticationAware} from '../../types/navigation/AuthenticationAware';
+import {AuthenticationActionTypes, SIGN_IN, SIGN_OUT} from './types';
 
-interface AuthenticationState {
-    isAuthenticated: boolean;
+interface AuthenticationState extends AuthenticationAware {
+    wrongPassword: boolean;
 }
 
 const INITIAL_STATE: AuthenticationState = {
-    isAuthenticated: false
+    isAuthenticated: false,
+    wrongPassword: false,
 };
 
 export const authenticationReducer = (state: AuthenticationState = INITIAL_STATE, action: AuthenticationActionTypes): AuthenticationState => {
     switch (action.type) {
-        case SET_AUTHENTICATED:
+        case SIGN_IN:
+            const isPasswordCorrect = action.payload.password == 'testpw';
             return {
                 ...state,
-                isAuthenticated: action.payload.isAuthenticated
+                wrongPassword: !isPasswordCorrect,
+                isAuthenticated: isPasswordCorrect,
+            };
+        case SIGN_OUT:
+            return {
+                ...state,
+                isAuthenticated: false
             };
         default:
             return state;

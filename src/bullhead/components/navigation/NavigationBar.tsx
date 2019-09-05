@@ -7,7 +7,7 @@ import {LightBullState} from '../../state';
 import {showNavigation} from '../../state/navigation/actions';
 import {NavigationActionTypes} from '../../state/navigation/types';
 import {NavigationAware} from '../../types/navigation/NavigationAware';
-import {LogoutButton} from '../authentication/LogoutButton';
+import {SignOutButton} from '../authentication/SignOutButton';
 import {NavigationDrawer} from './NavigationDrawer';
 import {ToggleThemeButton} from './ToggleThemeButton';
 
@@ -55,7 +55,7 @@ const PureNavigationBar = (props: Props) => {
                         LightBull
                     </Typography>
                     <ToggleThemeButton/>
-                    <LogoutButton/>
+                    <SignOutButton/>
                 </Toolbar>
             </AppBar>
             <NavigationDrawer/>

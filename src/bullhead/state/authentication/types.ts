@@ -1,10 +1,15 @@
-export const SET_AUTHENTICATED = '@authentication/SET_AUTHENTICATED';
+export const SIGN_IN = '@authentication/SIGN_IN';
+export const SIGN_OUT = '@authentication/SIGN_OUT';
 
-export interface SetAuthenticatedAction {
-    type: typeof SET_AUTHENTICATED,
+export interface SignInAction {
+    type: typeof SIGN_IN,
     payload: {
-        isAuthenticated: boolean
+        password: string
     }
 }
 
-export type AuthenticationActionTypes = SetAuthenticatedAction;
+export interface SignOutAction {
+    type: typeof SIGN_OUT,
+}
+
+export type AuthenticationActionTypes = SignInAction | SignOutAction;

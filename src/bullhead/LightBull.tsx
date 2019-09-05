@@ -3,7 +3,7 @@ import React, {useMemo} from 'react';
 import {connect} from 'react-redux';
 import {BrowserRouter, Route, Switch} from 'react-router-dom';
 import {AuthenticatedRoute} from './components/authentication/AuthenticatedRoute';
-import {LoginView} from './components/authentication/LoginView';
+import {SignInView} from './components/authentication/SignInView';
 import {LightBullFrame} from './components/LightBullFrame';
 import {LightBullState} from './state';
 
@@ -23,7 +23,7 @@ const PureLightBull = (props: Props) => {
             <BrowserRouter>
                 <CssBaseline/>
                 <Switch>
-                    <Route path='/login' component={LoginView}/>
+                    <Route path='/login' component={SignInView}/>
                     <AuthenticatedRoute path='/' component={LightBullFrame}/>
                 </Switch>
             </BrowserRouter>

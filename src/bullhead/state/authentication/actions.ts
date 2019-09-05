@@ -1,8 +1,13 @@
-import {AuthenticationActionTypes, SET_AUTHENTICATED} from './types';
+import {AuthenticationActionTypes, SIGN_IN, SIGN_OUT} from './types';
 
-export const setAuthenticated = (isAuthenticated: boolean): AuthenticationActionTypes => ({
-    type: SET_AUTHENTICATED,
+export const signIn = (password: string): AuthenticationActionTypes => ({
+    type: SIGN_IN,
     payload: {
-        isAuthenticated: isAuthenticated
+        password: password
     }
+});
+
+
+export const signOut = (): AuthenticationActionTypes => ({
+    type: SIGN_OUT
 });
