@@ -1,4 +1,4 @@
-import {Button, CircularProgress, createStyles, LinearProgress, makeStyles, Theme} from '@material-ui/core';
+import {Button, createStyles, LinearProgress, makeStyles, Theme} from '@material-ui/core';
 import {ButtonProps} from '@material-ui/core/Button';
 import React from 'react';
 
@@ -15,9 +15,9 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 export const ProgressAwareButton = (props: Props) => {
     const classes = useStyles();
 
-    const {disabled, ...remainingProps} = props;
+    const {disabled, hasProgress, ...remainingProps} = props;
 
-    const showProgress = !!props.hasProgress;
+    const showProgress = !!hasProgress;
     const isDisabled = showProgress || disabled;
 
     return (

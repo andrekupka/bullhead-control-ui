@@ -41,13 +41,20 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     }
 }));
 
+const getDestination = (props: Props) => {
+    if (props.location && props.location.state) {
+        return props.location.state.from || '/';
+    }
+    return '/';
+}
+
 export const PureLoginView = (props: Props) => {
     const [password, setPassword] = useState('');
 
     const classes = useStyles();
 
     if (props.isAuthenticated) {
-        return <Redirect to='/'/>;
+        return <Redirect to={getDestination(props)}/>;
     }
 
     const signIn = (event: React.FormEvent) => {

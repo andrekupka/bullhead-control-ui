@@ -17,8 +17,9 @@ const NavigationListItem: FunctionComponent<NavigationListItemProps> = ({to, tex
         background: 'rgba(255, 255, 255, 0.2)'
     };
 
-    const ForwardedNavLink = React.forwardRef<NavLink, NavLinkProps>(
-        (props, ref) => <NavLink {...props} ref={ref}/>
+    // TODO replace any with NavLinkProps
+    const ForwardedNavLink = React.forwardRef<NavLink, any>(
+        (props, ref) => <NavLink {...props} innerRef={ref}/>
     );
     return (
         <ListItem button component={ForwardedNavLink} to={to} activeStyle={activeStyle} exact={exact}>

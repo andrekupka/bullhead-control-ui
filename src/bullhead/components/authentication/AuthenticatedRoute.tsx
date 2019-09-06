@@ -16,7 +16,7 @@ export const PureAuthenticatedRoute = ({component: Component, isAuthenticated, .
             return <Redirect to={{
                 pathname: '/login',
                 state: {
-                    from: props.location
+                    destination: props.location
                 }
             }}/>;
         }}/>
