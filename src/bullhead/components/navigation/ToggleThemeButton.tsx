@@ -6,22 +6,20 @@ import {toggleTheme} from '../../state/theme/actions';
 import {ThemeActionTypes} from '../../state/theme/types';
 
 interface Props {
-    onToggleTheme: () => void;
+    toggleTheme: () => void;
 }
 
 const PureToggleThemeButton = (props: Props) => {
     return (
-        <IconButton color='inherit' onClick={() => props.onToggleTheme()}>
+        <IconButton color='inherit' onClick={() => props.toggleTheme()}>
             <InvertColors/>
         </IconButton>
     );
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<ThemeActionTypes>) => {
-    return {
-        onToggleTheme: () => dispatch(toggleTheme())
-    };
-};
+const mapDispatchToProps = (dispatch: Dispatch<ThemeActionTypes>) => ({
+    toggleTheme: () => dispatch(toggleTheme())
+});
 
 export const ToggleThemeButton = connect(
     null,

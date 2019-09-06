@@ -7,6 +7,7 @@ import {LightBullState} from '../../state';
 import {showNavigation} from '../../state/navigation/actions';
 import {NavigationActionTypes} from '../../state/navigation/types';
 import {NavigationAware} from '../../types/navigation/NavigationAware';
+import {SignOutButton} from '../authentication/SignOutButton';
 import {NavigationDrawer} from './NavigationDrawer';
 import {ToggleThemeButton} from './ToggleThemeButton';
 
@@ -42,20 +43,19 @@ const PureNavigationBar = (props: Props) => {
         <>
             <AppBar position='fixed'
                     color='inherit'
-                    className={classNames(classes.appBar, props.isNavigationOpen && classes.appBarShift)}
-            >
+                    className={classNames(classes.appBar, props.isNavigationOpen && classes.appBarShift)}>
                 <Toolbar>
                     <IconButton edge='start'
                                 color='inherit'
                                 className={classNames(props.isNavigationOpen && classes.hide)}
-                                onClick={() => props.showNavigation()}
-                    >
+                                onClick={() => props.showNavigation()}>
                         <MenuIcon/>
                     </IconButton>
                     <Typography variant='h6' style={{flex: 1}}>
                         LightBull
                     </Typography>
                     <ToggleThemeButton/>
+                    <SignOutButton/>
                 </Toolbar>
             </AppBar>
             <NavigationDrawer/>
@@ -64,7 +64,8 @@ const PureNavigationBar = (props: Props) => {
 };
 
 const mapStateToProps = (state: LightBullState) => ({
-    ...state.navigation
+    ...state.navigation,
+    isAuthenticated: state.authentication.isAuthenticated
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<NavigationActionTypes>) => ({

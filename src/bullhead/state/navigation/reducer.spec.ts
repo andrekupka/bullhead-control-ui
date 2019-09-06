@@ -6,7 +6,7 @@ describe('navigation reducers', () => {
        const state = navigationReducer(undefined, {});
 
        expect(state).toEqual({
-           isNavigationOpen: false,
+           isNavigationOpen: true,
            navigationWidth: 240,
        });
     });

@@ -59,6 +59,6 @@ const mapStateToProps = (state: LightBullState) => ({
     ...state.navigation
 });
 
-export const MainViewContainer = connect(
+export const LightBullContentContainer = connect(
     mapStateToProps
 )(PureMainViewContainer);

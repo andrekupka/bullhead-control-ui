@@ -1,10 +1,11 @@
-import React, {useMemo} from 'react';
 import {createMuiTheme, CssBaseline, MuiThemeProvider} from '@material-ui/core';
-import {BrowserRouter} from 'react-router-dom';
-import {MainViewContainer} from './components/MainViewContainer';
-import {NavigationBar} from './components/navigation/NavigationBar';
-import {LightBullState} from './state';
+import React, {useMemo} from 'react';
 import {connect} from 'react-redux';
+import {BrowserRouter, Route, Switch} from 'react-router-dom';
+import {AuthenticatedRoute} from './components/authentication/AuthenticatedRoute';
+import {SignInView} from './components/authentication/SignInView';
+import {LightBullFrame} from './components/LightBullFrame';
+import {LightBullState} from './state';
 
 interface Props {
     isDark: boolean;
@@ -20,11 +21,11 @@ const PureLightBull = (props: Props) => {
     return (
         <MuiThemeProvider theme={theme}>
             <BrowserRouter>
-                <div style={{display: 'flex'}}>
-                    <CssBaseline/>
-                    <NavigationBar/>
-                    <MainViewContainer/>
-                </div>
+                <CssBaseline/>
+                <Switch>
+                    <Route path='/login' component={SignInView}/>
+                    <AuthenticatedRoute path='/' component={LightBullFrame}/>
+                </Switch>
             </BrowserRouter>
         </MuiThemeProvider>
     );
