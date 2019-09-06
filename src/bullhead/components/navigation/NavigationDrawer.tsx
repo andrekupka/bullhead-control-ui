@@ -3,8 +3,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import React, {Dispatch} from 'react';
 import {connect} from 'react-redux';
 import {LightBullState} from '../../state';
-import {showNavigation} from '../../state/navigation/actions';
-import {NavigationActionTypes} from '../../state/navigation/types';
+import {NavigationActionTypes, showNavigation} from '../../state/navigation/actions';
 import {NavigationAware} from '../../types/navigation/NavigationAware';
 import {NavigationList} from './NavigationList';
 
@@ -12,7 +11,7 @@ interface Props extends NavigationAware {
     closeNavigation: () => void;
 }
 
-const useStyles = makeStyles<Theme,Props>((theme: Theme) => createStyles({
+const useStyles = makeStyles<Theme, Props>((theme: Theme) => createStyles({
     drawer: {
         width: props => props.navigationWidth,
         flexShrink: 0

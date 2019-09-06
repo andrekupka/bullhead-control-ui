@@ -5,8 +5,8 @@ import {connect} from 'react-redux';
 import {Redirect, RouteProps} from 'react-router-dom';
 import {ThunkDispatch} from 'redux-thunk';
 import {LightBullState} from '../../state';
+import {AuthenticationError} from '../../state/authentication/actions';
 import {signIn} from '../../state/authentication/thunks';
-import {AuthenticationError} from '../../state/authentication/types';
 import {PasswordInput} from '../common/form/PasswordInput';
 import {ProgressAwareButton} from '../common/form/ProgressAwareButton';
 
@@ -46,7 +46,7 @@ const getDestination = (props: Props) => {
         return props.location.state.from || '/';
     }
     return '/';
-}
+};
 
 export const PureLoginView = (props: Props) => {
     const [password, setPassword] = useState('');

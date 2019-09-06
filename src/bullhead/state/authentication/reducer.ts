@@ -5,8 +5,7 @@ import {
     SIGN_IN_START,
     SIGN_IN_SUCCESS,
     SIGN_OUT
-} from './types';
-
+} from './actions';
 
 interface AuthenticationState {
     isAuthenticated: boolean;

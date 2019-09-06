@@ -1,13 +1,13 @@
-import {themeReducer} from './reducer';
 import {toggleTheme} from './actions';
+import {themeReducer} from './reducer';
 
 describe('theme reducer', () => {
     it('should return dark as initial state', () => {
-       const state = themeReducer(undefined, {});
+        const state = themeReducer(undefined, {} as any);
 
-       expect(state).toEqual({
-           isDark: true
-       });
+        expect(state).toEqual({
+            isDark: true
+        });
     });
 
     it('should toggle dark to light on TOGGLE_THEME action', () => {
@@ -28,5 +28,5 @@ describe('theme reducer', () => {
         expect(state).toEqual({
             isDark: true
         });
-    })
+    });
 });

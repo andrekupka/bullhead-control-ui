@@ -1,7 +1,0 @@
-export const TOGGLE_THEME_TYPE = '@theme/TOGGLE_THEME';
-
-export interface ToggleThemeAction {
-    type: typeof TOGGLE_THEME_TYPE,
-}
-
-export type ThemeActionTypes = ToggleThemeAction;

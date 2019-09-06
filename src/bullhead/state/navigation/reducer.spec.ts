@@ -1,14 +1,14 @@
-import {navigationReducer} from './reducer';
 import {showNavigation} from './actions';
+import {navigationReducer} from './reducer';
 
 describe('navigation reducers', () => {
     it('should return closed navigation as initial state', () => {
-       const state = navigationReducer(undefined, {});
+        const state = navigationReducer(undefined, {} as any);
 
-       expect(state).toEqual({
-           isNavigationOpen: true,
-           navigationWidth: 240,
-       });
+        expect(state).toEqual({
+            isNavigationOpen: true,
+            navigationWidth: 240
+        });
     });
 
     const testShowNavigationAction = (description: string, action: boolean, initial: boolean, expected: boolean) => {
@@ -19,7 +19,7 @@ describe('navigation reducers', () => {
             }, showNavigation(action));
 
             expect(state).toMatchObject({
-                isNavigationOpen: expected,
+                isNavigationOpen: expected
             });
         });
     };

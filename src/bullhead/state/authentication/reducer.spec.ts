@@ -1,10 +1,9 @@
-import {signInFailure, signInStart, signInSuccess, signOut} from './actions';
+import {AuthenticationError, signInFailure, signInStart, signInSuccess, signOut} from './actions';
 import {authenticationReducer} from './reducer';
-import {AuthenticationError} from './types';
 
 describe('authentication reducer', () => {
     it('should return signed out initial state', () => {
-        const state = authenticationReducer(undefined, {});
+        const state = authenticationReducer(undefined, {} as any);
 
         expect(state).toEqual({
             isAuthenticated: false,

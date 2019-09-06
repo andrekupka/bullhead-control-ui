@@ -2,8 +2,7 @@ import {IconButton} from '@material-ui/core';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import React, {Dispatch} from 'react';
 import {connect} from 'react-redux';
-import {signOut} from '../../state/authentication/actions';
-import {AuthenticationActionTypes} from '../../state/authentication/types';
+import {AuthenticationActionTypes, signOut} from '../../state/authentication/actions';
 
 interface Props {
     signOut: () => void;
