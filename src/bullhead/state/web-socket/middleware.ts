@@ -1,13 +1,12 @@
 import {Dispatch, MiddlewareAPI} from 'redux';
+import {LightBullMessage} from '../../types/types';
 import {AuthenticationActionTypes, SIGN_OUT, signInSuccess, signOut, TOKEN_ACQUIRED} from '../authentication/actions';
 import {LightBullState} from '../index';
 import {
-    WEB_SOCKET_AUTHENTICATE,
     WEB_SOCKET_CONNECT,
     WEB_SOCKET_DISCONNECT,
     WEB_SOCKET_SEND,
     WebSocketActionTypes,
-    webSocketAuthenticate,
     webSocketConnect,
     webSocketConnected,
     webSocketConnecting,
@@ -23,26 +22,27 @@ type WSMiddlewareAPI = MiddlewareAPI<WSDispatch, LightBullState>;
 export const webSocketMiddleware = () => {
     let socket: WebSocket | null = null;
     let reconnect = false;
-    let token: string | null = null;
 
-    const getSocket = (): WebSocket => {
+    const send = (message: LightBullMessage) => {
         if (socket === null) {
             throw new Error('Invalid state, socket is not initialized');
         }
-        return socket;
-    };
-
-    const getToken = (): string => {
-        if (token === null) {
-            throw new Error('Invalid state, token is not initialized');
-        }
-        return token;
+        socket.send(JSON.stringify(message));
     };
 
     const onOpen = (store: WSMiddlewareAPI) => () => {
         console.log('connected');
         store.dispatch(webSocketConnected());
-        store.dispatch(webSocketAuthenticate(getToken()));
+        const token = store.getState().authentication.token;
+        if (!token) {
+            throw new Error('Invalid state, token is not initialized');
+        }
+        send({
+            type: 'authenticate',
+            payload: {
+                token: token
+            }
+        });
     };
 
     const onMessage = (store: WSMiddlewareAPI) => (event: MessageEvent) => {
@@ -76,7 +76,6 @@ export const webSocketMiddleware = () => {
         switch (action.type) {
             case TOKEN_ACQUIRED:
                 const signInResult = next(action);
-                token = action.payload.token;
                 store.dispatch(webSocketConnect());
                 return signInResult;
             case SIGN_OUT:
@@ -99,19 +98,11 @@ export const webSocketMiddleware = () => {
                 socket.onclose = onClose(store);
                 socket.onerror = onError(store);
                 break;
-            case WEB_SOCKET_AUTHENTICATE:
-                getSocket().send(JSON.stringify({
-                    type: 'authenticate',
-                    payload: {
-                        token: token
-                    }
-                }));
-                break;
             case WEB_SOCKET_SEND:
                 if (!store.getState().authentication.isAuthenticated) {
                     throw new Error('Cannot send message, unauthenticated');
                 }
-                getSocket().send(JSON.stringify(action.payload.message));
+                send(action.payload.message);
                 break;
             case WEB_SOCKET_DISCONNECT:
                 console.log('disconnect');
