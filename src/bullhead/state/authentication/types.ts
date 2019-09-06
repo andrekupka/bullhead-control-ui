@@ -6,7 +6,7 @@ export const SIGN_OUT = '@authentication/SIGN_OUT';
 export enum AuthenticationError {
     WRONG_PASSWORD,
     TIMEOUT,
-    GENERAL_FAILURE
+    UNKNOWN_ERROR
 }
 
 
@@ -16,6 +16,9 @@ export interface SignInStartAction {
 
 export interface SignInSuccessAction {
     type: typeof SIGN_IN_SUCCESS;
+    payload: {
+        token: string
+    }
 }
 
 export interface SignInFailureAction {

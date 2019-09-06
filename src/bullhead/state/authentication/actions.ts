@@ -11,8 +11,11 @@ export const signInStart = (): AuthenticationActionTypes => ({
     type: SIGN_IN_START
 });
 
-export const signInSuccess = (): AuthenticationActionTypes => ({
-    type: SIGN_IN_SUCCESS
+export const signInSuccess = (token: string): AuthenticationActionTypes => ({
+    type: SIGN_IN_SUCCESS,
+    payload: {
+        token: token
+    }
 });
 
 export const signInFailure = (error: AuthenticationError): AuthenticationActionTypes => ({

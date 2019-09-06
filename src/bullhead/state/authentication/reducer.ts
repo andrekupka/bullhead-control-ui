@@ -1,4 +1,3 @@
-import {AuthenticationAware} from '../../types/AuthenticationAware';
 import {
     AuthenticationActionTypes,
     AuthenticationError,
@@ -9,8 +8,10 @@ import {
 } from './types';
 
 
-interface AuthenticationState extends AuthenticationAware {
+interface AuthenticationState {
+    isAuthenticated: boolean;
     isAuthenticating: boolean;
+    token?: string;
     authenticationError?: AuthenticationError;
 }
 
@@ -35,7 +36,8 @@ export const authenticationReducer = (state: AuthenticationState = INITIAL_STATE
                 ...state,
                 isAuthenticated: true,
                 isAuthenticating: false,
-                authenticationError: undefined,
+                token: action.payload.token,
+                authenticationError: undefined
             };
         case SIGN_IN_FAILURE:
             return {
@@ -49,6 +51,7 @@ export const authenticationReducer = (state: AuthenticationState = INITIAL_STATE
                 ...state,
                 isAuthenticated: false,
                 isAuthenticating: false,
+                token: undefined,
                 authenticationError: undefined
             };
         default:

@@ -7,24 +7,25 @@ export const signIn = (password: string) => async (dispatch: Dispatch<Authentica
     dispatch(signInStart());
 
     try {
-        await axiosClient.post('/api/login', {
+        const { token } = await axiosClient.post('/api/login', {
             password: password
-        }, {
-            timeout: 5000
         });
-        dispatch(signInSuccess());
+        if (!token) {
+            dispatch(signInFailure(AuthenticationError.UNKNOWN_ERROR))
+        }
+        dispatch(signInSuccess(token));
     } catch (error) {
         if (error.response) {
             if (error.response.status === 401) {
                 dispatch(signInFailure(AuthenticationError.WRONG_PASSWORD));
             } else {
-                dispatch(signInFailure(AuthenticationError.GENERAL_FAILURE));
+                dispatch(signInFailure(AuthenticationError.UNKNOWN_ERROR));
             }
         } else {
             if (error.code === 'ECONNABORTED') {
                 dispatch(signInFailure(AuthenticationError.TIMEOUT));
             } else {
-                dispatch(signInFailure(AuthenticationError.GENERAL_FAILURE));
+                dispatch(signInFailure(AuthenticationError.UNKNOWN_ERROR));
             }
         }
     }

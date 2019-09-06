@@ -24,7 +24,7 @@ describe('authentication reducer', () => {
         });
     });
 
-    it ('should ignore signInStart action if already authenticated', () => {
+    it('should ignore signInStart action if already authenticated', () => {
         const state = authenticationReducer({
             isAuthenticated: true,
             isAuthenticating: false
@@ -49,15 +49,16 @@ describe('authentication reducer', () => {
         });
     });
 
-    it('should sign in user and reset progress on signInSuccess action', () => {
+    it('should sign in user, reset progress and store token on signInSuccess action', () => {
         const state = authenticationReducer({
             isAuthenticated: false,
             isAuthenticating: true
-        }, signInSuccess());
+        }, signInSuccess('token'));
 
         expect(state).toEqual({
             isAuthenticated: true,
-            isAuthenticating: false
+            isAuthenticating: false,
+            token: 'token'
         });
     });
 
@@ -74,15 +75,17 @@ describe('authentication reducer', () => {
         });
     });
 
-    it ('should sign out user on signOut action', () => {
+    it('should sign out user and remove token on signOut action', () => {
         const state = authenticationReducer({
             isAuthenticated: true,
-            isAuthenticating: false
+            isAuthenticating: false,
+            token: 'token'
         }, signOut());
 
         expect(state).toEqual({
             isAuthenticated: false,
-            isAuthenticating: false
+            isAuthenticating: false,
+            token: undefined
         });
-    })
+    });
 });

@@ -2,9 +2,9 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Redirect, Route, RouteProps} from 'react-router-dom';
 import {LightBullState} from '../../state';
-import {AuthenticationAware} from '../../types/AuthenticationAware';
 
-interface Props extends AuthenticationAware, RouteProps {
+interface Props extends RouteProps {
+    isAuthenticated: boolean;
 }
 
 export const PureAuthenticatedRoute = ({component: Component, isAuthenticated, ...rest}: Props) => {

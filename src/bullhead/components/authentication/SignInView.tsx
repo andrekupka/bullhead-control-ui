@@ -1,22 +1,22 @@
-import {Avatar, Button, Container, createStyles, makeStyles, Theme, Typography} from '@material-ui/core';
+import {Avatar, Container, createStyles, makeStyles, Theme, Typography} from '@material-ui/core';
 import LockIcon from '@material-ui/icons/Lock';
 import React, {useState} from 'react';
 import {connect} from 'react-redux';
 import {Redirect, RouteProps} from 'react-router-dom';
+import {ThunkDispatch} from 'redux-thunk';
 import {LightBullState} from '../../state';
 import {signIn} from '../../state/authentication/thunks';
 import {AuthenticationError} from '../../state/authentication/types';
-import {AuthenticationAware} from '../../types/AuthenticationAware';
 import {PasswordInput} from '../common/form/PasswordInput';
-import {ThunkDispatch} from 'redux-thunk';
 import {ProgressAwareButton} from '../common/form/ProgressAwareButton';
 
 const MESSAGES = new Map<AuthenticationError, string>();
 MESSAGES.set(AuthenticationError.WRONG_PASSWORD, 'Invalid password');
 MESSAGES.set(AuthenticationError.TIMEOUT, 'Server took too long to respond');
-MESSAGES.set(AuthenticationError.GENERAL_FAILURE, 'Unknown error');
+MESSAGES.set(AuthenticationError.UNKNOWN_ERROR, 'Unknown error');
 
-interface Props extends AuthenticationAware, RouteProps {
+interface Props extends RouteProps {
+    isAuthenticated: boolean;
     isAuthenticating: boolean;
     authenticationError: AuthenticationError | undefined;
     signIn: (password: string) => void;
