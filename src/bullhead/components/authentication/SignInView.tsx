@@ -9,6 +9,7 @@ import {AuthenticationError} from '../../state/authentication/types';
 import {AuthenticationAware} from '../../types/AuthenticationAware';
 import {PasswordInput} from '../common/form/PasswordInput';
 import {ThunkDispatch} from 'redux-thunk';
+import {ProgressAwareButton} from '../common/form/ProgressAwareButton';
 
 const MESSAGES = new Map<AuthenticationError, string>();
 MESSAGES.set(AuthenticationError.WRONG_PASSWORD, 'Invalid password');
@@ -54,8 +55,6 @@ export const PureLoginView = (props: Props) => {
         props.signIn(password);
     };
 
-    const submitDisabled = props.isAuthenticating || password.length === 0;
-
     const hasError = props.authenticationError !== undefined;
     const errorMessage = props.authenticationError !== undefined ? MESSAGES.get(props.authenticationError) : null;
 
@@ -80,14 +79,15 @@ export const PureLoginView = (props: Props) => {
                                    autoFocus
                                    value={password}
                                    onChange={event => setPassword(event.target.value)}/>
-                    <Button className={classes.submit}
-                            variant='contained'
-                            color='primary'
-                            type='submit'
-                            disabled={submitDisabled}
-                            fullWidth>
+                    <ProgressAwareButton className={classes.submit}
+                                         variant='contained'
+                                         color='primary'
+                                         type='submit'
+                                         disabled={password.length === 0}
+                                         hasProgress={props.isAuthenticating}
+                                         fullWidth>
                         Sign In
-                    </Button>
+                    </ProgressAwareButton>
                 </form>
             </div>
         </Container>

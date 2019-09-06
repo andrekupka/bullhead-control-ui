@@ -40,15 +40,17 @@ export const signIn = (password: string) => async (dispatch: Dispatch<Authentica
         });
         dispatch(signInSuccess());
     } catch (error) {
-        const code = error.code;
-        if (code === 'ECONNABORTED') {
-            dispatch(signInFailure(AuthenticationError.TIMEOUT));
-        } else {
-            const status = error.response.status;
-            if (status === 401) {
+        if (error.response) {
+            if (error.response.status === 401) {
                 dispatch(signInFailure(AuthenticationError.WRONG_PASSWORD));
             } else {
                 dispatch(signInFailure(AuthenticationError.GENERAL_FAILURE));
+            }
+        } else {
+            if (error.code === 'ECONNABORTED') {
+                dispatch(signInFailure(AuthenticationError.TIMEOUT));
+            } else {
+                dispatch(signInFailure(AuthenticationError.GENERAL_FAILURE))
             }
         }
     }
