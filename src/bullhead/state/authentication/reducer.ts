@@ -4,7 +4,8 @@ import {
     SIGN_IN_FAILURE,
     SIGN_IN_START,
     SIGN_IN_SUCCESS,
-    SIGN_OUT_FINISH
+    SIGN_OUT,
+    TOKEN_ACQUIRED
 } from './actions';
 
 interface AuthenticationState {
@@ -30,12 +31,16 @@ export const authenticationReducer = (state: AuthenticationState = INITIAL_STATE
                 isAuthenticating: true,
                 authenticationError: undefined
             };
+        case TOKEN_ACQUIRED:
+            return {
+                ...state,
+                token: action.payload.token
+            };
         case SIGN_IN_SUCCESS:
             return {
                 ...state,
                 isAuthenticated: true,
                 isAuthenticating: false,
-                token: action.payload.token,
                 authenticationError: undefined
             };
         case SIGN_IN_FAILURE:
@@ -45,7 +50,7 @@ export const authenticationReducer = (state: AuthenticationState = INITIAL_STATE
                 isAuthenticating: false,
                 authenticationError: action.payload.error
             };
-        case SIGN_OUT_FINISH:
+        case SIGN_OUT:
             return {
                 ...state,
                 isAuthenticated: false,

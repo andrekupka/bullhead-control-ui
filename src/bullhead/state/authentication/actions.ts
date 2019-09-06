@@ -1,7 +1,8 @@
 export const SIGN_IN_START = '@authentication/SIGN_IN_START';
+export const TOKEN_ACQUIRED = '@authentication/TOKEN_ACQUIRED';
 export const SIGN_IN_SUCCESS = '@authentication/SIGN_IN_SUCCESS';
 export const SIGN_IN_FAILURE = '@authentication/SIGN_IN_FAILURE';
-export const SIGN_OUT_FINISH = '@authentication/SIGN_OUT_FINISH';
+export const SIGN_OUT = '@authentication/SIGN_OUT';
 
 export enum AuthenticationError {
     WRONG_PASSWORD,
@@ -13,11 +14,15 @@ export const signInStart = () => ({
     type: SIGN_IN_START as typeof SIGN_IN_START
 });
 
-export const signInSuccess = (token: string) => ({
-    type: SIGN_IN_SUCCESS as typeof SIGN_IN_SUCCESS,
+export const tokenAcquired = (token: string) => ({
+    type: TOKEN_ACQUIRED as typeof TOKEN_ACQUIRED,
     payload: {
         token: token
     }
+});
+
+export const signInSuccess = () => ({
+    type: SIGN_IN_SUCCESS as typeof SIGN_IN_SUCCESS
 });
 
 export const signInFailure = (error: AuthenticationError) => ({
@@ -27,13 +32,14 @@ export const signInFailure = (error: AuthenticationError) => ({
     }
 });
 
-export const signOutFinish = () => ({
-    type: SIGN_OUT_FINISH as typeof SIGN_OUT_FINISH
+export const signOut = () => ({
+    type: SIGN_OUT as typeof SIGN_OUT
 });
 
 export type AuthenticationActionTypes =
     ReturnType<typeof signInStart>
+    | ReturnType<typeof tokenAcquired>
     | ReturnType<typeof signInSuccess>
     | ReturnType<typeof signInFailure>
-    | ReturnType<typeof signOutFinish>;
+    | ReturnType<typeof signOut>;
 

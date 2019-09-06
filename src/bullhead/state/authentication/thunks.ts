@@ -1,21 +1,8 @@
 import {Dispatch} from 'react';
 import {axiosClient} from '../../common/http';
-import {
-    webSocketConnect,
-    WebSocketConnectType,
-    webSocketDisconnect,
-    WebSocketDisconnectType
-} from '../web-socket/actions';
-import {
-    AuthenticationActionTypes,
-    AuthenticationError,
-    signInFailure,
-    signInStart,
-    signInSuccess,
-    signOutFinish
-} from './actions';
+import {AuthenticationActionTypes, AuthenticationError, signInFailure, signInStart, tokenAcquired} from './actions';
 
-export const signIn = (password: string) => async (dispatch: Dispatch<AuthenticationActionTypes | WebSocketConnectType>) => {
+export const signIn = (password: string) => async (dispatch: Dispatch<AuthenticationActionTypes>) => {
     dispatch(signInStart());
 
     try {
@@ -26,8 +13,7 @@ export const signIn = (password: string) => async (dispatch: Dispatch<Authentica
         if (!token) {
             dispatch(signInFailure(AuthenticationError.UNKNOWN_ERROR));
         }
-        dispatch(signInSuccess(token));
-        dispatch(webSocketConnect());
+        dispatch(tokenAcquired(token));
     } catch (error) {
         if (error.response) {
             if (error.response.status === 401) {
@@ -43,9 +29,4 @@ export const signIn = (password: string) => async (dispatch: Dispatch<Authentica
             }
         }
     }
-};
-
-export const signOut = () => (dispatch: Dispatch<AuthenticationActionTypes | WebSocketDisconnectType>) => {
-    dispatch(signOutFinish());
-    dispatch(webSocketDisconnect(true));
 };
