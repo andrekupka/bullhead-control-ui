@@ -22,6 +22,9 @@ const INITIAL_STATE: AuthenticationState = {
 export const authenticationReducer = (state: AuthenticationState = INITIAL_STATE, action: AuthenticationActionTypes): AuthenticationState => {
     switch (action.type) {
         case SIGN_IN_START:
+            if (state.isAuthenticated) {
+                return state;
+            }
             return {
                 ...state,
                 isAuthenticating: true,
@@ -32,7 +35,7 @@ export const authenticationReducer = (state: AuthenticationState = INITIAL_STATE
                 ...state,
                 isAuthenticated: true,
                 isAuthenticating: false,
-                authenticationError: undefined
+                authenticationError: undefined,
             };
         case SIGN_IN_FAILURE:
             return {
@@ -44,7 +47,9 @@ export const authenticationReducer = (state: AuthenticationState = INITIAL_STATE
         case SIGN_OUT:
             return {
                 ...state,
-                isAuthenticated: false
+                isAuthenticated: false,
+                isAuthenticating: false,
+                authenticationError: undefined
             };
         default:
             return state;

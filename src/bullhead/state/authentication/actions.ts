@@ -1,6 +1,3 @@
-import axios from 'axios';
-import {Dispatch} from 'react';
-
 import {
     AuthenticationActionTypes,
     AuthenticationError,
@@ -29,29 +26,3 @@ export const signOut = (): AuthenticationActionTypes => ({
     type: SIGN_OUT
 });
 
-export const signIn = (password: string) => async (dispatch: Dispatch<AuthenticationActionTypes>) => {
-    dispatch(signInStart());
-
-    try {
-        await axios.post('http://localhost:8080/api/login', {
-            password: password
-        }, {
-            timeout: 5000
-        });
-        dispatch(signInSuccess());
-    } catch (error) {
-        if (error.response) {
-            if (error.response.status === 401) {
-                dispatch(signInFailure(AuthenticationError.WRONG_PASSWORD));
-            } else {
-                dispatch(signInFailure(AuthenticationError.GENERAL_FAILURE));
-            }
-        } else {
-            if (error.code === 'ECONNABORTED') {
-                dispatch(signInFailure(AuthenticationError.TIMEOUT));
-            } else {
-                dispatch(signInFailure(AuthenticationError.GENERAL_FAILURE))
-            }
-        }
-    }
-};

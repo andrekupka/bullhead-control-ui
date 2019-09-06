@@ -4,7 +4,7 @@ import React, {useState} from 'react';
 import {connect} from 'react-redux';
 import {Redirect, RouteProps} from 'react-router-dom';
 import {LightBullState} from '../../state';
-import {signIn} from '../../state/authentication/actions';
+import {signIn} from '../../state/authentication/thunks';
 import {AuthenticationError} from '../../state/authentication/types';
 import {AuthenticationAware} from '../../types/AuthenticationAware';
 import {PasswordInput} from '../common/form/PasswordInput';
