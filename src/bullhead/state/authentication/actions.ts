@@ -1,9 +1,7 @@
-import {webSocketConnect} from '../web-socket/actions';
-
 export const SIGN_IN_START = '@authentication/SIGN_IN_START';
 export const SIGN_IN_SUCCESS = '@authentication/SIGN_IN_SUCCESS';
 export const SIGN_IN_FAILURE = '@authentication/SIGN_IN_FAILURE';
-export const SIGN_OUT = '@authentication/SIGN_OUT';
+export const SIGN_OUT_FINISH = '@authentication/SIGN_OUT_FINISH';
 
 export enum AuthenticationError {
     WRONG_PASSWORD,
@@ -29,14 +27,13 @@ export const signInFailure = (error: AuthenticationError) => ({
     }
 });
 
-export const signOut = () => ({
-    type: SIGN_OUT as typeof SIGN_OUT
+export const signOutFinish = () => ({
+    type: SIGN_OUT_FINISH as typeof SIGN_OUT_FINISH
 });
 
 export type AuthenticationActionTypes =
     ReturnType<typeof signInStart>
     | ReturnType<typeof signInSuccess>
     | ReturnType<typeof signInFailure>
-    | ReturnType<typeof signOut>
-    | ReturnType<typeof webSocketConnect>;
+    | ReturnType<typeof signOutFinish>;
 

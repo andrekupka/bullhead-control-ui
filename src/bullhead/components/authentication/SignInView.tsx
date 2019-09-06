@@ -3,10 +3,10 @@ import LockIcon from '@material-ui/icons/Lock';
 import React, {useState} from 'react';
 import {connect} from 'react-redux';
 import {Redirect, RouteProps} from 'react-router-dom';
-import {ThunkDispatch} from 'redux-thunk';
 import {LightBullState} from '../../state';
 import {AuthenticationError} from '../../state/authentication/actions';
 import {signIn} from '../../state/authentication/thunks';
+import {LightBullThunkDispatch} from '../../types/redux';
 import {PasswordInput} from '../common/form/PasswordInput';
 import {ProgressAwareButton} from '../common/form/ProgressAwareButton';
 
@@ -107,7 +107,7 @@ const mapStateToProps = (state: LightBullState) => ({
     authenticationError: state.authentication.authenticationError
 });
 
-const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, any>) => ({
+const mapDispatchToProps = (dispatch: LightBullThunkDispatch) => ({
     signIn: (password: string) => dispatch(signIn(password))
 });
 

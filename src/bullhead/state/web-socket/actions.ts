@@ -6,11 +6,8 @@ export const WEB_SOCKET_DISCONNECTING = '@web-socket/DISCONNECTING';
 export const WEB_SOCKET_DISCONNECTED = '@web-socket/DISCONNECTED';
 
 
-export const webSocketConnect = (host: string) => ({
-    type: WEB_SOCKET_CONNECT as typeof WEB_SOCKET_CONNECT,
-    payload: {
-        host: host
-    }
+export const webSocketConnect = () => ({
+    type: WEB_SOCKET_CONNECT as typeof WEB_SOCKET_CONNECT
 });
 
 export const webSocketConnecting = () => ({
@@ -21,8 +18,11 @@ export const webSocketConnected = () => ({
     type: WEB_SOCKET_CONNECTED as typeof WEB_SOCKET_CONNECTED
 });
 
-export const webSocketDisconnect = () => ({
-    type: WEB_SOCKET_DISCONNECT as typeof WEB_SOCKET_DISCONNECT
+export const webSocketDisconnect = (permanent: boolean = false) => ({
+    type: WEB_SOCKET_DISCONNECT as typeof WEB_SOCKET_DISCONNECT,
+    payload: {
+        permanent: permanent
+    }
 });
 
 export const webSocketDisconnecting = () => ({
@@ -33,10 +33,14 @@ export const webSocketDisconnected = () => ({
     type: WEB_SOCKET_DISCONNECTED as typeof WEB_SOCKET_DISCONNECTED
 });
 
+export type WebSocketConnectType = ReturnType<typeof webSocketConnect>;
+
+export type WebSocketDisconnectType = ReturnType<typeof webSocketDisconnect>;
+
 export type WebSocketActionTypes =
-    ReturnType<typeof webSocketConnect>
+    WebSocketConnectType
     | ReturnType<typeof webSocketConnecting>
     | ReturnType<typeof webSocketConnected>
-    | ReturnType<typeof webSocketDisconnect>
+    | WebSocketDisconnectType
     | ReturnType<typeof webSocketDisconnecting>
     | ReturnType<typeof webSocketDisconnected>;
