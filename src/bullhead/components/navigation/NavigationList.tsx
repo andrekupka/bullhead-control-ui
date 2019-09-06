@@ -2,7 +2,7 @@ import {List, ListItem, ListItemIcon, ListItemText} from '@material-ui/core';
 import HomeIcon from '@material-ui/icons/Home';
 import SettingsIcon from '@material-ui/icons/Settings';
 import React, {FunctionComponent} from 'react';
-import {NavLink, NavLinkProps} from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
 
 interface NavigationListItemProps {
     to: string;

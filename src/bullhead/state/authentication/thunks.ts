@@ -7,11 +7,12 @@ export const signIn = (password: string) => async (dispatch: Dispatch<Authentica
     dispatch(signInStart());
 
     try {
-        const { token } = await axiosClient.post('/api/login', {
+        const response = await axiosClient.post('/api/login', {
             password: password
         });
+        const {token} = response.data;
         if (!token) {
-            dispatch(signInFailure(AuthenticationError.UNKNOWN_ERROR))
+            dispatch(signInFailure(AuthenticationError.UNKNOWN_ERROR));
         }
         dispatch(signInSuccess(token));
     } catch (error) {
