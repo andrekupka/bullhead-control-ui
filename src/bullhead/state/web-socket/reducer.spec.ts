@@ -100,7 +100,17 @@ describe('web-socket reducer', () => {
         expect(state).toEqual(initialState);
     });
 
-    it('should start disconnecting on disconnect action', () => {
+    it('should start disconnecting on disconnect action if connecting', () => {
+        const state = webSocketReducer(createState({
+            isConnecting: true
+        }), webSocketDisconnect());
+
+        expect(state).toMatchObject({
+            isDisconnecting: true
+        });
+    });
+
+    it('should start disconnecting on disconnect action if connected', () => {
         const state = webSocketReducer(createState({
             isConnected: true
         }), webSocketDisconnect());
@@ -110,7 +120,7 @@ describe('web-socket reducer', () => {
         });
     });
 
-    it('should ignore disconnecting action if not connected', () => {
+    it('should ignore disconnecting action if not connected or connecting', () => {
         const initialState = createState();
         const state = webSocketReducer(initialState, webSocketDisconnect());
 
