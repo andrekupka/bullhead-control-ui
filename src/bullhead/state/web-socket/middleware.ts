@@ -57,18 +57,15 @@ export const webSocketMiddleware = () => {
         const {type, payload} = JSON.parse(event.data);
         switch (type) {
             case 'authenticated':
-                console.log('authenticated');
                 store.dispatch(webSocketAuthenticated());
                 break;
             case 'unauthenticated':
-                console.log('unauthenticated');
                 store.dispatch(authenticationLost());
                 break;
         }
     };
 
     const onClose = (store: WSMiddlewareAPI) => () => {
-        console.log('close');
         store.dispatch(webSocketDisconnected());
         if (reconnect) {
             setTimeout(() => store.dispatch(webSocketConnect()), 2000);
@@ -76,7 +73,6 @@ export const webSocketMiddleware = () => {
     };
 
     const onError = (store: WSMiddlewareAPI) => (event: Event) => {
-        console.log('error');
         store.dispatch(webSocketDisconnect());
     };
 
@@ -93,12 +89,10 @@ export const webSocketMiddleware = () => {
                 return signOutResult;
             case WEB_SOCKET_CONNECT:
                 if (socket !== null) {
-                    console.warn('Already connected');
                     socket.close();
                 }
                 reconnect = true;
 
-                console.log('connect');
                 store.dispatch(webSocketConnecting());
 
                 socket = new WebSocket('ws://localhost:8080');
@@ -115,7 +109,6 @@ export const webSocketMiddleware = () => {
                 send(action.payload.message);
                 break;
             case WEB_SOCKET_DISCONNECT:
-                console.log('disconnect');
                 if (action.payload.permanent) {
                     reconnect = false;
                 }
