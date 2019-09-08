@@ -1,4 +1,4 @@
-import {Avatar, Container, createStyles, makeStyles, Theme, Typography} from '@material-ui/core';
+import {Avatar, Card, Container, createStyles, makeStyles, Theme, Typography} from '@material-ui/core';
 import LockIcon from '@material-ui/icons/Lock';
 import React, {useState} from 'react';
 import {connect} from 'react-redux';
@@ -9,6 +9,7 @@ import {signIn} from '../../state/authentication/thunks';
 import {LightBullThunkDispatch} from '../../types/redux';
 import {PasswordInput} from '../common/form/PasswordInput';
 import {ProgressAwareButton} from '../common/form/ProgressAwareButton';
+import {AuthenticationLostInfo} from "./AuthenticationLostInfo";
 
 const MESSAGES = new Map<AuthenticationError, string>();
 MESSAGES.set(AuthenticationError.WRONG_PASSWORD, 'Invalid password');
@@ -18,11 +19,15 @@ MESSAGES.set(AuthenticationError.UNKNOWN_ERROR, 'Unknown error');
 interface Props extends RouteProps {
     isAuthenticated: boolean;
     isAuthenticating: boolean;
+    authenticationLost: boolean;
     authenticationError: AuthenticationError | undefined;
     signIn: (password: string) => void;
 }
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
+    info: {
+        paddingBottom: theme.spacing(1)
+    },
     avatar: {
         margin: theme.spacing(1)
     },
@@ -65,9 +70,11 @@ export const PureLoginView = (props: Props) => {
     const hasError = props.authenticationError !== undefined;
     const errorMessage = props.authenticationError !== undefined ? MESSAGES.get(props.authenticationError) : null;
 
+
     return (
         <Container component='main' maxWidth='xs'>
             <div className={classes.paper}>
+                {props.authenticationLost && <AuthenticationLostInfo/>}
                 <Avatar className={classes.avatar}>
                     <LockIcon/>
                 </Avatar>
@@ -104,6 +111,7 @@ export const PureLoginView = (props: Props) => {
 const mapStateToProps = (state: LightBullState) => ({
     isAuthenticated: state.authentication.isAuthenticated,
     isAuthenticating: state.authentication.isAuthenticating,
+    authenticationLost: state.authentication.authenticationLost,
     authenticationError: state.authentication.authenticationError
 });
 

@@ -4,19 +4,21 @@ import {
     AUTHENTICATION_FAILURE,
     AUTHENTICATION_START,
     AUTHENTICATION_SUCCESS,
-    AUTHENTICATION_CLEAR,
+    AUTHENTICATION_CLEAR, AUTHENTICATION_LOST,
 } from './actions';
 
 interface AuthenticationState {
     isAuthenticated: boolean;
     isAuthenticating: boolean;
     token?: string;
+    authenticationLost: boolean;
     authenticationError?: AuthenticationError;
 }
 
 const INITIAL_STATE: AuthenticationState = {
     isAuthenticated: false,
-    isAuthenticating: false
+    isAuthenticating: false,
+    authenticationLost: false
 };
 
 export const authenticationReducer = (state: AuthenticationState = INITIAL_STATE, action: AuthenticationActionTypes): AuthenticationState => {
@@ -36,6 +38,7 @@ export const authenticationReducer = (state: AuthenticationState = INITIAL_STATE
                 isAuthenticated: true,
                 isAuthenticating: false,
                 token: action.payload.token,
+                authenticationLost: false,
                 authenticationError: undefined
             };
         case AUTHENTICATION_FAILURE:
@@ -43,7 +46,17 @@ export const authenticationReducer = (state: AuthenticationState = INITIAL_STATE
                 ...state,
                 isAuthenticated: false,
                 isAuthenticating: false,
+                authenticationLost: false,
                 authenticationError: action.payload.error
+            };
+        case AUTHENTICATION_LOST:
+            return {
+                ...state,
+                isAuthenticated: false,
+                isAuthenticating: false,
+                token: undefined,
+                authenticationLost: true,
+                authenticationError: undefined
             };
         case AUTHENTICATION_CLEAR:
             return {
