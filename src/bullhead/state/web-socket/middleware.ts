@@ -1,7 +1,8 @@
-import {Dispatch, MiddlewareAPI, AnyAction} from 'redux';
+import {Dispatch, MiddlewareAPI} from 'redux';
 import {LightBullMessage} from '../../types/types';
 import {
-    AUTHENTICATION_CLEAR, AUTHENTICATION_LOST,
+    AUTHENTICATION_CLEAR,
+    AUTHENTICATION_LOST,
     AUTHENTICATION_SUCCESS,
     AuthenticationActionTypes,
     authenticationLost,
@@ -12,8 +13,8 @@ import {
     WEB_SOCKET_DISCONNECT,
     WEB_SOCKET_SEND,
     WebSocketActionTypes,
-    webSocketAuthenticated,
     webSocketAuthenticate,
+    webSocketAuthenticated,
     webSocketConnect,
     webSocketConnected,
     webSocketDisconnect,

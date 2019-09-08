@@ -8,6 +8,7 @@ import {NotFound} from './common/NotFound';
 import {Home} from './home/Home';
 import {SystemView} from './system/SystemView';
 import {Route, Switch} from 'react-router-dom';
+import {ShowView} from "./shows/ShowView";
 
 interface Props extends NavigationAware {
 }
@@ -47,6 +48,7 @@ const PureMainViewContainer = (props: Props) => {
             <div className={classes.contentView}>
                 <Switch>
                     <Route exact path='/' component={Home}/>
+                    <Route path='/shows' component={ShowView}/>
                     <Route path='/system' component={SystemView}/>
                     <Route component={NotFound}/>
                 </Switch>

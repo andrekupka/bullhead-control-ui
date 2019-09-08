@@ -1,5 +1,5 @@
 import {Dispatch} from 'react';
-import {axiosClient} from '../../common/http';
+import {Api} from '../../api/client';
 import {
     AuthenticationActionTypes,
     AuthenticationError,
@@ -12,14 +12,12 @@ export const signIn = (password: string) => async (dispatch: Dispatch<Authentica
     dispatch(authenticationStart());
 
     try {
-        const response = await axiosClient.post('/api/login', {
-            password: password
-        });
-        const {token} = response.data;
+        const token = await Api.login(password);
         if (!token) {
             dispatch(authenticationFailure(AuthenticationError.UNKNOWN_ERROR));
+        } else {
+            dispatch(authenticationSuccess(token));
         }
-        dispatch(authenticationSuccess(token));
     } catch (error) {
         if (error.response) {
             if (error.response.status === 401) {
