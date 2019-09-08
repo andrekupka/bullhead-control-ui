@@ -1,5 +1,5 @@
 import {NavigationAware} from '../../types/navigation/NavigationAware';
-import {SHOW_NAVIGATION, NavigationActionTypes} from './types';
+import {NavigationActionTypes, SHOW_NAVIGATION} from './actions';
 
 interface NavigationState extends NavigationAware {
 }

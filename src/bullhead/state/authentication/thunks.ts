@@ -1,10 +1,15 @@
 import {Dispatch} from 'react';
 import {axiosClient} from '../../common/http';
-import {signInFailure, signInStart, signInSuccess} from './actions';
-import {AuthenticationActionTypes, AuthenticationError} from './types';
+import {
+    AuthenticationActionTypes,
+    AuthenticationError,
+    authenticationStart,
+    authenticationFailure,
+    authenticationSuccess, authenticationClear
+} from './actions';
 
 export const signIn = (password: string) => async (dispatch: Dispatch<AuthenticationActionTypes>) => {
-    dispatch(signInStart());
+    dispatch(authenticationStart());
 
     try {
         const response = await axiosClient.post('/api/login', {
@@ -12,22 +17,24 @@ export const signIn = (password: string) => async (dispatch: Dispatch<Authentica
         });
         const {token} = response.data;
         if (!token) {
-            dispatch(signInFailure(AuthenticationError.UNKNOWN_ERROR));
+            dispatch(authenticationFailure(AuthenticationError.UNKNOWN_ERROR));
         }
-        dispatch(signInSuccess(token));
+        dispatch(authenticationSuccess(token));
     } catch (error) {
         if (error.response) {
             if (error.response.status === 401) {
-                dispatch(signInFailure(AuthenticationError.WRONG_PASSWORD));
+                dispatch(authenticationFailure(AuthenticationError.WRONG_PASSWORD));
             } else {
-                dispatch(signInFailure(AuthenticationError.UNKNOWN_ERROR));
+                dispatch(authenticationFailure(AuthenticationError.UNKNOWN_ERROR));
             }
         } else {
             if (error.code === 'ECONNABORTED') {
-                dispatch(signInFailure(AuthenticationError.TIMEOUT));
+                dispatch(authenticationFailure(AuthenticationError.TIMEOUT));
             } else {
-                dispatch(signInFailure(AuthenticationError.UNKNOWN_ERROR));
+                dispatch(authenticationFailure(AuthenticationError.UNKNOWN_ERROR));
             }
         }
     }
 };
+
+export const signOut = () => (dispatch: Dispatch<AuthenticationActionTypes>) => dispatch(authenticationClear());

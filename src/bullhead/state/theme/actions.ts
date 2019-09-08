@@ -1,5 +1,7 @@
-import {ThemeActionTypes, TOGGLE_THEME_TYPE} from './types';
+export const TOGGLE_THEME = '@theme/TOGGLE_THEME';
 
-export const toggleTheme = (): ThemeActionTypes => ({
-    type: TOGGLE_THEME_TYPE
+export const toggleTheme = () => ({
+    type: TOGGLE_THEME as typeof TOGGLE_THEME
 });
+
+export type ThemeActionTypes = ReturnType<typeof toggleTheme>;

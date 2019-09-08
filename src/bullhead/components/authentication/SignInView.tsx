@@ -3,12 +3,13 @@ import LockIcon from '@material-ui/icons/Lock';
 import React, {useState} from 'react';
 import {connect} from 'react-redux';
 import {Redirect, RouteProps} from 'react-router-dom';
-import {ThunkDispatch} from 'redux-thunk';
 import {LightBullState} from '../../state';
+import {AuthenticationError} from '../../state/authentication/actions';
 import {signIn} from '../../state/authentication/thunks';
-import {AuthenticationError} from '../../state/authentication/types';
+import {LightBullThunkDispatch} from '../../types/redux';
 import {PasswordInput} from '../common/form/PasswordInput';
 import {ProgressAwareButton} from '../common/form/ProgressAwareButton';
+import {AuthenticationLostInfo} from "./AuthenticationLostInfo";
 
 const MESSAGES = new Map<AuthenticationError, string>();
 MESSAGES.set(AuthenticationError.WRONG_PASSWORD, 'Invalid password');
@@ -18,11 +19,15 @@ MESSAGES.set(AuthenticationError.UNKNOWN_ERROR, 'Unknown error');
 interface Props extends RouteProps {
     isAuthenticated: boolean;
     isAuthenticating: boolean;
+    authenticationLost: boolean;
     authenticationError: AuthenticationError | undefined;
     signIn: (password: string) => void;
 }
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
+    info: {
+        paddingBottom: theme.spacing(1)
+    },
     avatar: {
         margin: theme.spacing(1)
     },
@@ -46,7 +51,7 @@ const getDestination = (props: Props) => {
         return props.location.state.from || '/';
     }
     return '/';
-}
+};
 
 export const PureLoginView = (props: Props) => {
     const [password, setPassword] = useState('');
@@ -65,9 +70,11 @@ export const PureLoginView = (props: Props) => {
     const hasError = props.authenticationError !== undefined;
     const errorMessage = props.authenticationError !== undefined ? MESSAGES.get(props.authenticationError) : null;
 
+
     return (
         <Container component='main' maxWidth='xs'>
             <div className={classes.paper}>
+                {props.authenticationLost && <AuthenticationLostInfo/>}
                 <Avatar className={classes.avatar}>
                     <LockIcon/>
                 </Avatar>
@@ -104,10 +111,11 @@ export const PureLoginView = (props: Props) => {
 const mapStateToProps = (state: LightBullState) => ({
     isAuthenticated: state.authentication.isAuthenticated,
     isAuthenticating: state.authentication.isAuthenticating,
+    authenticationLost: state.authentication.authenticationLost,
     authenticationError: state.authentication.authenticationError
 });
 
-const mapDispatchToProps = (dispatch: ThunkDispatch<{}, {}, any>) => ({
+const mapDispatchToProps = (dispatch: LightBullThunkDispatch) => ({
     signIn: (password: string) => dispatch(signIn(password))
 });
 

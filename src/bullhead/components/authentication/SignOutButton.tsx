@@ -1,9 +1,9 @@
 import {IconButton} from '@material-ui/core';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import React, {Dispatch} from 'react';
+import React from 'react';
 import {connect} from 'react-redux';
-import {signOut} from '../../state/authentication/actions';
-import {AuthenticationActionTypes} from '../../state/authentication/types';
+import {signOut} from "../../state/authentication/thunks";
+import {LightBullThunkDispatch} from "../../types/redux";
 
 interface Props {
     signOut: () => void;
@@ -17,7 +17,7 @@ const PureLogoutButton = (props: Props) => {
     );
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<AuthenticationActionTypes>) => ({
+const mapDispatchToProps = (dispatch: LightBullThunkDispatch) => ({
     signOut: () => dispatch(signOut())
 });
 

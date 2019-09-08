@@ -1,4 +1,4 @@
-import {ThemeActionTypes, TOGGLE_THEME_TYPE} from './types';
+import {ThemeActionTypes, TOGGLE_THEME} from './actions';
 
 interface ThemeState {
     isDark: boolean;
@@ -10,7 +10,7 @@ const INITIAL_STATE: ThemeState = {
 
 export const themeReducer = (state: ThemeState = INITIAL_STATE, action: ThemeActionTypes): ThemeState => {
     switch (action.type) {
-        case TOGGLE_THEME_TYPE:
+        case TOGGLE_THEME:
             return {
                 ...state,
                 isDark: !state.isDark
