@@ -9,6 +9,7 @@ import {NavigationAware} from '../../types/navigation/NavigationAware';
 import {SignOutButton} from '../authentication/SignOutButton';
 import {NavigationDrawer} from './NavigationDrawer';
 import {ToggleThemeButton} from './ToggleThemeButton';
+import {WebSocketConnectionState} from "./WebSocketConnectionState";
 
 interface Props extends NavigationAware {
     showNavigation: () => void;
@@ -53,6 +54,7 @@ const PureNavigationBar = (props: Props) => {
                     <Typography variant='h6' style={{flex: 1}}>
                         LightBull
                     </Typography>
+                    <WebSocketConnectionState/>
                     <ToggleThemeButton/>
                     <SignOutButton/>
                 </Toolbar>
