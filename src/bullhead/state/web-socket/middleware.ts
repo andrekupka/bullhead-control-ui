@@ -13,13 +13,11 @@ import {
     WEB_SOCKET_SEND,
     WebSocketActionTypes,
     webSocketAuthenticated,
-    webSocketAuthenticating,
+    webSocketAuthenticate,
     webSocketConnect,
     webSocketConnected,
-    webSocketConnecting,
     webSocketDisconnect,
     webSocketDisconnected,
-    webSocketDisconnecting
 } from './actions';
 
 type WSActions = WebSocketActionTypes | AuthenticationActionTypes;
@@ -44,7 +42,7 @@ export const webSocketMiddleware = () => {
         if (!token) {
             throw new Error('Invalid state, token is not initialized');
         }
-        store.dispatch(webSocketAuthenticating());
+        store.dispatch(webSocketAuthenticate());
         send({
             type: 'authenticate',
             payload: {
@@ -93,14 +91,14 @@ export const webSocketMiddleware = () => {
                 }
                 reconnect = true;
 
-                store.dispatch(webSocketConnecting());
+                const connectResult = next(action);
 
                 socket = new WebSocket('ws://localhost:8080');
                 socket.onopen = onOpen(store);
                 socket.onmessage = onMessage(store);
                 socket.onclose = onClose(store);
                 socket.onerror = onError(store);
-                break;
+                return connectResult;
             case WEB_SOCKET_SEND:
                 const {isConnected, isAuthenticated} = store.getState().webSocket;
                 if (!isConnected || ! isAuthenticated) {
@@ -112,12 +110,13 @@ export const webSocketMiddleware = () => {
                 if (action.payload.permanent) {
                     reconnect = false;
                 }
-                store.dispatch(webSocketDisconnecting());
+
+                const disconnectResult = next(action);
                 if (socket !== null) {
                     socket.close();
                 }
                 socket = null;
-                break;
+                return disconnectResult;
             default:
                 return next(action);
         }
