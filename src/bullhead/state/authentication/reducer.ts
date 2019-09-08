@@ -7,7 +7,7 @@ import {
     AUTHENTICATION_CLEAR, AUTHENTICATION_LOST,
 } from './actions';
 
-interface AuthenticationState {
+export interface AuthenticationState {
     isAuthenticated: boolean;
     isAuthenticating: boolean;
     token?: string;
@@ -15,7 +15,7 @@ interface AuthenticationState {
     authenticationError?: AuthenticationError;
 }
 
-const INITIAL_STATE: AuthenticationState = {
+export const INITIAL_STATE: AuthenticationState = {
     isAuthenticated: false,
     isAuthenticating: false,
     authenticationLost: false
@@ -55,16 +55,14 @@ export const authenticationReducer = (state: AuthenticationState = INITIAL_STATE
                 isAuthenticated: false,
                 isAuthenticating: false,
                 token: undefined,
-                authenticationLost: true,
-                authenticationError: undefined
+                authenticationLost: true
             };
         case AUTHENTICATION_CLEAR:
             return {
                 ...state,
                 isAuthenticated: false,
                 isAuthenticating: false,
-                token: undefined,
-                authenticationError: undefined
+                token: undefined
             };
         default:
             return state;

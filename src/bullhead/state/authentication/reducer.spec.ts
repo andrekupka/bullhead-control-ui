@@ -1,5 +1,14 @@
-import {AuthenticationError, authenticationFailure, authenticationStart, authenticationSuccess, authenticationClear} from './actions';
-import {authenticationReducer} from './reducer';
+import {
+    AuthenticationError,
+    authenticationFailure,
+    authenticationStart,
+    authenticationSuccess,
+    authenticationClear, authenticationLost
+} from './actions';
+import {authenticationReducer, AuthenticationState, INITIAL_STATE} from './reducer';
+
+const createState = (patch: Partial<AuthenticationState>): AuthenticationState =>
+    Object.assign({}, INITIAL_STATE, patch);
 
 describe('authentication reducer', () => {
     it('should return not authenticated initial state', () => {
@@ -7,81 +16,112 @@ describe('authentication reducer', () => {
 
         expect(state).toEqual({
             isAuthenticated: false,
-            isAuthenticating: false
+            isAuthenticating: false,
+            authenticationLost: false
         });
     });
 
     it('should start authentication with progress on start action', () => {
-        const state = authenticationReducer({
-            isAuthenticated: false,
-            isAuthenticating: false
-        }, authenticationStart());
+        const state = authenticationReducer(INITIAL_STATE, authenticationStart());
 
-        expect(state).toEqual({
+        expect(state).toMatchObject({
             isAuthenticated: false,
-            isAuthenticating: true
+            isAuthenticating: true,
         });
     });
 
     it('should ignore start action if already authenticated', () => {
-        const state = authenticationReducer({
+        const state = authenticationReducer(createState({
             isAuthenticated: true,
-            isAuthenticating: false
-        }, authenticationStart());
+            token: 'something'
+        }), authenticationStart());
 
-        expect(state).toEqual({
+        expect(state).toMatchObject({
             isAuthenticated: true,
-            isAuthenticating: false
+            isAuthenticating: false,
+            token: 'something'
         });
     });
 
-    it('should reset authentication error on signInStart action', () => {
-        const state = authenticationReducer({
+    it('should reset authentication error on start action', () => {
+        const state = authenticationReducer(createState({
+            authenticationError: AuthenticationError.WRONG_PASSWORD
+        }), authenticationStart());
+
+        expect(state).toMatchObject({
+            authenticationError: undefined
+        });
+    });
+
+    it('should sign in user, reset progress and store token on success action', () => {
+        const state = authenticationReducer(createState({
+            isAuthenticated: false,
+            isAuthenticating: true
+        }), authenticationSuccess('something'));
+
+        expect(state).toMatchObject({
+            isAuthenticated: true,
+            isAuthenticating: false,
+            token: 'something'
+        });
+    });
+
+    it('should reset lost authentication on success action', () => {
+        const state = authenticationReducer(createState({
+            isAuthenticating: true,
+            authenticationLost: true
+        }), authenticationSuccess('something'));
+
+        expect(state).toMatchObject({
+            authenticationLost: false
+        });
+    });
+
+    it('should show error and reset progress on failure action', () => {
+        const state = authenticationReducer(createState({
+            isAuthenticated: false,
+            isAuthenticating: true
+        }), authenticationFailure(AuthenticationError.WRONG_PASSWORD));
+
+        expect(state).toMatchObject({
             isAuthenticated: false,
             isAuthenticating: false,
             authenticationError: AuthenticationError.WRONG_PASSWORD
-        }, authenticationStart());
-
-        expect(state).toEqual({
-            isAuthenticated: false,
-            isAuthenticating: true
         });
     });
 
-    it('should sign in user, reset progress and store token on signInSuccess action', () => {
-        const state = authenticationReducer({
-            isAuthenticated: false,
-            isAuthenticating: true
-        }, authenticationSuccess('token'));
+    it('should reset lost authentication on failure action', () => {
+        const state = authenticationReducer(createState({
+            isAuthenticating: true,
+            authenticationLost: true,
+        }), authenticationFailure(AuthenticationError.WRONG_PASSWORD));
 
-        expect(state).toEqual({
+        expect(state).toMatchObject({
+            authenticationLost: false
+        });
+    });
+
+    it('should sign out user, remove token and set lost authentication', () => {
+        const state = authenticationReducer(createState({
+            isAuthenticated: true,
+            token: 'something'
+        }), authenticationLost());
+
+        expect(state).toMatchObject({
+            isAuthenticated: false,
+            token: undefined,
+            authenticationLost: true
+        })
+    });
+
+    it('should sign out user and remove token on clear action', () => {
+        const state = authenticationReducer(createState({
             isAuthenticated: true,
             isAuthenticating: false,
             token: 'token'
-        });
-    });
+        }), authenticationClear());
 
-    it('should show error and reset progress on signInFailure action', () => {
-        const state = authenticationReducer({
-            isAuthenticated: false,
-            isAuthenticating: true
-        }, authenticationFailure(AuthenticationError.WRONG_PASSWORD));
-
-        expect(state).toEqual({
-            isAuthenticated: false,
-            isAuthenticating: false,
-            authenticationError: AuthenticationError.WRONG_PASSWORD
-        });
-    });
-
-    it('should sign out user and remove token on signOut action', () => {
-        const state = authenticationReducer({
-            isAuthenticated: true,
-            isAuthenticating: false,
-            token: 'token'
-        }, authenticationClear());
-
-        expect(state).toEqual({
+        expect(state).toMatchObject({
             isAuthenticated: false,
             isAuthenticating: false,
             token: undefined
