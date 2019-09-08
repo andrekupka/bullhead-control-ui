@@ -3,12 +3,12 @@ import {
     authenticationFailure,
     authenticationStart,
     authenticationSuccess,
-    authenticationClear, authenticationLost
+    authenticationClear, authenticationLost, authenticationLoad
 } from './actions';
 import {authenticationReducer, AuthenticationState, INITIAL_STATE} from './reducer';
 
-const createState = (patch: Partial<AuthenticationState>): AuthenticationState =>
-    Object.assign({}, INITIAL_STATE, patch);
+const createState = (patch?: Partial<AuthenticationState>): AuthenticationState =>
+    Object.assign({}, INITIAL_STATE, patch || {});
 
 describe('authentication reducer', () => {
     it('should return not authenticated initial state', () => {
@@ -21,8 +21,19 @@ describe('authentication reducer', () => {
         });
     });
 
+    it('should initialize authentication on load action', () => {
+        const state = authenticationReducer(createState(), authenticationLoad('something'));
+
+        expect(state).toEqual({
+            isAuthenticated: true,
+            isAuthenticating: false,
+            token: 'something',
+            authenticationLost: false
+        })
+    })
+
     it('should start authentication with progress on start action', () => {
-        const state = authenticationReducer(INITIAL_STATE, authenticationStart());
+        const state = authenticationReducer(createState(), authenticationStart());
 
         expect(state).toMatchObject({
             isAuthenticated: false,
