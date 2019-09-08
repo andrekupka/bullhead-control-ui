@@ -1,11 +1,10 @@
 import {
     AuthenticationActionTypes,
     AuthenticationError,
-    SIGN_IN_FAILURE,
-    SIGN_IN_START,
-    SIGN_IN_SUCCESS,
-    SIGN_OUT,
-    TOKEN_ACQUIRED
+    AUTHENTICATION_FAILURE,
+    AUTHENTICATION_START,
+    AUTHENTICATION_SUCCESS,
+    AUTHENTICATION_CLEAR,
 } from './actions';
 
 interface AuthenticationState {
@@ -22,7 +21,7 @@ const INITIAL_STATE: AuthenticationState = {
 
 export const authenticationReducer = (state: AuthenticationState = INITIAL_STATE, action: AuthenticationActionTypes): AuthenticationState => {
     switch (action.type) {
-        case SIGN_IN_START:
+        case AUTHENTICATION_START:
             if (state.isAuthenticated) {
                 return state;
             }
@@ -31,26 +30,22 @@ export const authenticationReducer = (state: AuthenticationState = INITIAL_STATE
                 isAuthenticating: true,
                 authenticationError: undefined
             };
-        case TOKEN_ACQUIRED:
-            return {
-                ...state,
-                token: action.payload.token
-            };
-        case SIGN_IN_SUCCESS:
+        case AUTHENTICATION_SUCCESS:
             return {
                 ...state,
                 isAuthenticated: true,
                 isAuthenticating: false,
+                token: action.payload.token,
                 authenticationError: undefined
             };
-        case SIGN_IN_FAILURE:
+        case AUTHENTICATION_FAILURE:
             return {
                 ...state,
                 isAuthenticated: false,
                 isAuthenticating: false,
                 authenticationError: action.payload.error
             };
-        case SIGN_OUT:
+        case AUTHENTICATION_CLEAR:
             return {
                 ...state,
                 isAuthenticated: false,

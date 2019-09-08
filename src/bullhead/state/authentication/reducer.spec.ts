@@ -1,8 +1,8 @@
-import {AuthenticationError, signInFailure, signInStart, signInSuccess, signOut} from './actions';
+import {AuthenticationError, authenticationFailure, authenticationStart, authenticationSuccess, authenticationClear} from './actions';
 import {authenticationReducer} from './reducer';
 
 describe('authentication reducer', () => {
-    it('should return signed out initial state', () => {
+    it('should return not authenticated initial state', () => {
         const state = authenticationReducer(undefined, {} as any);
 
         expect(state).toEqual({
@@ -11,11 +11,11 @@ describe('authentication reducer', () => {
         });
     });
 
-    it('should start sign in with progress on signInStart action', () => {
+    it('should start authentication with progress on start action', () => {
         const state = authenticationReducer({
             isAuthenticated: false,
             isAuthenticating: false
-        }, signInStart());
+        }, authenticationStart());
 
         expect(state).toEqual({
             isAuthenticated: false,
@@ -23,11 +23,11 @@ describe('authentication reducer', () => {
         });
     });
 
-    it('should ignore signInStart action if already authenticated', () => {
+    it('should ignore start action if already authenticated', () => {
         const state = authenticationReducer({
             isAuthenticated: true,
             isAuthenticating: false
-        }, signInStart());
+        }, authenticationStart());
 
         expect(state).toEqual({
             isAuthenticated: true,
@@ -40,7 +40,7 @@ describe('authentication reducer', () => {
             isAuthenticated: false,
             isAuthenticating: false,
             authenticationError: AuthenticationError.WRONG_PASSWORD
-        }, signInStart());
+        }, authenticationStart());
 
         expect(state).toEqual({
             isAuthenticated: false,
@@ -52,7 +52,7 @@ describe('authentication reducer', () => {
         const state = authenticationReducer({
             isAuthenticated: false,
             isAuthenticating: true
-        }, signInSuccess('token'));
+        }, authenticationSuccess('token'));
 
         expect(state).toEqual({
             isAuthenticated: true,
@@ -65,7 +65,7 @@ describe('authentication reducer', () => {
         const state = authenticationReducer({
             isAuthenticated: false,
             isAuthenticating: true
-        }, signInFailure(AuthenticationError.WRONG_PASSWORD));
+        }, authenticationFailure(AuthenticationError.WRONG_PASSWORD));
 
         expect(state).toEqual({
             isAuthenticated: false,
@@ -79,7 +79,7 @@ describe('authentication reducer', () => {
             isAuthenticated: true,
             isAuthenticating: false,
             token: 'token'
-        }, signOut());
+        }, authenticationClear());
 
         expect(state).toEqual({
             isAuthenticated: false,

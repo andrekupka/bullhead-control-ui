@@ -1,4 +1,6 @@
 import {
+    WEB_SOCKET_AUTHENTICATED,
+    WEB_SOCKET_AUTHENTICATING,
     WEB_SOCKET_CONNECTED,
     WEB_SOCKET_CONNECTING,
     WEB_SOCKET_DISCONNECTED,
@@ -8,14 +10,18 @@ import {
 
 export interface WebSocketState {
     isConnected: boolean;
+    isAuthenticating: boolean;
+    isAuthenticated: boolean;
     isConnecting: boolean;
     isDisconnecting: boolean;
 }
 
 const INITIAL_STATE: WebSocketState = {
-    isConnected: false,
     isConnecting: false,
-    isDisconnecting: false
+    isConnected: false,
+    isAuthenticating: false,
+    isAuthenticated: false,
+    isDisconnecting: false,
 };
 
 export const webSocketReducer = (state: WebSocketState = INITIAL_STATE, action: WebSocketActionTypes): WebSocketState => {
@@ -31,16 +37,29 @@ export const webSocketReducer = (state: WebSocketState = INITIAL_STATE, action: 
                 isConnected: true,
                 isConnecting: false
             };
+        case WEB_SOCKET_AUTHENTICATING:
+            return {
+                ...state,
+                isAuthenticating: true
+            };
+        case WEB_SOCKET_AUTHENTICATED:
+            return {
+                ...state,
+                isAuthenticating: false,
+                isAuthenticated: true
+            };
         case WEB_SOCKET_DISCONNECTING:
             return {
                 ...state,
-                isDisconnecting: false
+                isDisconnecting: false,
             };
         case WEB_SOCKET_DISCONNECTED:
             return {
                 ...state,
                 isConnected: false,
-                isDisconnecting: true
+                isDisconnecting: true,
+                isAuthenticating: false,
+                isAuthenticated: false
             };
         default:
             return state;
