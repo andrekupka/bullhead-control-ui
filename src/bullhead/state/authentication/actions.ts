@@ -1,3 +1,4 @@
+export const AUTHENTICATION_LOAD = '@authentication/LOAD';
 export const AUTHENTICATION_START = '@authentication/START';
 export const AUTHENTICATION_SUCCESS = '@authentication/SUCCESS';
 export const AUTHENTICATION_FAILURE = '@authentication/FAILURE';
@@ -9,6 +10,13 @@ export enum AuthenticationError {
     TIMEOUT,
     UNKNOWN_ERROR
 }
+
+export const authenticationLoad = (token: string) => ({
+    type: AUTHENTICATION_LOAD as typeof AUTHENTICATION_LOAD,
+    payload: {
+        token: token
+    }
+});
 
 export const authenticationStart = () => ({
     type: AUTHENTICATION_START as typeof AUTHENTICATION_START
@@ -37,7 +45,8 @@ export const authenticationClear = () => ({
 });
 
 export type AuthenticationActionTypes =
-    ReturnType<typeof authenticationStart>
+    ReturnType<typeof authenticationLoad>
+    | ReturnType<typeof authenticationStart>
     | ReturnType<typeof authenticationSuccess>
     | ReturnType<typeof authenticationFailure>
     | ReturnType<typeof authenticationLost>

@@ -4,7 +4,7 @@ import {
     AUTHENTICATION_FAILURE,
     AUTHENTICATION_START,
     AUTHENTICATION_SUCCESS,
-    AUTHENTICATION_CLEAR, AUTHENTICATION_LOST,
+    AUTHENTICATION_CLEAR, AUTHENTICATION_LOST, AUTHENTICATION_LOAD,
 } from './actions';
 
 export interface AuthenticationState {
@@ -23,6 +23,13 @@ export const INITIAL_STATE: AuthenticationState = {
 
 export const authenticationReducer = (state: AuthenticationState = INITIAL_STATE, action: AuthenticationActionTypes): AuthenticationState => {
     switch (action.type) {
+        case AUTHENTICATION_LOAD:
+            return {
+                isAuthenticated: true,
+                isAuthenticating: false,
+                token: action.payload.token,
+                authenticationLost: false,
+            };
         case AUTHENTICATION_START:
             if (state.isAuthenticated) {
                 return state;

@@ -1,4 +1,4 @@
-import {Dispatch, MiddlewareAPI} from 'redux';
+import {Dispatch, MiddlewareAPI, AnyAction} from 'redux';
 import {LightBullMessage} from '../../types/types';
 import {
     AUTHENTICATION_CLEAR, AUTHENTICATION_LOST,
@@ -20,8 +20,8 @@ import {
     webSocketDisconnected,
 } from './actions';
 
-type WSActions = WebSocketActionTypes | AuthenticationActionTypes;
-type WSDispatch = Dispatch<WSActions>;
+type WSAction = WebSocketActionTypes | AuthenticationActionTypes;
+type WSDispatch = Dispatch<WSAction>;
 type WSMiddlewareAPI = MiddlewareAPI<WSDispatch, LightBullState>;
 
 export const webSocketMiddleware = () => {
@@ -35,14 +35,13 @@ export const webSocketMiddleware = () => {
         socket.send(JSON.stringify(message));
     };
 
-    const onOpen = (store: WSMiddlewareAPI) => () => {
-        console.log('connected');
-        store.dispatch(webSocketConnected());
-        const token = store.getState().authentication.token;
+    const onOpen = (api: WSMiddlewareAPI) => () => {
+        api.dispatch(webSocketConnected());
+        const token = api.getState().authentication.token;
         if (!token) {
             throw new Error('Invalid state, token is not initialized');
         }
-        store.dispatch(webSocketAuthenticate());
+        api.dispatch(webSocketAuthenticate());
         send({
             type: 'authenticate',
             payload: {
@@ -51,39 +50,39 @@ export const webSocketMiddleware = () => {
         });
     };
 
-    const onMessage = (store: WSMiddlewareAPI) => (event: MessageEvent) => {
+    const onMessage = (api: WSMiddlewareAPI) => (event: MessageEvent) => {
         const {type, payload} = JSON.parse(event.data);
         switch (type) {
             case 'authenticated':
-                store.dispatch(webSocketAuthenticated());
+                api.dispatch(webSocketAuthenticated());
                 break;
             case 'unauthenticated':
-                store.dispatch(authenticationLost());
+                api.dispatch(authenticationLost());
                 break;
         }
     };
 
-    const onClose = (store: WSMiddlewareAPI) => () => {
-        store.dispatch(webSocketDisconnected());
+    const onClose = (api: WSMiddlewareAPI) => () => {
+        api.dispatch(webSocketDisconnected());
         if (reconnect) {
-            setTimeout(() => store.dispatch(webSocketConnect()), 2000);
+            setTimeout(() => api.dispatch(webSocketConnect()), 2000);
         }
     };
 
-    const onError = (store: WSMiddlewareAPI) => (event: Event) => {
-        store.dispatch(webSocketDisconnect());
+    const onError = (api: WSMiddlewareAPI) => (event: Event) => {
+        api.dispatch(webSocketDisconnect());
     };
 
-    return (store: WSMiddlewareAPI) => (next: WSDispatch) => (action: WSActions) => {
+    return (api: WSMiddlewareAPI) => (next: WSDispatch) => (action: WSAction) => {
         switch (action.type) {
             case AUTHENTICATION_SUCCESS:
                 const signInResult = next(action);
-                store.dispatch(webSocketConnect());
+                api.dispatch(webSocketConnect());
                 return signInResult;
             case AUTHENTICATION_CLEAR:
             case AUTHENTICATION_LOST:
                 const signOutResult = next(action);
-                store.dispatch(webSocketDisconnect(true));
+                api.dispatch(webSocketDisconnect(true));
                 return signOutResult;
             case WEB_SOCKET_CONNECT:
                 if (socket !== null) {
@@ -94,13 +93,13 @@ export const webSocketMiddleware = () => {
                 const connectResult = next(action);
 
                 socket = new WebSocket('ws://localhost:8080');
-                socket.onopen = onOpen(store);
-                socket.onmessage = onMessage(store);
-                socket.onclose = onClose(store);
-                socket.onerror = onError(store);
+                socket.onopen = onOpen(api);
+                socket.onmessage = onMessage(api);
+                socket.onclose = onClose(api);
+                socket.onerror = onError(api);
                 return connectResult;
             case WEB_SOCKET_SEND:
-                const {isConnected, isAuthenticated} = store.getState().webSocket;
+                const {isConnected, isAuthenticated} = api.getState().webSocket;
                 if (!isConnected || ! isAuthenticated) {
                     throw new Error('Cannot send message, unauthenticated');
                 }
