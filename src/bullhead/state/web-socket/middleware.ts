@@ -1,10 +1,11 @@
-import {Dispatch, MiddlewareAPI, AnyAction} from 'redux';
+import {Dispatch, MiddlewareAPI} from 'redux';
 import {LightBullMessage} from '../../types/types';
 import {
-    AUTHENTICATION_CLEAR, AUTHENTICATION_LOST,
+    AUTHENTICATION_CLEAR,
+    AUTHENTICATION_LOST,
     AUTHENTICATION_SUCCESS,
     AuthenticationActionTypes,
-    authenticationLost,
+    authenticationLost
 } from '../authentication/actions';
 import {LightBullState} from '../index';
 import {
@@ -12,12 +13,12 @@ import {
     WEB_SOCKET_DISCONNECT,
     WEB_SOCKET_SEND,
     WebSocketActionTypes,
-    webSocketAuthenticated,
     webSocketAuthenticate,
+    webSocketAuthenticated,
     webSocketConnect,
     webSocketConnected,
     webSocketDisconnect,
-    webSocketDisconnected,
+    webSocketDisconnected
 } from './actions';
 
 type WSAction = WebSocketActionTypes | AuthenticationActionTypes;
@@ -100,7 +101,7 @@ export const webSocketMiddleware = () => {
                 return connectResult;
             case WEB_SOCKET_SEND:
                 const {isConnected, isAuthenticated} = api.getState().webSocket;
-                if (!isConnected || ! isAuthenticated) {
+                if (!isConnected || !isAuthenticated) {
                     throw new Error('Cannot send message, unauthenticated');
                 }
                 send(action.payload.message);

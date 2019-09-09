@@ -2,12 +2,14 @@ import {createStyles, makeStyles, Theme} from '@material-ui/core';
 import classNames from 'classnames';
 import React from 'react';
 import {connect} from 'react-redux';
+import {Route, Switch} from 'react-router-dom';
 import {LightBullState} from '../state';
 import {NavigationAware} from '../types/navigation/NavigationAware';
 import {NotFound} from './common/NotFound';
 import {Home} from './home/Home';
+import {ShowCollectionView} from './shows/ShowCollectionView';
+import {ShowDetailView} from './shows/ShowDetailView';
 import {SystemView} from './system/SystemView';
-import {Route, Switch} from 'react-router-dom';
 
 interface Props extends NavigationAware {
 }
@@ -47,6 +49,8 @@ const PureMainViewContainer = (props: Props) => {
             <div className={classes.contentView}>
                 <Switch>
                     <Route exact path='/' component={Home}/>
+                    <Route exact path='/shows' component={ShowCollectionView}/>
+                    <Route path='/shows/:id' component={ShowDetailView}/>
                     <Route path='/system' component={SystemView}/>
                     <Route component={NotFound}/>
                 </Switch>
