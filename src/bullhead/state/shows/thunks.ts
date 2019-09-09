@@ -1,13 +1,16 @@
-import {Dispatch} from "react";
-import {loadAllShowsBegin, loadAllShowsFailure, loadAllShowsSuccess, ShowActionTypes} from "./actions";
-import {Api} from "../../api/client";
+import {Api} from '../../store';
+import {LightBullThunkDispatch} from '../../types/redux';
+import {loadShowsFailure, loadShowsRequest, loadShowsSuccess} from './actions';
 
-export const loadAllShows = () => async (dispatch: Dispatch<ShowActionTypes>) => {
-    dispatch(loadAllShowsBegin());
+export const loadShows = () => async (dispatch: LightBullThunkDispatch) => {
+    dispatch(loadShowsRequest());
     try {
         const shows = await Api.loadShows();
-        dispatch(loadAllShowsSuccess(shows));
+        dispatch(loadShowsSuccess(shows));
     } catch (error) {
-        dispatch(loadAllShowsFailure());
+        console.log(error);
+        dispatch(loadShowsFailure());
+        //await delay(2000);
+        //await dispatch(preLoadShows());
     }
 };

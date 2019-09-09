@@ -1,12 +1,8 @@
-import axios from 'axios';
-import {AxiosInstance, AxiosRequestConfig} from 'axios';
-import {ShowCollection} from "../model/Show";
-import {LightBullState} from "../state";
-import {Store} from 'redux';
-import {store} from "../store";
+import axios, {AxiosInstance, AxiosRequestConfig} from 'axios';
+import {ShowCollection} from '../model/Show';
 
-const BASE_URL = 'http://localhost:8080';
-const DEFAULT_TIMEOUT = 10000;
+export const BASE_URL = 'http://localhost:8080';
+export const DEFAULT_TIMEOUT = 10000;
 
 type AxiosRequestInterceptor = (config: AxiosRequestConfig) => AxiosRequestConfig;
 
@@ -17,12 +13,12 @@ class ApiClient {
     constructor(baseURL: string, timeout: number = DEFAULT_TIMEOUT) {
         this.axiosClient = axios.create({
             baseURL: baseURL,
-            timeout: timeout,
+            timeout: timeout
         });
     }
 
     useRequestInterceptor(interceptor: AxiosRequestInterceptor): void {
-       this.axiosClient.interceptors.request.use(interceptor);
+        this.axiosClient.interceptors.request.use(interceptor);
     }
 
     async login(password: string): Promise<string | undefined> {
@@ -39,10 +35,12 @@ class ApiClient {
     }
 }
 
-const initializeApi = (store: Store<LightBullState>, baseUrl: string, timeout: number): ApiClient => {
+type TokenProvider = () => string | null | undefined;
+
+export const createApi = (baseUrl: string, tokenProvider: TokenProvider, timeout: number): ApiClient => {
     const api = new ApiClient(baseUrl, timeout);
     api.useRequestInterceptor(config => {
-        const token = store.getState().authentication.token;
+        const token = tokenProvider();
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
@@ -50,5 +48,3 @@ const initializeApi = (store: Store<LightBullState>, baseUrl: string, timeout: n
     });
     return api;
 };
-
-export const Api = initializeApi(store, BASE_URL, DEFAULT_TIMEOUT);

@@ -1,6 +1,6 @@
 import {Dispatch, MiddlewareAPI} from 'redux';
-import {AUTHENTICATION_CLEAR, AUTHENTICATION_LOST, AUTHENTICATION_SUCCESS, AuthenticationActionTypes} from "./actions";
-import {LightBullState} from "../index";
+import {LightBullState} from '../index';
+import {AUTHENTICATION_CLEAR, AUTHENTICATION_LOST, AUTHENTICATION_SUCCESS, AuthenticationActionTypes} from './actions';
 
 type TPMAction = AuthenticationActionTypes;
 type TPMDispatch = Dispatch<AuthenticationActionTypes>;

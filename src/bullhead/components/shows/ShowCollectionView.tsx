@@ -1,44 +1,33 @@
-import React, {useEffect} from 'react';
+import {Grid} from '@material-ui/core';
+import React from 'react';
 import {connect} from 'react-redux';
-import {Link} from 'react-router-dom';
 import {ShowCollection} from '../../model/Show';
 import {LightBullState} from '../../state';
-import {loadAllShows} from '../../state/shows/thunks';
-import {LightBullThunkDispatch} from '../../types/redux';
+import {ShowCard} from './ShowCard';
 
 interface Props {
-    loadShows: () => void;
-    isLoading: boolean;
     shows: ShowCollection;
 }
 
 export const PureShowCollectionView = (props: Props) => {
-    useEffect(() => {
-        props.loadShows();
-    }, [props.loadShows]);
-
     return (
         <div>
-            {props.isLoading ? <h1>Shows loading</h1> : <h1>Shows</h1>}
-            <div>
+            <h1>Shows</h1>
+            <Grid container spacing={3}>
                 {props.shows.map(show =>
-                    <Link key={show.id} to={`/shows/${show.id}`}>{show.id} - {show.name}</Link>
+                    <Grid item xs={4} key={show.id}>
+                        <ShowCard show={show}/>
+                    </Grid>
                 )}
-            </div>
+            </Grid>
         </div>
     );
 };
 
 const mapStateToProps = (state: LightBullState) => ({
-    shows: state.shows.collection,
-    isLoading: state.shows.isLoading
-});
-
-const mapDispatchToProps = (dispatch: LightBullThunkDispatch) => ({
-    loadShows: () => dispatch(loadAllShows())
+    shows: state.shows.collection
 });
 
 export const ShowCollectionView = connect(
-    mapStateToProps,
-    mapDispatchToProps
+    mapStateToProps
 )(PureShowCollectionView);

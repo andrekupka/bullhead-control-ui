@@ -1,35 +1,40 @@
-import {Show} from "../../model/Show";
-import {LOAD_ALL_SHOWS_BEGIN, LOAD_ALL_SHOWS_FAILURE, LOAD_ALL_SHOWS_SUCCESS, ShowActionTypes} from "./actions";
-import {createAuthenticatedReducer} from "../authentication/utils";
+import {ShowCollection} from '../../model/Show';
+import {LoadingState} from '../../types/types';
+import {createAuthenticatedReducer} from '../authentication/utils';
+import {LOAD_SHOWS_FAILURE, LOAD_SHOWS_REQUEST, LOAD_SHOWS_SUCCESS, ShowActionTypes} from './actions';
 
-export interface ShowsState {
-    isLoading: boolean;
-    collection: Array<Show>;
+export interface ShowState extends LoadingState {
+    collection: ShowCollection;
 }
 
-const INITIAL_STATE = {
-    isLoading: false,
-    collection: []
+const INITIAL_STATE: ShowState = {
+    collection: [],
+    loading: false,
+    loaded: false,
+    failed: false
 };
 
-export const showsReducer = createAuthenticatedReducer((state: ShowsState = INITIAL_STATE, action: ShowActionTypes): ShowsState => {
+export const showsReducer = createAuthenticatedReducer((state: ShowState = INITIAL_STATE, action: ShowActionTypes): ShowState => {
     switch (action.type) {
-        case LOAD_ALL_SHOWS_BEGIN:
+        case LOAD_SHOWS_REQUEST:
             return {
                 ...state,
-                isLoading: true
+                loading: true
             };
-        case LOAD_ALL_SHOWS_SUCCESS:
+        case LOAD_SHOWS_SUCCESS:
             return {
                 ...state,
-                isLoading: false,
+                loading: false,
+                loaded: true,
+                failed: false,
                 collection: action.payload.shows
             };
-        case LOAD_ALL_SHOWS_FAILURE:
+        case LOAD_SHOWS_FAILURE:
             return {
                 ...state,
-                isLoading: false,
-                collection: []
+                loading: false,
+                loaded: false,
+                failed: true
             };
         default:
             return state;

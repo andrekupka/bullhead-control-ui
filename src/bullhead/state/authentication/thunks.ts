@@ -1,5 +1,5 @@
 import {Dispatch} from 'react';
-import {Api} from '../../api/client';
+import {Api} from '../../store';
 import {
     AuthenticationActionTypes,
     AuthenticationError,

@@ -1,25 +1,25 @@
-import {Show, ShowCollection} from "../../model/Show";
+import {ShowCollection} from '../../model/Show';
 
-export const LOAD_ALL_SHOWS_BEGIN = '@shows/LOAD_ALL_BEGIN';
-export const LOAD_ALL_SHOWS_SUCCESS = '@shows/LOAD_ALL_SUCCESS';
-export const LOAD_ALL_SHOWS_FAILURE = '@shows/LOAD_ALL_FAILURE';
+export const LOAD_SHOWS_REQUEST = '@shows/LOAD_REQUEST';
+export const LOAD_SHOWS_SUCCESS = '@shows/LOAD_SUCCESS';
+export const LOAD_SHOWS_FAILURE = '@shows/LOAD_FAILURE';
 
-export const loadAllShowsBegin = () => ({
-    type: LOAD_ALL_SHOWS_BEGIN as typeof LOAD_ALL_SHOWS_BEGIN
+export const loadShowsRequest = () => ({
+    type: LOAD_SHOWS_REQUEST as typeof LOAD_SHOWS_REQUEST
 });
 
-export const loadAllShowsSuccess = (shows: ShowCollection) => ({
-    type: LOAD_ALL_SHOWS_SUCCESS as typeof LOAD_ALL_SHOWS_SUCCESS,
+export const loadShowsSuccess = (shows: ShowCollection) => ({
+    type: LOAD_SHOWS_SUCCESS as typeof LOAD_SHOWS_SUCCESS,
     payload: {
         shows: shows
     }
 });
 
-export const loadAllShowsFailure = () => ({
-    type: LOAD_ALL_SHOWS_FAILURE as typeof LOAD_ALL_SHOWS_FAILURE,
+export const loadShowsFailure = () => ({
+    type: LOAD_SHOWS_FAILURE as typeof LOAD_SHOWS_FAILURE,
 });
 
 export type ShowActionTypes =
-    ReturnType<typeof loadAllShowsBegin>
-    | ReturnType<typeof loadAllShowsSuccess>
-    | ReturnType<typeof loadAllShowsFailure>;
+    ReturnType<typeof loadShowsRequest>
+    | ReturnType<typeof loadShowsSuccess>
+    | ReturnType<typeof loadShowsFailure>;
