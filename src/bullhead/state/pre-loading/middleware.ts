@@ -11,7 +11,7 @@ type PLMMiddlewareAPI = MiddlewareAPI<PLMDispatch, LightBullState>;
 export const preLoadingMiddleware = () => {
     return (api: PLMMiddlewareAPI) => (next: PLMDispatch) => (action: PLMAction) => {
         const result = next(action);
-        if (action.type === AUTHENTICATION_SUCCESS || action.type == AUTHENTICATION_LOAD) {
+        if (action.type === AUTHENTICATION_SUCCESS || action.type === AUTHENTICATION_LOAD) {
             api.dispatch(startPreLoading());
         }
         return result;
