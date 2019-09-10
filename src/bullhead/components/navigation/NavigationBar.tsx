@@ -7,9 +7,10 @@ import {LightBullState} from '../../state';
 import {NavigationActionTypes, showNavigation} from '../../state/navigation/actions';
 import {NavigationAware} from '../../types/navigation/NavigationAware';
 import {SignOutButton} from '../authentication/SignOutButton';
+import {NavigationBreadcrumbs} from './NavigationBreadcrumbs';
 import {NavigationDrawer} from './NavigationDrawer';
 import {ToggleThemeButton} from './ToggleThemeButton';
-import {WebSocketConnectionState} from "./WebSocketConnectionState";
+import {WebSocketConnectionState} from './WebSocketConnectionState';
 
 interface Props extends NavigationAware {
     showNavigation: () => void;
@@ -31,8 +32,14 @@ const useStyles = makeStyles<Theme, Props>((theme: Theme) => createStyles({
             duration: theme.transitions.duration.enteringScreen
         })
     },
+    brand: {
+        marginRight: theme.spacing(3)
+    },
     hide: {
         display: 'none'
+    },
+    grow: {
+        flexGrow: 1
     }
 }));
 
@@ -51,9 +58,12 @@ const PureNavigationBar = (props: Props) => {
                                 onClick={() => props.showNavigation()}>
                         <MenuIcon/>
                     </IconButton>
-                    <Typography variant='h6' style={{flex: 1}}>
+                    <Typography className={classes.brand} variant='h6'>
                         LightBull
                     </Typography>
+                    <div className={classes.grow}>
+                        <NavigationBreadcrumbs/>
+                    </div>
                     <WebSocketConnectionState/>
                     <ToggleThemeButton/>
                     <SignOutButton/>
