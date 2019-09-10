@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {Show} from '../../model/Show';
-import {RouteComponentProps} from 'react-router-dom';
+import {RouteComponentProps, Redirect} from 'react-router-dom';
 import {LightBullState} from '../../state';
 
 interface Params {
@@ -13,9 +13,8 @@ interface Props extends RouteComponentProps<Params> {
 }
 
 export const PureShowDetailView = (props: Props) => {
-    console.log(props.match.params);
     if (!props.show) {
-        return <div>Show does not exist</div>;
+        return <Redirect to='/shows'/>;
     }
     return (
         <div>

@@ -36,7 +36,7 @@ const useStyles = makeStyles<Theme, Props>((theme: Theme) => createStyles({
     }
 }));
 
-const PureMainViewContainer = (props: Props) => {
+const PureLightBullContentContainer = (props: Props) => {
     const classes = useStyles(props);
 
     const mainClasses = classNames(
@@ -65,4 +65,4 @@ const mapStateToProps = (state: LightBullState) => ({
 
 export const LightBullContentContainer = connect(
     mapStateToProps
-)(PureMainViewContainer);
+)(PureLightBullContentContainer);

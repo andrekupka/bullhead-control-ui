@@ -1,7 +1,14 @@
 import React from 'react';
-import {LightBullContentContainer} from './MainContentContainer';
+import {connect} from 'react-redux';
+import {LightBullState} from '../state';
+import {LightBullContentContainer} from './LightBullContentContainer';
 import {NavigationBar} from './navigation/NavigationBar';
-import {makeStyles} from "@material-ui/core";
+import {makeStyles} from '@material-ui/core';
+import {InitializationView} from './initialization/InitializationView';
+
+interface Props {
+    finishedLoading: boolean;
+}
 
 const useStyles = makeStyles({
     frame: {
@@ -9,8 +16,12 @@ const useStyles = makeStyles({
     }
 });
 
-export const LightBullFrame = () => {
+const PureLightBullFrame = (props: Props) => {
     const classes = useStyles();
+
+    if (!props.finishedLoading) {
+        return <InitializationView/>;
+    }
 
     return (
         <div className={classes.frame}>
@@ -19,3 +30,11 @@ export const LightBullFrame = () => {
         </div>
     );
 };
+
+const mapStateToProps = (state: LightBullState) => ({
+    finishedLoading: state.shows.loaded && state.webSocket.isConnected && state.webSocket.isAuthenticated
+});
+
+export const LightBullFrame = connect(
+    mapStateToProps
+)(PureLightBullFrame);

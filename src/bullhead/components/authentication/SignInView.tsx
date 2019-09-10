@@ -1,4 +1,4 @@
-import {Avatar, Container, createStyles, makeStyles, Theme, Typography} from '@material-ui/core';
+import {Avatar, createStyles, makeStyles, Theme, Typography} from '@material-ui/core';
 import LockIcon from '@material-ui/icons/Lock';
 import React, {useState} from 'react';
 import {connect} from 'react-redux';
@@ -9,7 +9,8 @@ import {signIn} from '../../state/authentication/thunks';
 import {LightBullThunkDispatch} from '../../types/redux';
 import {PasswordInput} from '../common/form/PasswordInput';
 import {ProgressAwareButton} from '../common/form/ProgressAwareButton';
-import {AuthenticationLostInfo} from "./AuthenticationLostInfo";
+import {StandaloneContainer} from '../common/StandaloneContainer';
+import {AuthenticationLostInfo} from './AuthenticationLostInfo';
 
 const MESSAGES = new Map<AuthenticationError, string>();
 MESSAGES.set(AuthenticationError.WRONG_PASSWORD, 'Invalid password');
@@ -30,12 +31,6 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     },
     avatar: {
         margin: theme.spacing(1)
-    },
-    paper: {
-        marginTop: theme.spacing(12),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center'
     },
     form: {
         width: '100%',
@@ -72,39 +67,37 @@ export const PureLoginView = (props: Props) => {
 
 
     return (
-        <Container component='main' maxWidth='xs'>
-            <div className={classes.paper}>
-                {props.authenticationLost && <AuthenticationLostInfo/>}
-                <Avatar className={classes.avatar}>
-                    <LockIcon/>
-                </Avatar>
-                <Typography component='h1' variant='h5'>
+        <StandaloneContainer>
+            {props.authenticationLost && <AuthenticationLostInfo/>}
+            <Avatar className={classes.avatar}>
+                <LockIcon/>
+            </Avatar>
+            <Typography component='h1' variant='h5'>
+                Sign In
+            </Typography>
+            <form className={classes.form} noValidate onSubmit={event => signIn(event)}>
+                <PasswordInput id='password'
+                               label='Password'
+                               variant='outlined'
+                               error={hasError}
+                               helperText={errorMessage}
+                               disabled={props.isAuthenticating}
+                               required
+                               fullWidth
+                               autoFocus
+                               value={password}
+                               onChange={event => setPassword(event.target.value)}/>
+                <ProgressAwareButton className={classes.submit}
+                                     variant='contained'
+                                     color='primary'
+                                     type='submit'
+                                     disabled={password.length === 0}
+                                     hasProgress={props.isAuthenticating}
+                                     fullWidth>
                     Sign In
-                </Typography>
-                <form className={classes.form} noValidate onSubmit={event => signIn(event)}>
-                    <PasswordInput id='password'
-                                   label='Password'
-                                   variant='outlined'
-                                   error={hasError}
-                                   helperText={errorMessage}
-                                   disabled={props.isAuthenticating}
-                                   required
-                                   fullWidth
-                                   autoFocus
-                                   value={password}
-                                   onChange={event => setPassword(event.target.value)}/>
-                    <ProgressAwareButton className={classes.submit}
-                                         variant='contained'
-                                         color='primary'
-                                         type='submit'
-                                         disabled={password.length === 0}
-                                         hasProgress={props.isAuthenticating}
-                                         fullWidth>
-                        Sign In
-                    </ProgressAwareButton>
-                </form>
-            </div>
-        </Container>
+                </ProgressAwareButton>
+            </form>
+        </StandaloneContainer>
     );
 };
 
