@@ -1,4 +1,4 @@
-import {createAuthenticatedReducer} from '../authentication/utils';
+import {createAuthenticationAwareReducer, DeauthAware} from '../authentication/utils';
 import {
     LOADING_SHOWS_FAILURE,
     LOADING_SHOWS_REQUEST,
@@ -27,46 +27,47 @@ const INITIAL_STATE: LoadingState = {
     }
 };
 
-export const loadingReducer = createAuthenticatedReducer(((state: LoadingState = INITIAL_STATE, action: LoadingActionTypes) => {
-    switch (action.type) {
-        case LOADING_ENABLE:
-            return {
-                ...state,
-                enabled: true
-            };
-        case LOADING_DISABLE:
-            return {
-                ...state,
-                enabled: false
-            };
-        case LOADING_SHOWS_REQUEST:
-            return {
-                ...state,
-                shows: {
-                    ...state.shows,
-                    loading: true,
-                    failed: false
-                }
-            };
-        case LOADING_SHOWS_SUCCESS:
-            return {
-                ...state,
-                shows: {
-                    ...state.shows,
-                    loading: false,
-                    loaded: true
-                }
-            };
-        case LOADING_SHOWS_FAILURE:
-            return {
-                ...state,
-                shows: {
-                    ...state.shows,
-                    loading: false,
-                    failed: true
-                }
-            };
-        default:
-            return state;
-    }
-}));
+export const loadingReducer = createAuthenticationAwareReducer(
+        (state: LoadingState = INITIAL_STATE, action: DeauthAware<LoadingActionTypes>) => {
+            switch (action.type) {
+                case LOADING_ENABLE:
+                    return {
+                        ...state,
+                        enabled: true
+                    };
+                case LOADING_DISABLE:
+                    return {
+                        ...state,
+                        enabled: false
+                    };
+                case LOADING_SHOWS_REQUEST:
+                    return {
+                        ...state,
+                        shows: {
+                            ...state.shows,
+                            loading: true,
+                            failed: false
+                        }
+                    };
+                case LOADING_SHOWS_SUCCESS:
+                    return {
+                        ...state,
+                        shows: {
+                            ...state.shows,
+                            loading: false,
+                            loaded: true
+                        }
+                    };
+                case LOADING_SHOWS_FAILURE:
+                    return {
+                        ...state,
+                        shows: {
+                            ...state.shows,
+                            loading: false,
+                            failed: true
+                        }
+                    };
+                default:
+                    return state;
+            }
+        });

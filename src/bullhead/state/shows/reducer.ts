@@ -1,5 +1,5 @@
 import {ShowCollection} from '../../model/Show';
-import {createAuthenticatedReducer} from '../authentication/utils';
+import {createAuthenticationAwareReducer, DeauthAware} from '../authentication/utils';
 import {INITIALIZE_SHOWS, ShowActionTypes} from './actions';
 
 export interface ShowState {
@@ -7,17 +7,18 @@ export interface ShowState {
 }
 
 const INITIAL_STATE: ShowState = {
-    collection: [],
+    collection: []
 };
 
-export const showsReducer = createAuthenticatedReducer((state: ShowState = INITIAL_STATE, action: ShowActionTypes): ShowState => {
-    switch (action.type) {
-        case INITIALIZE_SHOWS:
-            return {
-                ...state,
-                collection: action.payload.shows
-            };
-        default:
-            return state;
-    }
-});
+export const showsReducer = createAuthenticationAwareReducer(
+        (state: ShowState = INITIAL_STATE, action: DeauthAware<ShowActionTypes>): ShowState => {
+            switch (action.type) {
+                case INITIALIZE_SHOWS:
+                    return {
+                        ...state,
+                        collection: action.payload.shows
+                    };
+                default:
+                    return state;
+            }
+        });

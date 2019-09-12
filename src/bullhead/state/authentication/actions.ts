@@ -44,11 +44,15 @@ export const authenticationClear = () => ({
     type: AUTHENTICATION_CLEAR as typeof AUTHENTICATION_CLEAR
 });
 
+
+export type DeauthenticationActionTypes =
+    ReturnType<typeof authenticationLost>
+    | ReturnType<typeof authenticationClear>;
+
 export type AuthenticationActionTypes =
     ReturnType<typeof authenticationLoad>
     | ReturnType<typeof authenticationStart>
     | ReturnType<typeof authenticationSuccess>
     | ReturnType<typeof authenticationFailure>
-    | ReturnType<typeof authenticationLost>
-    | ReturnType<typeof authenticationClear>;
+    | DeauthenticationActionTypes;
 
