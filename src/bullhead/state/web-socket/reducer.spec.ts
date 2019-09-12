@@ -1,12 +1,12 @@
-import {INITIAL_STATE, webSocketReducer, WebSocketState} from "./reducer";
 import {
     webSocketAuthenticate,
     webSocketAuthenticated,
     webSocketConnect,
     webSocketConnected,
-    webSocketDisconnect, webSocketDisconnected
-} from "./actions";
-import {create} from "domain";
+    webSocketDisconnect,
+    webSocketDisconnected
+} from './actions';
+import {INITIAL_STATE, webSocketReducer, WebSocketState} from './reducer';
 
 const createState = (patch?: Partial<WebSocketState>): WebSocketState =>
     Object.assign({}, INITIAL_STATE, patch || {});
@@ -138,11 +138,4 @@ describe('web-socket reducer', () => {
             isDisconnecting: false
         });
     });
-
-    it ('should ignore disconnected action if not disconnecting', () => {
-        const initialState = createState();
-        const state = webSocketReducer(initialState, webSocketDisconnected());
-
-        expect(state).toEqual(initialState);
-    })
 });

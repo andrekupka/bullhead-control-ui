@@ -62,9 +62,6 @@ export const webSocketReducer = (state: WebSocketState = INITIAL_STATE, action: 
                 isDisconnecting: true,
             };
         case WEB_SOCKET_DISCONNECTED:
-            if (!state.isDisconnecting) {
-                return state;
-            }
             return {
                 ...state,
                 isConnected: false,

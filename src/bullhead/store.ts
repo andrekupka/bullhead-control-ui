@@ -5,7 +5,7 @@ import {BASE_URL, createApi, DEFAULT_TIMEOUT} from './api/client';
 import {lightBullReducer, LightBullState} from './state';
 import {authenticationLoad} from './state/authentication/actions';
 import {tokenPersistingMiddleware} from './state/authentication/middleware';
-import {preLoadingMiddleware} from './state/pre-loading/middleware';
+import {loadingMiddleware} from './state/loading/middleware';
 import {webSocketConnect} from './state/web-socket/actions';
 import {webSocketMiddleware} from './state/web-socket/middleware';
 
@@ -23,7 +23,7 @@ const initializeState = (store: Store<LightBullState>) => {
 const initializeStore = () => {
     const middlewares = [
         thunk,
-        preLoadingMiddleware(),
+        loadingMiddleware(),
         tokenPersistingMiddleware(LOCAL_STORAGE_TOKEN_KEY),
         webSocketMiddleware()
     ];

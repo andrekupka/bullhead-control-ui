@@ -1,7 +1,10 @@
-import {Reducer, Action} from 'redux';
-import {AUTHENTICATION_CLEAR, AUTHENTICATION_LOST} from "./actions";
+import {Action, Reducer} from 'redux';
+import {AUTHENTICATION_CLEAR, AUTHENTICATION_LOST, DeauthenticationActionTypes} from './actions';
 
-export const createAuthenticatedReducer = <S, A extends Action>(reducer: Reducer<S, A>): Reducer<S, A> => {
+export type DeauthAware<A extends Action> = A | DeauthenticationActionTypes;
+
+export const createAuthenticationAwareReducer = <S, A extends Action>(reducer: Reducer<S, DeauthAware<A>>)
+        : Reducer<S, DeauthAware<A>> => {
     return (state, action) => {
         switch (action.type) {
             case AUTHENTICATION_CLEAR:
