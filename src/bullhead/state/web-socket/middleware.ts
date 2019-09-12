@@ -52,7 +52,7 @@ export const webSocketMiddleware = () => {
     };
 
     const onMessage = (api: WSMiddlewareAPI) => (event: MessageEvent) => {
-        const {type, payload} = JSON.parse(event.data);
+        const {type} = JSON.parse(event.data);
         switch (type) {
             case 'authenticated':
                 api.dispatch(webSocketAuthenticated());
