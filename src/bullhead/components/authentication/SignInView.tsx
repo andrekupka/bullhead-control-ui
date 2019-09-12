@@ -15,7 +15,7 @@ import {AuthenticationLostInfo} from './AuthenticationLostInfo';
 const MESSAGES = new Map<AuthenticationError, string>();
 MESSAGES.set(AuthenticationError.WRONG_PASSWORD, 'Invalid password');
 MESSAGES.set(AuthenticationError.TIMEOUT, 'Server took too long to respond');
-MESSAGES.set(AuthenticationError.UNKNOWN_ERROR, 'Unknown error');
+MESSAGES.set(AuthenticationError.UNKNOWN_ERROR, 'An unknown error occurred');
 
 interface Props extends RouteProps {
     isAuthenticated: boolean;
