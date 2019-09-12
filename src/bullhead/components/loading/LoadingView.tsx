@@ -22,6 +22,16 @@ const PurePreLoadingView = (props: Props) => {
     const classes = useStyles();
 
 
+    let loadingDataItems = null;
+    if (props.loading.enabled) {
+        loadingDataItems =
+            <>
+                <LoadingStateItem loadingText='Loading shows...'
+                                  loadedText='Loaded shows!'
+                                  failedText='Failed to load shows'
+                                  state={props.loading.shows}/>
+            </>;
+    }
 
     return (
         <StandaloneContainer>
@@ -33,9 +43,7 @@ const PurePreLoadingView = (props: Props) => {
                 <LoadingStateItem loadingText='Establishing WebSocket connection...'
                                   loadedText='Established WebSocket connection!'
                                   state={props.webSocket}/>
-                <LoadingStateItem loadingText='Loading shows...'
-                                  loadedText='Loaded shows!'
-                                  state={props.loading.shows}/>
+                {loadingDataItems}
             </List>
         </StandaloneContainer>
     );

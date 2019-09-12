@@ -1,18 +1,23 @@
 import {MiddlewareAPI} from 'redux';
 import {LightBullThunkDispatch} from '../../types/redux';
-import {AUTHENTICATION_LOAD, AUTHENTICATION_SUCCESS, AuthenticationActionTypes} from '../authentication/actions';
+import {AuthenticationActionTypes} from '../authentication/actions';
 import {LightBullState} from '../index';
+import {WEB_SOCKET_AUTHENTICATED, WEB_SOCKET_DISCONNECTED, WebSocketActionTypes} from '../web-socket/actions';
+import {disableLoading, enableLoading} from './actions';
 import {startLoading} from './thunks';
 
-type PLMAction = AuthenticationActionTypes;
+type PLMAction = AuthenticationActionTypes | WebSocketActionTypes;
 type PLMDispatch = LightBullThunkDispatch;
 type PLMMiddlewareAPI = MiddlewareAPI<PLMDispatch, LightBullState>;
 
 export const loadingMiddleware = () => {
     return (api: PLMMiddlewareAPI) => (next: PLMDispatch) => (action: PLMAction) => {
         const result = next(action);
-        if (action.type === AUTHENTICATION_SUCCESS || action.type === AUTHENTICATION_LOAD) {
+        if (action.type === WEB_SOCKET_AUTHENTICATED) {
+            api.dispatch(enableLoading());
             api.dispatch(startLoading());
+        } else if (action.type === WEB_SOCKET_DISCONNECTED) {
+            api.dispatch(disableLoading());
         }
         return result;
     };

@@ -1,5 +1,11 @@
 import {createAuthenticatedReducer} from '../authentication/utils';
-import {LOAD_SHOWS_FAILURE, LOAD_SHOWS_REQUEST, LOAD_SHOWS_SUCCESS, LoadingActionTypes} from './actions';
+import {
+    LOADING_SHOWS_FAILURE,
+    LOADING_SHOWS_REQUEST,
+    LOADING_SHOWS_SUCCESS,
+    LOADING_ENABLE,
+    LoadingActionTypes, LOADING_DISABLE
+} from './actions';
 
 export interface LoadingInfo {
     loading: boolean;
@@ -8,10 +14,12 @@ export interface LoadingInfo {
 }
 
 export interface LoadingState {
+    enabled: boolean,
     shows: LoadingInfo
 }
 
 const INITIAL_STATE: LoadingState = {
+    enabled: false,
     shows: {
         loading: false,
         loaded: false,
@@ -21,7 +29,17 @@ const INITIAL_STATE: LoadingState = {
 
 export const loadingReducer = createAuthenticatedReducer(((state: LoadingState = INITIAL_STATE, action: LoadingActionTypes) => {
     switch (action.type) {
-        case LOAD_SHOWS_REQUEST:
+        case LOADING_ENABLE:
+            return {
+                ...state,
+                enabled: true
+            };
+        case LOADING_DISABLE:
+            return {
+                ...state,
+                enabled: false
+            };
+        case LOADING_SHOWS_REQUEST:
             return {
                 ...state,
                 shows: {
@@ -30,7 +48,7 @@ export const loadingReducer = createAuthenticatedReducer(((state: LoadingState =
                     failed: false
                 }
             };
-        case LOAD_SHOWS_SUCCESS:
+        case LOADING_SHOWS_SUCCESS:
             return {
                 ...state,
                 shows: {
@@ -39,7 +57,7 @@ export const loadingReducer = createAuthenticatedReducer(((state: LoadingState =
                     loaded: true
                 }
             };
-        case LOAD_SHOWS_FAILURE:
+        case LOADING_SHOWS_FAILURE:
             return {
                 ...state,
                 shows: {
