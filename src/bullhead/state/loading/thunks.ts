@@ -16,8 +16,8 @@ export const loadShows = () => async (dispatch: LightBullThunkDispatch, getState
     try {
         const shows = await Api.loadShows();
         if (isLoadingEnabled()) {
-            dispatch(loadShowsSuccess());
             dispatch(initializeShows(shows))
+            dispatch(loadShowsSuccess());
         }
     } catch (error) {
         dispatch(loadShowsFailure());
