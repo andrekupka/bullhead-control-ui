@@ -2,14 +2,13 @@ import {createStyles, List, makeStyles, Theme, Typography} from '@material-ui/co
 import React from 'react';
 import {connect} from 'react-redux';
 import {LightBullState} from '../../state';
-import {WebSocketState} from '../../state/web-socket/reducer';
-import {LoadingState} from '../../types/types';
+import {LoadingInfo, LoadingState} from '../../state/loading/reducer';
 import {StandaloneContainer} from '../common/StandaloneContainer';
 import {LoadingStateItem} from './LoadingStateItem';
 
 interface Props {
-    webSocket: WebSocketState;
-    shows: LoadingState;
+    webSocket: LoadingInfo;
+    loading: LoadingState;
 }
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
@@ -33,22 +32,24 @@ const PurePreLoadingView = (props: Props) => {
             <List className={classes.list}>
                 <LoadingStateItem loadingText='Establishing WebSocket connection...'
                                   loadedText='Established WebSocket connection!'
-                                  isLoaded={props.webSocket.isConnected && props.webSocket.isAuthenticated}/>
+                                  state={props.webSocket}/>
                 <LoadingStateItem loadingText='Loading shows...'
                                   loadedText='Loaded shows!'
-                                  isLoaded={props.shows.loaded}/>
+                                  state={props.loading.shows}/>
             </List>
         </StandaloneContainer>
     );
 };
 
 const mapStateToProps = (state: LightBullState) => ({
-    webSocket: state.webSocket,
-    shows: {
-        ...state.shows
-    }
+    webSocket: {
+        loading: state.webSocket.isConnecting,
+        loaded: state.webSocket.isConnected,
+        failed: false
+    },
+    loading: state.loading
 });
 
-export const InitializationView = connect(
+export const LoadingView = connect(
     mapStateToProps
 )(PurePreLoadingView);

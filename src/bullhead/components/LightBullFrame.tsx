@@ -4,7 +4,7 @@ import {LightBullState} from '../state';
 import {LightBullContentContainer} from './LightBullContentContainer';
 import {NavigationBar} from './navigation/NavigationBar';
 import {makeStyles} from '@material-ui/core';
-import {InitializationView} from './initialization/InitializationView';
+import {LoadingView} from './loading/LoadingView';
 
 interface Props {
     finishedLoading: boolean;
@@ -20,7 +20,7 @@ const PureLightBullFrame = (props: Props) => {
     const classes = useStyles();
 
     if (!props.finishedLoading) {
-        return <InitializationView/>;
+        return <LoadingView/>;
     }
 
     return (
@@ -32,7 +32,7 @@ const PureLightBullFrame = (props: Props) => {
 };
 
 const mapStateToProps = (state: LightBullState) => ({
-    finishedLoading: state.shows.loaded && state.webSocket.isConnected && state.webSocket.isAuthenticated
+    finishedLoading: state.loading.shows.loaded && state.webSocket.isConnected && state.webSocket.isAuthenticated
 });
 
 export const LightBullFrame = connect(
