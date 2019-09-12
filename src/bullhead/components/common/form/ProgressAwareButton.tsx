@@ -1,5 +1,6 @@
-import {Button, createStyles, LinearProgress, makeStyles, Theme} from '@material-ui/core';
+import {Button, CircularProgress, createStyles, makeStyles, Theme} from '@material-ui/core';
 import {ButtonProps} from '@material-ui/core/Button';
+import {green} from '@material-ui/core/colors';
 import React from 'react';
 
 interface Props extends ButtonProps {
@@ -7,8 +8,16 @@ interface Props extends ButtonProps {
 }
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
+    wrapper: {
+        position: 'relative'
+    },
     progress: {
-        marginTop: -24
+        color: green[500],
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        marginTop: -12,
+        marginLeft: -12,
     }
 }));
 
@@ -21,12 +30,12 @@ export const ProgressAwareButton = (props: Props) => {
     const isDisabled = showProgress || disabled;
 
     return (
-        <div>
+        <div className={classes.wrapper}>
             <Button disabled={isDisabled}
                     {...remainingProps}>
                 {props.children}
             </Button>
-            {showProgress && <LinearProgress color='primary' className={classes.progress}/>}
+            {showProgress && <CircularProgress size={24} className={classes.progress}/>}
         </div>
     );
 };

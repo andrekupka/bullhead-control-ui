@@ -8,16 +8,16 @@ interface Props {
 }
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
-    clickable: {
+    showCard: {
+        display: 'flex',
         cursor: 'pointer',
         '&:hover': {
             boxShadow: '-1px 10px 29px 0px rgba(0,0,0,0.8);'
-        }
+        },
+        height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
-    centeredContent: {
-        display: 'flex',
-        justifyContent: 'center'
-    }
 }));
 
 export const ShowCard = (props: Props) => {
@@ -29,8 +29,8 @@ export const ShowCard = (props: Props) => {
     }
 
     return (
-        <Card className={classes.clickable} onClick={() => setShouldOpen(true)}>
-            <CardContent className={classes.centeredContent}>
+        <Card className={classes.showCard} onClick={() => setShouldOpen(true)}>
+            <CardContent>
                 <Typography variant='h5' component='div'>
                     {props.show.name}
                 </Typography>

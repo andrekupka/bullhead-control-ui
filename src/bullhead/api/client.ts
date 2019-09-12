@@ -1,5 +1,5 @@
 import axios, {AxiosInstance, AxiosRequestConfig} from 'axios';
-import {ShowCollection} from '../model/Show';
+import {Show, ShowCollection} from '../model/Show';
 
 export const BASE_URL = 'http://localhost:8080';
 export const DEFAULT_TIMEOUT = 10000;
@@ -32,6 +32,13 @@ class ApiClient {
     async loadShows(): Promise<ShowCollection> {
         const response = await this.axiosClient.get('/api/shows');
         return response.data;
+    }
+
+    async createShow(name: string): Promise<Show> {
+        const response = await this.axiosClient.post('/api/shows', {
+            name: name
+        });
+        return response.data
     }
 }
 
