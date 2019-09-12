@@ -138,11 +138,4 @@ describe('web-socket reducer', () => {
             isDisconnecting: false
         });
     });
-
-    it ('should ignore disconnected action if not disconnecting', () => {
-        const initialState = createState();
-        const state = webSocketReducer(initialState, webSocketDisconnected());
-
-        expect(state).toEqual(initialState);
-    })
 });
