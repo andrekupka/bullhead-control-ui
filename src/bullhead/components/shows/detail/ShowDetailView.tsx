@@ -1,8 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {Show} from '../../model/Show';
+import {Show} from '../../../model/Show';
 import {RouteComponentProps, Redirect} from 'react-router-dom';
-import {LightBullState} from '../../state';
+import {LightBullState} from '../../../state';
 
 interface Params {
     id: string;

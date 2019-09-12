@@ -8,7 +8,7 @@ import {NavigationAware} from '../types/navigation/NavigationAware';
 import {NotFound} from './common/NotFound';
 import {Home} from './home/Home';
 import {ShowCollectionView} from './shows/ShowCollectionView';
-import {ShowDetailView} from './shows/ShowDetailView';
+import {ShowDetailView} from './shows/detail/ShowDetailView';
 import {SystemView} from './system/SystemView';
 
 interface Props extends NavigationAware {
