@@ -1,4 +1,4 @@
-# lightbull-ui
+# lightbull-ui &middot; [![CircleCI](https://circleci.com/gh/light-bull/lightbull-ui.svg?style=svg)](https://circleci.com/gh/light-bull/lightbull-ui)
 
 A user interface to control the bullhead written in React.
 
