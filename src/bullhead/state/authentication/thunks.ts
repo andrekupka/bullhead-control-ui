@@ -2,11 +2,13 @@ import {Dispatch} from 'react';
 import {Api} from '../../store';
 import {
     AuthenticationActionTypes,
-    AuthenticationError,
-    authenticationStart,
+    authenticationClear,
     authenticationFailure,
-    authenticationSuccess, authenticationClear
+    authenticationStart,
+    authenticationSuccess
 } from './actions';
+
+
 
 export const signIn = (password: string) => async (dispatch: Dispatch<AuthenticationActionTypes>) => {
     dispatch(authenticationStart());
@@ -14,22 +16,22 @@ export const signIn = (password: string) => async (dispatch: Dispatch<Authentica
     try {
         const token = await Api.login(password);
         if (!token) {
-            dispatch(authenticationFailure(AuthenticationError.UNKNOWN_ERROR));
+            dispatch(authenticationFailure('An unknown error occurred'));
         } else {
             dispatch(authenticationSuccess(token));
         }
     } catch (error) {
         if (error.response) {
             if (error.response.status === 401) {
-                dispatch(authenticationFailure(AuthenticationError.WRONG_PASSWORD));
+                dispatch(authenticationFailure('Invalid password'));
             } else {
-                dispatch(authenticationFailure(AuthenticationError.UNKNOWN_ERROR));
+                dispatch(authenticationFailure('An unknown error occurred'));
             }
         } else {
             if (error.code === 'ECONNABORTED') {
-                dispatch(authenticationFailure(AuthenticationError.TIMEOUT));
+                dispatch(authenticationFailure('Server took too long to respond'));
             } else {
-                dispatch(authenticationFailure(AuthenticationError.UNKNOWN_ERROR));
+                dispatch(authenticationFailure('An unknown error occurred'));
             }
         }
     }

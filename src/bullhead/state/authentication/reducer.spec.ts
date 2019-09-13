@@ -1,9 +1,10 @@
 import {
-    AuthenticationError,
+    authenticationClear,
     authenticationFailure,
+    authenticationLoad,
+    authenticationLost,
     authenticationStart,
-    authenticationSuccess,
-    authenticationClear, authenticationLost, authenticationLoad
+    authenticationSuccess
 } from './actions';
 import {authenticationReducer, AuthenticationState, INITIAL_STATE} from './reducer';
 
@@ -56,7 +57,7 @@ describe('authentication reducer', () => {
 
     it('should reset authentication error on start action', () => {
         const state = authenticationReducer(createState({
-            authenticationError: AuthenticationError.WRONG_PASSWORD
+            authenticationError: 'Invalid password'
         }), authenticationStart());
 
         expect(state).toMatchObject({
@@ -92,12 +93,12 @@ describe('authentication reducer', () => {
         const state = authenticationReducer(createState({
             isAuthenticated: false,
             isAuthenticating: true
-        }), authenticationFailure(AuthenticationError.WRONG_PASSWORD));
+        }), authenticationFailure('Invalid password'));
 
         expect(state).toMatchObject({
             isAuthenticated: false,
             isAuthenticating: false,
-            authenticationError: AuthenticationError.WRONG_PASSWORD
+            authenticationError: 'Invalid password'
         });
     });
 
@@ -105,7 +106,7 @@ describe('authentication reducer', () => {
         const state = authenticationReducer(createState({
             isAuthenticating: true,
             authenticationLost: true,
-        }), authenticationFailure(AuthenticationError.WRONG_PASSWORD));
+        }), authenticationFailure('Invalid password'));
 
         expect(state).toMatchObject({
             authenticationLost: false

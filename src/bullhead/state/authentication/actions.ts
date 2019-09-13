@@ -5,12 +5,6 @@ export const AUTHENTICATION_FAILURE = '@authentication/FAILURE';
 export const AUTHENTICATION_LOST = '@authentication/LOST';
 export const AUTHENTICATION_CLEAR = '@authentication/CLEAR';
 
-export enum AuthenticationError {
-    WRONG_PASSWORD,
-    TIMEOUT,
-    UNKNOWN_ERROR
-}
-
 export const authenticationLoad = (token: string) => ({
     type: AUTHENTICATION_LOAD as typeof AUTHENTICATION_LOAD,
     payload: {
@@ -29,7 +23,7 @@ export const authenticationSuccess = (token: string) => ({
     }
 });
 
-export const authenticationFailure = (error: AuthenticationError) => ({
+export const authenticationFailure = (error: string) => ({
     type: AUTHENTICATION_FAILURE as typeof AUTHENTICATION_FAILURE,
     payload: {
         error: error

@@ -1,10 +1,11 @@
 import {
-    AuthenticationActionTypes,
-    AuthenticationError,
+    AUTHENTICATION_CLEAR,
     AUTHENTICATION_FAILURE,
+    AUTHENTICATION_LOAD,
+    AUTHENTICATION_LOST,
     AUTHENTICATION_START,
     AUTHENTICATION_SUCCESS,
-    AUTHENTICATION_CLEAR, AUTHENTICATION_LOST, AUTHENTICATION_LOAD,
+    AuthenticationActionTypes
 } from './actions';
 
 export interface AuthenticationState {
@@ -12,7 +13,7 @@ export interface AuthenticationState {
     isAuthenticating: boolean;
     token?: string;
     authenticationLost: boolean;
-    authenticationError?: AuthenticationError;
+    authenticationError?: string;
 }
 
 export const INITIAL_STATE: AuthenticationState = {
