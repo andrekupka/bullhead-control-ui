@@ -1,3 +1,4 @@
+import {act} from 'react-dom/test-utils';
 import {combineReducers} from 'redux';
 import {Show, ShowCollection} from '../../model/Show';
 import {createAuthenticationAwareReducer, DeauthAware} from '../authentication/utils';
@@ -5,10 +6,10 @@ import {
     ADD_SHOW_FAILURE,
     ADD_SHOW_REQUEST,
     ADD_SHOW_SUCCESS,
-    END_ADD_SHOW,
-    INITIALIZE_SHOWS,
+    ADD_SHOW_END,
+    INITIALIZE_SHOWS, PUSH_SHOW,
     ShowActionTypes,
-    START_ADD_SHOW
+    ADD_SHOW_START
 } from './actions';
 
 export type ShowCollectionState = ShowCollection;
@@ -18,8 +19,8 @@ export const showCollectionReducer = createAuthenticationAwareReducer(
         switch (action.type) {
             case INITIALIZE_SHOWS:
                 return action.payload.shows;
-            case ADD_SHOW_SUCCESS:
-                return state.concat(action.payload.show);
+            case PUSH_SHOW:
+                return [...state, action.payload.show];
             default:
                 return state;
         }
@@ -28,7 +29,7 @@ export const showCollectionReducer = createAuthenticationAwareReducer(
 export interface AddModeState {
     isActive: boolean;
     isPending: boolean;
-    newShow?: Show;
+    newShowId?: string;
     error?: string;
 }
 
@@ -40,20 +41,20 @@ const INITIAL_ADD_MODE_STATE: AddModeState = {
 export const addShowModeReducer = createAuthenticationAwareReducer(
     (state: AddModeState = INITIAL_ADD_MODE_STATE, action: DeauthAware<ShowActionTypes>): AddModeState => {
         switch (action.type) {
-            case START_ADD_SHOW:
+            case ADD_SHOW_START:
                 return {
                     ...state,
                     isActive: true,
                     isPending: false,
-                    newShow: undefined,
+                    newShowId: undefined,
                     error: undefined
                 };
-            case END_ADD_SHOW:
+            case ADD_SHOW_END:
                 return {
                     ...state,
                     isActive: false,
                     isPending: false,
-                    newShow: undefined,
+                    newShowId: undefined,
                     error: undefined
                 };
             case ADD_SHOW_REQUEST:
@@ -65,7 +66,7 @@ export const addShowModeReducer = createAuthenticationAwareReducer(
                 return {
                     ...state,
                     isPending: false,
-                    newShow: action.payload.show
+                    newShowId: action.payload.showId
                 };
             case ADD_SHOW_FAILURE:
                 return {

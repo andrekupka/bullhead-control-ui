@@ -2,9 +2,8 @@ import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} fr
 import React, {FormEvent, useState} from 'react';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
-import {Show} from '../../model/Show';
 import {LightBullState} from '../../state';
-import {endAddShow} from '../../state/shows/actions';
+import {addShowEnd} from '../../state/shows/actions';
 import {addShow} from '../../state/shows/thunks';
 import {LightBullThunkDispatch} from '../../types/redux';
 import {ProgressAwareButton} from '../common/form/ProgressAwareButton';
@@ -12,7 +11,7 @@ import {ProgressAwareButton} from '../common/form/ProgressAwareButton';
 interface Props {
     isOpen: boolean;
     isPending: boolean;
-    newShow?: Show;
+    newShowId?: string;
     error?: string;
 
     finishAdding: () => void;
@@ -28,9 +27,9 @@ const PureAddShowDialog = (props: Props) => {
         }
     };
 
-    if (props.newShow) {
+    if (props.newShowId) {
         close();
-        return <Redirect to={`/shows/${props.newShow.id}`}/>;
+        return <Redirect to={`/shows/${props.newShowId}`}/>;
     }
 
     const canSubmit = !!name;
@@ -74,13 +73,13 @@ const PureAddShowDialog = (props: Props) => {
 const mapStateToProps = (state: LightBullState) => ({
     isOpen: state.shows.addMode.isActive,
     isPending: state.shows.addMode.isPending,
-    newShow: state.shows.addMode.newShow,
+    newShowId: state.shows.addMode.newShowId,
     error: state.shows.addMode.error
 });
 
 const mapDispatchToProps = (dispatch: LightBullThunkDispatch) => ({
     addShow: (name: string) => dispatch(addShow(name)),
-    finishAdding: () => dispatch(endAddShow())
+    finishAdding: () => dispatch(addShowEnd())
 });
 
 export const AddShowDialog = connect(

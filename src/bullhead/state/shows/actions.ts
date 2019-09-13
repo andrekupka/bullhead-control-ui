@@ -1,12 +1,14 @@
 import {Show, ShowCollection} from '../../model/Show';
 
 export const INITIALIZE_SHOWS = '@shows/INITIALIZE';
-export const START_ADD_SHOW = '@shows/ADD_START';
-export const END_ADD_SHOW = '@shows/ADD_END';
-export const ADD_SHOW_REQUEST = '@shows/ADD_REQUEST';
-export const ADD_SHOW_SUCCESS = '@shows/ADD_SUCCESS';
-export const ADD_SHOW_FAILURE = '@shows/ADD_FAILURE';
-export const ADD_SHOW_RESET = '@shows/ADD_RESET';
+export const PUSH_SHOW = '@shows/PUSH';
+
+export const ADD_SHOW_START = '@add-show/START';
+export const ADD_SHOW_END = '@add-show/END';
+export const ADD_SHOW_REQUEST = '@add-show/REQUEST';
+export const ADD_SHOW_SUCCESS = '@add-show/SUCCESS';
+export const ADD_SHOW_FAILURE = '@add-show/FAILURE';
+export const ADD_SHOW_RESET = '@add-show/RESET';
 
 export const initializeShows = (shows: ShowCollection) => ({
     type: INITIALIZE_SHOWS as typeof INITIALIZE_SHOWS,
@@ -15,22 +17,29 @@ export const initializeShows = (shows: ShowCollection) => ({
     }
 });
 
-export const startAddShow = () => ({
-    type: START_ADD_SHOW as typeof START_ADD_SHOW
+export const pushShow = (show: Show) => ({
+    type: PUSH_SHOW as typeof PUSH_SHOW,
+    payload: {
+        show: show
+    }
 });
 
-export const endAddShow = () => ({
-    type: END_ADD_SHOW as typeof END_ADD_SHOW
+export const addShowStart = () => ({
+    type: ADD_SHOW_START as typeof ADD_SHOW_START
+});
+
+export const addShowEnd = () => ({
+    type: ADD_SHOW_END as typeof ADD_SHOW_END
 });
 
 export const addShowRequest = () => ({
     type: ADD_SHOW_REQUEST as typeof ADD_SHOW_REQUEST
 });
 
-export const addShowSuccess = (show: Show) => ({
+export const addShowSuccess = (showId: string) => ({
     type: ADD_SHOW_SUCCESS as typeof ADD_SHOW_SUCCESS,
     payload: {
-        show: show
+        showId: showId
     }
 });
 
@@ -47,8 +56,9 @@ export const addShowReset = () => ({
 
 export type ShowActionTypes =
     ReturnType<typeof initializeShows>
-    | ReturnType<typeof startAddShow>
-    | ReturnType<typeof endAddShow>
+    | ReturnType<typeof pushShow>
+    | ReturnType<typeof addShowStart>
+    | ReturnType<typeof addShowEnd>
     | ReturnType<typeof addShowRequest>
     | ReturnType<typeof addShowSuccess>
     | ReturnType<typeof addShowFailure>
