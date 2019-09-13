@@ -2,7 +2,7 @@ import {IconButton} from '@material-ui/core';
 import {InvertColors} from '@material-ui/icons';
 import React, {Dispatch} from 'react';
 import {connect} from 'react-redux';
-import {ThemeActionTypes, toggleTheme} from '../../state/theme/actions';
+import {ThemeActionTypes, toggleTheme} from '../../state/ui/theme/actions';
 
 interface Props {
     toggleTheme: () => void;

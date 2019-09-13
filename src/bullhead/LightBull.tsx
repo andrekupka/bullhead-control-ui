@@ -32,7 +32,7 @@ const PureLightBull = (props: Props) => {
 };
 
 const mapStateToProps = (state: LightBullState) => ({
-    isDark: state.theme.isDark
+    isDark: state.ui.theme.isDark
 });
 
 export const LightBull = connect(
