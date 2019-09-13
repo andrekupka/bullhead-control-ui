@@ -1,4 +1,4 @@
-import {createAuthenticationAwareReducer, DeauthAware} from '../../authentication/utils';
+import {createResettingReducer, ResetAware} from '../../utils';
 import {
     ADD_SHOW_END,
     ADD_SHOW_FAILURE,
@@ -20,8 +20,8 @@ const INITIAL_ADD_MODE_STATE: UiShowsState = {
     isPending: false
 };
 
-export const uiShowsReducer = createAuthenticationAwareReducer(
-    (state: UiShowsState = INITIAL_ADD_MODE_STATE, action: DeauthAware<ShowActionTypes>): UiShowsState => {
+export const uiShowsReducer = createResettingReducer(
+    (state: UiShowsState = INITIAL_ADD_MODE_STATE, action: ResetAware<ShowActionTypes>): UiShowsState => {
         switch (action.type) {
             case ADD_SHOW_START:
                 return {

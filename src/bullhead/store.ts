@@ -33,13 +33,23 @@ const initializeStore = () => {
         composeWithDevTools(applyMiddleware(...middlewares)),
     );
 
-
     return store;
 };
 
 
 export const store = initializeStore();
 
-export const Api = createApi(BASE_URL, () => store.getState().authentication.token, DEFAULT_TIMEOUT);
+const headerConfigurer = (headers: any) => {
+    const authorizationToken = store.getState().authentication.token;
+    if (authorizationToken) {
+        headers.Authorization = `Bearer ${authorizationToken}`;
+    }
+    const connectionId = store.getState().webSocket.connectionId;
+    if (connectionId) {
+        headers['X-Connection-Id'] = connectionId;
+    }
+};
+
+export const Api = createApi(BASE_URL, headerConfigurer, DEFAULT_TIMEOUT);
 
 initializeState(store);
