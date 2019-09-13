@@ -2,7 +2,7 @@ import {LightBullState} from './state';
 import {BreadcrumbConfig} from './utils/breadcrumbs';
 
 const resolveShowName = (state: LightBullState, {id}: {id: string}): string => {
-    const show = state.shows.collection.find(show => show.id === id);
+    const show = state.model.shows[id];
     return show ? show.name : 'Unknown show'
 };
 

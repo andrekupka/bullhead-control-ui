@@ -1,30 +1,13 @@
-import {act} from 'react-dom/test-utils';
 import {combineReducers} from 'redux';
-import {Show, ShowCollection} from '../../model/Show';
 import {createAuthenticationAwareReducer, DeauthAware} from '../authentication/utils';
 import {
+    ADD_SHOW_END,
     ADD_SHOW_FAILURE,
     ADD_SHOW_REQUEST,
+    ADD_SHOW_START,
     ADD_SHOW_SUCCESS,
-    ADD_SHOW_END,
-    INITIALIZE_SHOWS, PUSH_SHOW,
-    ShowActionTypes,
-    ADD_SHOW_START
+    ShowActionTypes
 } from './actions';
-
-export type ShowCollectionState = ShowCollection;
-
-export const showCollectionReducer = createAuthenticationAwareReducer(
-    (state: ShowCollectionState = [], action: DeauthAware<ShowActionTypes>): ShowCollectionState => {
-        switch (action.type) {
-            case INITIALIZE_SHOWS:
-                return action.payload.shows;
-            case PUSH_SHOW:
-                return [...state, action.payload.show];
-            default:
-                return state;
-        }
-    });
 
 export interface AddModeState {
     isActive: boolean;
@@ -80,6 +63,5 @@ export const addShowModeReducer = createAuthenticationAwareReducer(
     });
 
 export const showsReducer = combineReducers({
-    collection: showCollectionReducer,
     addMode: addShowModeReducer
 });

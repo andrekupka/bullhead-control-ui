@@ -2,7 +2,7 @@ import {Api} from '../../store';
 import {LightBullThunkDispatch} from '../../types/redux';
 import {delay} from '../../utils';
 import {LightBullState} from '../index';
-import {initializeShows} from '../shows/actions';
+import {initializeShows} from '../model/shows/actions';
 import {loadShowsFailure, loadShowsRequest, loadShowsSuccess} from './actions';
 
 export const startLoading = () => (dispatch: LightBullThunkDispatch) => {

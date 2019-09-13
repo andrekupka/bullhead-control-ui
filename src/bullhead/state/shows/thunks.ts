@@ -1,8 +1,9 @@
 import {Dispatch} from 'react';
 import {Api} from '../../store';
-import {addShowFailure, addShowRequest, addShowSuccess, pushShow, ShowActionTypes} from './actions';
+import {pushShow, ShowsActionTypes} from '../model/shows/actions';
+import {addShowFailure, addShowRequest, addShowSuccess, ShowActionTypes} from './actions';
 
-export const addShow = (name: string) => async (dispatch: Dispatch<ShowActionTypes>) => {
+export const addShow = (name: string) => async (dispatch: Dispatch<ShowsActionTypes|ShowActionTypes>) => {
     dispatch(addShowRequest());
     try {
         const show = await Api.createShow(name);

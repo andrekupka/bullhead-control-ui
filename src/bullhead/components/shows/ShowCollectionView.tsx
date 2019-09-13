@@ -47,7 +47,7 @@ export const PureShowCollectionView = (props: Props) => {
 };
 
 const mapStateToProps = (state: LightBullState) => ({
-    shows: state.shows.collection
+    shows: Object.keys(state.model.shows).map(showId => state.model.shows[showId])
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<ShowActionTypes>) => ({

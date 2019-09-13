@@ -1,28 +1,9 @@
-import {Show, ShowCollection} from '../../model/Show';
-
-export const INITIALIZE_SHOWS = '@shows/INITIALIZE';
-export const PUSH_SHOW = '@shows/PUSH';
-
 export const ADD_SHOW_START = '@add-show/START';
 export const ADD_SHOW_END = '@add-show/END';
 export const ADD_SHOW_REQUEST = '@add-show/REQUEST';
 export const ADD_SHOW_SUCCESS = '@add-show/SUCCESS';
 export const ADD_SHOW_FAILURE = '@add-show/FAILURE';
 export const ADD_SHOW_RESET = '@add-show/RESET';
-
-export const initializeShows = (shows: ShowCollection) => ({
-    type: INITIALIZE_SHOWS as typeof INITIALIZE_SHOWS,
-    payload: {
-        shows: shows
-    }
-});
-
-export const pushShow = (show: Show) => ({
-    type: PUSH_SHOW as typeof PUSH_SHOW,
-    payload: {
-        show: show
-    }
-});
 
 export const addShowStart = () => ({
     type: ADD_SHOW_START as typeof ADD_SHOW_START
@@ -55,9 +36,7 @@ export const addShowReset = () => ({
 });
 
 export type ShowActionTypes =
-    ReturnType<typeof initializeShows>
-    | ReturnType<typeof pushShow>
-    | ReturnType<typeof addShowStart>
+    ReturnType<typeof addShowStart>
     | ReturnType<typeof addShowEnd>
     | ReturnType<typeof addShowRequest>
     | ReturnType<typeof addShowSuccess>
