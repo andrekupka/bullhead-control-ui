@@ -1,9 +1,9 @@
-export const ADD_SHOW_START = '@add-show/START';
-export const ADD_SHOW_END = '@add-show/END';
-export const ADD_SHOW_REQUEST = '@add-show/REQUEST';
-export const ADD_SHOW_SUCCESS = '@add-show/SUCCESS';
-export const ADD_SHOW_FAILURE = '@add-show/FAILURE';
-export const ADD_SHOW_RESET = '@add-show/RESET';
+export const ADD_SHOW_START = '@ui/shows/START';
+export const ADD_SHOW_END = '@ui/shows/END';
+export const ADD_SHOW_REQUEST = '@ui/shows/REQUEST';
+export const ADD_SHOW_SUCCESS = '@ui/shows/SUCCESS';
+export const ADD_SHOW_FAILURE = '@ui/shows/FAILURE';
+export const ADD_SHOW_RESET = '@ui/shows/RESET';
 
 export const addShowStart = () => ({
     type: ADD_SHOW_START as typeof ADD_SHOW_START

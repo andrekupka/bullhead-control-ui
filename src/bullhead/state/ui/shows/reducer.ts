@@ -1,5 +1,4 @@
-import {combineReducers} from 'redux';
-import {createAuthenticationAwareReducer, DeauthAware} from '../authentication/utils';
+import {createAuthenticationAwareReducer, DeauthAware} from '../../authentication/utils';
 import {
     ADD_SHOW_END,
     ADD_SHOW_FAILURE,
@@ -9,20 +8,20 @@ import {
     ShowActionTypes
 } from './actions';
 
-export interface AddModeState {
+export interface UiShowsState {
     isActive: boolean;
     isPending: boolean;
     newShowId?: string;
     error?: string;
 }
 
-const INITIAL_ADD_MODE_STATE: AddModeState = {
+const INITIAL_ADD_MODE_STATE: UiShowsState = {
     isActive: false,
     isPending: false
 };
 
-export const addShowModeReducer = createAuthenticationAwareReducer(
-    (state: AddModeState = INITIAL_ADD_MODE_STATE, action: DeauthAware<ShowActionTypes>): AddModeState => {
+export const uiShowsReducer = createAuthenticationAwareReducer(
+    (state: UiShowsState = INITIAL_ADD_MODE_STATE, action: DeauthAware<ShowActionTypes>): UiShowsState => {
         switch (action.type) {
             case ADD_SHOW_START:
                 return {
@@ -61,7 +60,3 @@ export const addShowModeReducer = createAuthenticationAwareReducer(
                 return state;
         }
     });
-
-export const showsReducer = combineReducers({
-    addMode: addShowModeReducer
-});
