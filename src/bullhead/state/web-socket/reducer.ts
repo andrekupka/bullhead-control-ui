@@ -3,18 +3,13 @@ import {WebSocketAction, WebSocketActions} from './actions';
 
 export interface WebSocketState {
     isConnected: boolean;
-    isAuthenticating: boolean;
-    isAuthenticated: boolean;
     isConnecting: boolean;
     isDisconnecting: boolean;
-    connectionId?: string;
 }
 
 export const INITIAL_STATE: WebSocketState = {
     isConnecting: false,
     isConnected: false,
-    isAuthenticating: false,
-    isAuthenticated: false,
     isDisconnecting: false,
 };
 
@@ -28,26 +23,6 @@ export const webSocketReducer = createReducer<WebSocketState, WebSocketAction>(I
         isConnected: true,
         isConnecting: false
     }))
-    .handleAction(WebSocketActions.authenticate, state => {
-        if (!state.isConnected) {
-            return state;
-        }
-        return {
-            ...state,
-            isAuthenticating: true
-        };
-    })
-    .handleAction(WebSocketActions.authenticated, (state, action) => {
-        if (!state.isConnected || !state.isAuthenticating) {
-            return state;
-        }
-        return {
-            ...state,
-            isAuthenticating: false,
-            isAuthenticated: true,
-            connectionId: action.payload.connectionId
-        };
-    })
     .handleAction(WebSocketActions.disconnect, state => {
         if (!(state.isConnected || state.isConnecting)) {
             return state;
@@ -61,7 +36,4 @@ export const webSocketReducer = createReducer<WebSocketState, WebSocketAction>(I
         ...state,
         isConnected: false,
         isDisconnecting: false,
-        isAuthenticating: false,
-        isAuthenticated: false,
-        connectionId: undefined
     }));
