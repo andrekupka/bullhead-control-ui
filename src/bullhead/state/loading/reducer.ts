@@ -1,11 +1,7 @@
-import {createResettingReducer, ResetAware} from '../utils';
-import {
-    LOADING_SHOWS_FAILURE,
-    LOADING_SHOWS_REQUEST,
-    LOADING_SHOWS_SUCCESS,
-    LOADING_ENABLE,
-    LoadingActionTypes, LOADING_DISABLE
-} from './actions';
+import {combineReducers} from 'redux';
+import {createReducer, StateType} from 'typesafe-actions';
+import {createResettingReducer, ResetAware} from '../reducer-utils';
+import {LoadingAction, LoadingActions} from './actions';
 
 export interface LoadingInfo {
     loading: boolean;
@@ -13,61 +9,38 @@ export interface LoadingInfo {
     failed: boolean;
 }
 
-export interface LoadingState {
-    enabled: boolean,
-    shows: LoadingInfo
-}
-
-const INITIAL_STATE: LoadingState = {
-    enabled: false,
-    shows: {
-        loading: false,
-        loaded: false,
-        failed: false
-    }
+const INITIAL_SHOWS_STATE: LoadingInfo = {
+    loading: false,
+    loaded: false,
+    failed: false
 };
 
-export const loadingReducer = createResettingReducer(
-        (state: LoadingState = INITIAL_STATE, action: ResetAware<LoadingActionTypes>) => {
-            switch (action.type) {
-                case LOADING_ENABLE:
-                    return {
-                        ...state,
-                        enabled: true
-                    };
-                case LOADING_DISABLE:
-                    return {
-                        ...state,
-                        enabled: false
-                    };
-                case LOADING_SHOWS_REQUEST:
-                    return {
-                        ...state,
-                        shows: {
-                            ...state.shows,
-                            loading: true,
-                            failed: false
-                        }
-                    };
-                case LOADING_SHOWS_SUCCESS:
-                    return {
-                        ...state,
-                        shows: {
-                            ...state.shows,
-                            loading: false,
-                            loaded: true
-                        }
-                    };
-                case LOADING_SHOWS_FAILURE:
-                    return {
-                        ...state,
-                        shows: {
-                            ...state.shows,
-                            loading: false,
-                            failed: true
-                        }
-                    };
-                default:
-                    return state;
-            }
-        });
+const loadingEnabledReducer = createReducer<boolean, ResetAware<LoadingAction>>(false)
+    .handleAction(LoadingActions.enable, () => true)
+    .handleAction(LoadingActions.disable, () => false);
+
+const loadingShowsReducer = createReducer<LoadingInfo, ResetAware<LoadingAction>>(INITIAL_SHOWS_STATE)
+    .handleAction(LoadingActions.showsRequest, state => ({
+        ...state,
+        loading: true,
+        failed: false
+    }))
+    .handleAction(LoadingActions.showsSuccess, state => ({
+        ...state,
+        loading: false,
+        loaded: true
+    }))
+    .handleAction(LoadingActions.showsFailure, state => ({
+        ...state,
+        loading: false,
+        failed: true
+    }));
+
+export const pureLoadingReducer = combineReducers({
+    enabled: loadingEnabledReducer,
+    shows: loadingShowsReducer
+});
+
+export type LoadingState = StateType<typeof pureLoadingReducer>;
+
+export const loadingReducer = createResettingReducer(pureLoadingReducer);

@@ -1,28 +1,12 @@
 import {Dispatch, MiddlewareAPI} from 'redux';
-import {Show} from '../../model/Show';
+import {getType} from 'typesafe-actions';
 import {LightBullMessage} from '../../types/types';
-import {
-    AUTHENTICATION_CLEAR,
-    AUTHENTICATION_LOST,
-    AUTHENTICATION_SUCCESS,
-    AuthenticationActionTypes,
-    authenticationLost
-} from '../authentication/actions';
+import {AuthenticationAction, AuthenticationActions} from '../authentication/actions';
 import {LightBullState} from '../index';
-import {pushShow, ShowsActionTypes} from '../model/shows/actions';
-import {
-    WEB_SOCKET_CONNECT,
-    WEB_SOCKET_DISCONNECT,
-    WebSocketActionTypes,
-    webSocketAuthenticate,
-    webSocketAuthenticated,
-    webSocketConnect,
-    webSocketConnected,
-    webSocketDisconnect,
-    webSocketDisconnected
-} from './actions';
+import {ShowsAction, ShowsActions} from '../model/shows/actions';
+import {WebSocketAction, WebSocketActions} from './actions';
 
-type WSAction = WebSocketActionTypes | AuthenticationActionTypes;
+type WSAction = WebSocketAction | AuthenticationAction | ShowsAction;
 type WSDispatch = Dispatch<WSAction>;
 type WSMiddlewareAPI = MiddlewareAPI<WSDispatch, LightBullState>;
 
@@ -38,12 +22,12 @@ export const webSocketMiddleware = () => {
     };
 
     const onOpen = (api: WSMiddlewareAPI) => () => {
-        api.dispatch(webSocketConnected());
+        api.dispatch(WebSocketActions.connected());
         const token = api.getState().authentication.token;
         if (!token) {
             throw new Error('Invalid state, token is not initialized');
         }
-        api.dispatch(webSocketAuthenticate());
+        api.dispatch(WebSocketActions.authenticate());
         send({
             type: 'authenticate',
             payload: {
@@ -62,40 +46,43 @@ export const webSocketMiddleware = () => {
         switch (type) {
             case 'authenticated':
                 if (payload && payload.connectionId) {
-                    api.dispatch(webSocketAuthenticated(payload.connectionId));
+                    api.dispatch(WebSocketActions.authenticated(payload.connectionId));
                 } else {
-                    api.dispatch(authenticationLost())
+                    api.dispatch(AuthenticationActions.lost());
                 }
                 break;
             case 'unauthenticated':
-                api.dispatch(authenticationLost());
+                api.dispatch(AuthenticationActions.lost());
+                break;
+            case 'addShow':
+                api.dispatch(ShowsActions.add(payload.show))
                 break;
         }
     };
 
     const onClose = (api: WSMiddlewareAPI) => () => {
-        api.dispatch(webSocketDisconnected());
+        api.dispatch(WebSocketActions.disconnected());
         if (reconnect) {
-            setTimeout(() => api.dispatch(webSocketConnect()), 2000);
+            setTimeout(() => api.dispatch(WebSocketActions.connect()), 2000);
         }
     };
 
     const onError = (api: WSMiddlewareAPI) => (event: Event) => {
-        api.dispatch(webSocketDisconnect());
+        api.dispatch(WebSocketActions.disconnect(false));
     };
 
     return (api: WSMiddlewareAPI) => (next: WSDispatch) => (action: WSAction) => {
         switch (action.type) {
-            case AUTHENTICATION_SUCCESS:
+            case getType(AuthenticationActions.success):
                 const signInResult = next(action);
-                api.dispatch(webSocketConnect());
+                api.dispatch(WebSocketActions.connect());
                 return signInResult;
-            case AUTHENTICATION_CLEAR:
-            case AUTHENTICATION_LOST:
+            case getType(AuthenticationActions.clear):
+            case getType(AuthenticationActions.lost):
                 const signOutResult = next(action);
-                api.dispatch(webSocketDisconnect(true));
+                api.dispatch(WebSocketActions.disconnect(true));
                 return signOutResult;
-            case WEB_SOCKET_CONNECT:
+            case getType(WebSocketActions.connect):
                 if (socket !== null) {
                     socket.close();
                 }
@@ -109,7 +96,7 @@ export const webSocketMiddleware = () => {
                 socket.onclose = onClose(api);
                 socket.onerror = onError(api);
                 return connectResult;
-            case WEB_SOCKET_DISCONNECT:
+            case getType(WebSocketActions.disconnect):
                 if (action.payload.permanent) {
                     reconnect = false;
                 }

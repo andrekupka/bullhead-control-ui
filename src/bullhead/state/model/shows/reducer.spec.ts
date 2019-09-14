@@ -1,10 +1,8 @@
-import {authenticationClear, authenticationLost} from '../../authentication/actions';
-import {addShowSuccess} from '../../ui/shows/actions';
-import {uiShowsReducer} from '../../ui/shows/reducer';
-import {initializeShows, pushShow} from './actions';
+import {AuthenticationActions} from '../../authentication/actions';
+import {ShowsActions} from './actions';
 import {showsReducer} from './reducer';
 
-describe('ui shows reducer', () => {
+describe('shows reducer', () => {
     it('should return empty show map as initial state', () => {
         const state = showsReducer(undefined, {} as any);
 
@@ -17,7 +15,7 @@ describe('ui shows reducer', () => {
             name: 'Special Show'
         };
 
-        const state = showsReducer({[show.id]: show}, authenticationLost());
+        const state = showsReducer({[show.id]: show}, AuthenticationActions.lost());
 
         expect(state).toEqual({});
     });
@@ -29,7 +27,7 @@ describe('ui shows reducer', () => {
             name: 'Special Show'
         };
 
-        const state = showsReducer({[show.id]: show}, authenticationClear());
+        const state = showsReducer({[show.id]: show}, AuthenticationActions.clear());
 
         expect(state).toEqual({});
     });
@@ -40,14 +38,14 @@ describe('ui shows reducer', () => {
             name: 'Special Show'
         };
 
-        const state = showsReducer(undefined, initializeShows([show]));
+        const state = showsReducer(undefined, ShowsActions.initialize([show]));
 
         expect(state).toEqual({
             [show.id]: show
         });
     });
 
-    it('should insert show on push show action', () => {
+    it('should insert show on add show action', () => {
         const show = {
             id: '1',
             name: 'Special Show'
@@ -58,7 +56,7 @@ describe('ui shows reducer', () => {
             name: 'Special Show'
         };
 
-        const state = showsReducer({[show.id]: show}, pushShow(newShow));
+        const state = showsReducer({[show.id]: show}, ShowsActions.add(newShow));
 
         expect(state).toEqual({
             [show.id]: show,

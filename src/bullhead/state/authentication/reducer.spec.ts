@@ -1,11 +1,4 @@
-import {
-    authenticationClear,
-    authenticationFailure,
-    authenticationLoad,
-    authenticationLost,
-    authenticationStart,
-    authenticationSuccess
-} from './actions';
+import {AuthenticationActions} from './actions';
 import {authenticationReducer, AuthenticationState, INITIAL_STATE} from './reducer';
 
 const createState = (patch?: Partial<AuthenticationState>): AuthenticationState =>
@@ -23,7 +16,7 @@ describe('authentication reducer', () => {
     });
 
     it('should initialize authentication on load action', () => {
-        const state = authenticationReducer(createState(), authenticationLoad('something'));
+        const state = authenticationReducer(createState(), AuthenticationActions.load('something'));
 
         expect(state).toEqual({
             isAuthenticated: true,
@@ -31,10 +24,10 @@ describe('authentication reducer', () => {
             token: 'something',
             authenticationLost: false
         })
-    })
+    });
 
-    it('should start authentication with progress on start action', () => {
-        const state = authenticationReducer(createState(), authenticationStart());
+    it('should request authentication with progress on request action', () => {
+        const state = authenticationReducer(createState(), AuthenticationActions.request());
 
         expect(state).toMatchObject({
             isAuthenticated: false,
@@ -42,11 +35,11 @@ describe('authentication reducer', () => {
         });
     });
 
-    it('should ignore start action if already authenticated', () => {
+    it('should ignore request action if already authenticated', () => {
         const state = authenticationReducer(createState({
             isAuthenticated: true,
             token: 'something'
-        }), authenticationStart());
+        }), AuthenticationActions.request());
 
         expect(state).toMatchObject({
             isAuthenticated: true,
@@ -55,10 +48,10 @@ describe('authentication reducer', () => {
         });
     });
 
-    it('should reset authentication error on start action', () => {
+    it('should reset authentication error on request action', () => {
         const state = authenticationReducer(createState({
             authenticationError: 'Invalid password'
-        }), authenticationStart());
+        }), AuthenticationActions.request());
 
         expect(state).toMatchObject({
             authenticationError: undefined
@@ -69,7 +62,7 @@ describe('authentication reducer', () => {
         const state = authenticationReducer(createState({
             isAuthenticated: false,
             isAuthenticating: true
-        }), authenticationSuccess('something'));
+        }), AuthenticationActions.success('something'));
 
         expect(state).toMatchObject({
             isAuthenticated: true,
@@ -82,7 +75,7 @@ describe('authentication reducer', () => {
         const state = authenticationReducer(createState({
             isAuthenticating: true,
             authenticationLost: true
-        }), authenticationSuccess('something'));
+        }), AuthenticationActions.success('something'));
 
         expect(state).toMatchObject({
             authenticationLost: false
@@ -93,7 +86,7 @@ describe('authentication reducer', () => {
         const state = authenticationReducer(createState({
             isAuthenticated: false,
             isAuthenticating: true
-        }), authenticationFailure('Invalid password'));
+        }), AuthenticationActions.failure('Invalid password'));
 
         expect(state).toMatchObject({
             isAuthenticated: false,
@@ -106,7 +99,7 @@ describe('authentication reducer', () => {
         const state = authenticationReducer(createState({
             isAuthenticating: true,
             authenticationLost: true,
-        }), authenticationFailure('Invalid password'));
+        }), AuthenticationActions.failure('Invalid password'));
 
         expect(state).toMatchObject({
             authenticationLost: false
@@ -117,7 +110,7 @@ describe('authentication reducer', () => {
         const state = authenticationReducer(createState({
             isAuthenticated: true,
             token: 'something'
-        }), authenticationLost());
+        }), AuthenticationActions.lost());
 
         expect(state).toMatchObject({
             isAuthenticated: false,
@@ -131,7 +124,7 @@ describe('authentication reducer', () => {
             isAuthenticated: true,
             isAuthenticating: false,
             token: 'token'
-        }), authenticationClear());
+        }), AuthenticationActions.clear());
 
         expect(state).toMatchObject({
             isAuthenticated: false,

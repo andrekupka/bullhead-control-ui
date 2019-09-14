@@ -1,4 +1,5 @@
-import {ThemeActionTypes, TOGGLE_THEME} from './actions';
+import {ThemeAction, ThemeActions} from './actions';
+import { createReducer } from 'typesafe-actions';
 
 interface ThemeState {
     isDark: boolean;
@@ -8,14 +9,8 @@ const INITIAL_STATE: ThemeState = {
     isDark: true
 };
 
-export const themeReducer = (state: ThemeState = INITIAL_STATE, action: ThemeActionTypes): ThemeState => {
-    switch (action.type) {
-        case TOGGLE_THEME:
-            return {
-                ...state,
-                isDark: !state.isDark
-            };
-        default:
-            return state;
-    }
-};
+export const themeReducer = createReducer<ThemeState, ThemeAction>(INITIAL_STATE)
+    .handleAction(ThemeActions.toggle, state => ({
+        ...state,
+        isDark: !state.isDark
+    }));
