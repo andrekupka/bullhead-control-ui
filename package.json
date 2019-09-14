@@ -50,6 +50,9 @@
       "last 1 safari version"
     ]
   },
+  "jest": {
+    "coverageReporters": ["html"]
+  },
   "devDependencies": {
     "redux-devtools-extension": "^2.13.8"
   }
