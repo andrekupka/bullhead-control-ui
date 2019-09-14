@@ -37,6 +37,7 @@ export const lifecycleMiddleware = () => {
                 api.dispatch(ConnectionActions.handleMessage(action.payload.message));
                 break;
             case getType(WebSocketActions.disconnected):
+                api.dispatch(ConnectionActions.destroy);
                 api.dispatch(LoadingActions.disable());
                 break;
             case getType(AuthenticationActions.lost):

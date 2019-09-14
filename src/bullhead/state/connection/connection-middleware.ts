@@ -1,6 +1,7 @@
 import {MiddlewareAPI} from 'redux';
 import {getType} from 'typesafe-actions';
 import {LightBullThunkDispatch} from '../../types/redux';
+import {LightBullMessage} from '../../types/types';
 import {AuthenticationActions} from '../authentication/actions';
 import {LightBullState} from '../index';
 import {ShowsActions} from '../model/shows/actions';
@@ -14,6 +15,18 @@ type CMiddlewareAPI = MiddlewareAPI<CDispatch, LightBullState>;
 export const connectionMiddleware = () => {
     return (api: CMiddlewareAPI) => (next: CDispatch) => (action: CAction) => {
         const isIdentified = () => api.getState().connection.connectionId !== undefined;
+
+        const handleMessage = (message: LightBullMessage) => {
+            const {type, payload, meta} = message;
+            if (isIdentified()) {
+                if (meta && meta.connectionId && meta.connectionId === api.getState().connection.connectionId) {
+                    return;
+                }
+                handleMessageIdentified(type, payload);
+            } else {
+                handleMessageUnidentified(type, payload);
+            }
+        };
 
         const handleMessageUnidentified = (type: string, payload: any) => {
             if (type === 'identified') {
@@ -48,15 +61,7 @@ export const connectionMiddleware = () => {
                 }));
                 break;
             case getType(ConnectionActions.handleMessage):
-                const {type, payload, meta} = action.payload.message;
-                if (isIdentified()) {
-                    if (meta && meta.connectionId && meta.connectionId === api.getState().connection.connectionId) {
-                        return;
-                    }
-                    handleMessageIdentified(type, payload);
-                } else {
-                    handleMessageUnidentified(type, payload);
-                }
+                handleMessage(action.payload.message);
                 break;
         }
         return result;
