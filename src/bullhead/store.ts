@@ -4,10 +4,10 @@ import thunk from 'redux-thunk';
 import {BASE_URL, createApi, DEFAULT_TIMEOUT} from './api/client';
 import {lightBullReducer, LightBullState} from './state';
 import {AuthenticationActions} from './state/authentication/actions';
-import {tokenPersistingMiddleware} from './state/authentication/middleware';
-import {loadingMiddleware} from './state/loading/middleware';
-import {WebSocketActions} from './state/web-socket/actions';
-import {webSocketMiddleware} from './state/web-socket/middleware';
+import {tokenPersistingMiddleware} from './state/authentication/token-persisting-middleware';
+import {connectionMiddleware} from './state/connection/connection-middleware';
+import {lifecycleMiddleware} from './state/lifecycle-middleware';
+import {webSocketMiddleware} from './state/web-socket/web-socket-middleware';
 
 export const LOCAL_STORAGE_TOKEN_KEY = 'token';
 
@@ -16,16 +16,16 @@ const initializeState = (store: Store<LightBullState>) => {
 
     if (token !== null) {
         store.dispatch(AuthenticationActions.load(token));
-        store.dispatch(WebSocketActions.connect());
     }
 };
 
 const initializeStore = () => {
     const middlewares = [
         thunk,
-        loadingMiddleware(),
+        lifecycleMiddleware(),
         tokenPersistingMiddleware(LOCAL_STORAGE_TOKEN_KEY),
-        webSocketMiddleware()
+        webSocketMiddleware(),
+        connectionMiddleware()
     ];
 
     return createStore(
@@ -42,7 +42,7 @@ const headerConfigurer = (headers: any) => {
     if (authorizationToken) {
         headers.Authorization = `Bearer ${authorizationToken}`;
     }
-    const connectionId = store.getState().webSocket.connectionId;
+    const connectionId = store.getState().connection.connectionId;
     if (connectionId) {
         headers['X-Connection-Id'] = connectionId;
     }

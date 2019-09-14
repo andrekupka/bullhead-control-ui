@@ -1,4 +1,5 @@
 export interface LightBullMessage {
     type: string;
-    payload: any;
+    payload?: any;
+    meta?: any;
 }

@@ -32,7 +32,7 @@ const PureLightBullFrame = (props: Props) => {
 };
 
 const mapStateToProps = (state: LightBullState) => ({
-    finishedLoading: state.loading.shows.loaded && state.webSocket.isAuthenticated
+    finishedLoading: state.loading.shows.loaded && state.connection.connectionId !== undefined
 });
 
 export const LightBullFrame = connect(
