@@ -1,12 +1,5 @@
-import {
-    AUTHENTICATION_CLEAR,
-    AUTHENTICATION_FAILURE,
-    AUTHENTICATION_LOAD,
-    AUTHENTICATION_LOST,
-    AUTHENTICATION_START,
-    AUTHENTICATION_SUCCESS,
-    AuthenticationActionTypes
-} from './actions';
+import {createReducer} from 'typesafe-actions';
+import {AuthenticationAction, AuthenticationActions} from './actions';
 
 export interface AuthenticationState {
     isAuthenticated: boolean;
@@ -22,57 +15,48 @@ export const INITIAL_STATE: AuthenticationState = {
     authenticationLost: false
 };
 
-export const authenticationReducer = (state: AuthenticationState = INITIAL_STATE, action: AuthenticationActionTypes): AuthenticationState => {
-    switch (action.type) {
-        case AUTHENTICATION_LOAD:
-            return {
-                isAuthenticated: true,
-                isAuthenticating: false,
-                token: action.payload.token,
-                authenticationLost: false,
-            };
-        case AUTHENTICATION_START:
-            if (state.isAuthenticated) {
-                return state;
-            }
-            return {
-                ...state,
-                isAuthenticating: true,
-                authenticationError: undefined
-            };
-        case AUTHENTICATION_SUCCESS:
-            return {
-                ...state,
-                isAuthenticated: true,
-                isAuthenticating: false,
-                token: action.payload.token,
-                authenticationLost: false,
-                authenticationError: undefined
-            };
-        case AUTHENTICATION_FAILURE:
-            return {
-                ...state,
-                isAuthenticated: false,
-                isAuthenticating: false,
-                authenticationLost: false,
-                authenticationError: action.payload.error
-            };
-        case AUTHENTICATION_LOST:
-            return {
-                ...state,
-                isAuthenticated: false,
-                isAuthenticating: false,
-                token: undefined,
-                authenticationLost: true
-            };
-        case AUTHENTICATION_CLEAR:
-            return {
-                ...state,
-                isAuthenticated: false,
-                isAuthenticating: false,
-                token: undefined
-            };
-        default:
+export const authenticationReducer = createReducer<AuthenticationState, AuthenticationAction>(INITIAL_STATE)
+    .handleAction(AuthenticationActions.load, (state, action) => ({
+        isAuthenticated: true,
+        isAuthenticating: false,
+        token: action.payload.token,
+        authenticationLost: false
+    }))
+    .handleAction(AuthenticationActions.request, state => {
+        if (state.isAuthenticated) {
             return state;
-    }
-};
+        }
+        return {
+            ...state,
+            isAuthenticating: true,
+            authenticationError: undefined
+        };
+    })
+    .handleAction(AuthenticationActions.success, (state, action) => ({
+        ...state,
+        isAuthenticated: true,
+        isAuthenticating: false,
+        token: action.payload.token,
+        authenticationLost: false,
+        authenticationError: undefined
+    }))
+    .handleAction(AuthenticationActions.failure, (state, action) => ({
+        ...state,
+        isAuthenticated: false,
+        isAuthenticating: false,
+        authenticationLost: false,
+        authenticationError: action.payload.error
+    }))
+    .handleAction(AuthenticationActions.lost, state => ({
+        ...state,
+        isAuthenticated: false,
+        isAuthenticating: false,
+        token: undefined,
+        authenticationLost: true
+    }))
+    .handleAction(AuthenticationActions.clear, state => ({
+        ...state,
+        isAuthenticated: false,
+        isAuthenticating: false,
+        token: undefined
+    }));

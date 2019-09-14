@@ -1,6 +1,6 @@
 import {combineReducers} from 'redux';
 import {createReducer, StateType} from 'typesafe-actions';
-import {createResettingReducer, ResetAware} from '../utils';
+import {createResettingReducer, ResetAware} from '../reducer-utils';
 import {LoadingAction, LoadingActions} from './actions';
 
 export interface LoadingInfo {

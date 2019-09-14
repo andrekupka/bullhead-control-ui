@@ -1,4 +1,4 @@
-import {createResettingReducer, ResetAware} from '../../utils';
+import {createResettingReducer, ResetAware} from '../../reducer-utils';
 import {UiShowsAction, UiShowsActions} from './actions';
 import {createReducer} from 'typesafe-actions';
 

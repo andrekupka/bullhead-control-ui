@@ -1,5 +1,5 @@
 import {ActionType} from 'typesafe-actions';
-import {createEmptyAction} from '../utils';
+import {createEmptyAction} from '../action-utils';
 
 export const LoadingActions = {
     enable: createEmptyAction('@loading/ENABLE'),

@@ -1,8 +1,8 @@
-import {authenticationClear, authenticationLost} from '../../authentication/actions';
+import {AuthenticationActions} from '../../authentication/actions';
 import {ShowsActions} from './actions';
 import {showsReducer} from './reducer';
 
-describe('ui shows reducer', () => {
+describe('shows reducer', () => {
     it('should return empty show map as initial state', () => {
         const state = showsReducer(undefined, {} as any);
 
@@ -15,7 +15,7 @@ describe('ui shows reducer', () => {
             name: 'Special Show'
         };
 
-        const state = showsReducer({[show.id]: show}, authenticationLost());
+        const state = showsReducer({[show.id]: show}, AuthenticationActions.lost());
 
         expect(state).toEqual({});
     });
@@ -27,7 +27,7 @@ describe('ui shows reducer', () => {
             name: 'Special Show'
         };
 
-        const state = showsReducer({[show.id]: show}, authenticationClear());
+        const state = showsReducer({[show.id]: show}, AuthenticationActions.clear());
 
         expect(state).toEqual({});
     });

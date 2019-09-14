@@ -1,6 +1,6 @@
 import {createReducer} from 'typesafe-actions';
 import {ShowMap} from '../../../model/Show';
-import {createResettingReducer, ResetAware} from '../../utils';
+import {createResettingReducer, ResetAware} from '../../reducer-utils';
 import {ShowsActions, ShowsAction} from './actions';
 
 export type ShowsState = ShowMap;

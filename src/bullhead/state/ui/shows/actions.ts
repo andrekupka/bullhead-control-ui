@@ -1,5 +1,5 @@
 import {ActionType, createAction} from 'typesafe-actions';
-import {createEmptyAction} from '../../utils';
+import {createEmptyAction} from '../../action-utils';
 
 export const UiShowsActions = {
     addStart: createEmptyAction('@ui/shows/START'),

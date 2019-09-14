@@ -1,11 +1,4 @@
-import {
-    webSocketAuthenticate,
-    webSocketAuthenticated,
-    webSocketConnect,
-    webSocketConnected,
-    webSocketDisconnect,
-    webSocketDisconnected
-} from './actions';
+import {WebSocketActions} from './actions';
 import {INITIAL_STATE, webSocketReducer, WebSocketState} from './reducer';
 
 const createState = (patch?: Partial<WebSocketState>): WebSocketState =>
@@ -27,7 +20,7 @@ describe('web-socket reducer', () => {
     it('should start connecting on connect action', () => {
         const state = webSocketReducer(createState({
             isConnected: false
-        }), webSocketConnect());
+        }), WebSocketActions.connect());
 
         expect(state).toMatchObject({
             isConnected: false,
@@ -39,7 +32,7 @@ describe('web-socket reducer', () => {
         const state = webSocketReducer(createState({
             isConnected: false,
             isConnecting: true
-        }), webSocketConnected());
+        }), WebSocketActions.connected());
 
         expect(state).toMatchObject({
             isConnected: true,
@@ -51,7 +44,7 @@ describe('web-socket reducer', () => {
         const state = webSocketReducer(createState({
             isConnected: true,
             isConnecting: false
-        }), webSocketAuthenticate());
+        }), WebSocketActions.authenticate());
 
         expect(state).toMatchObject({
             isConnected: true,
@@ -63,7 +56,7 @@ describe('web-socket reducer', () => {
 
     it('should ignore authenticate action if not connected', () => {
         const initialState = createState();
-        const state = webSocketReducer(initialState, webSocketAuthenticate());
+        const state = webSocketReducer(initialState, WebSocketActions.authenticate());
 
         expect(state).toEqual(initialState);
     });
@@ -73,7 +66,7 @@ describe('web-socket reducer', () => {
             isConnected: true,
             isConnecting: false,
             isAuthenticating: true
-        }), webSocketAuthenticated('id1'));
+        }), WebSocketActions.authenticated('id1'));
 
         expect(state).toMatchObject({
             isConnected: true,
@@ -86,7 +79,7 @@ describe('web-socket reducer', () => {
 
     it('should ignore authenticated action if not connected', () => {
         const initialState = createState();
-        const state = webSocketReducer(createState(initialState), webSocketAuthenticated('id1'));
+        const state = webSocketReducer(createState(initialState), WebSocketActions.authenticated('id1'));
 
         expect(state).toEqual(initialState);
     });
@@ -96,7 +89,7 @@ describe('web-socket reducer', () => {
             isConnected: true,
             isAuthenticating: false
         });
-        const state = webSocketReducer(initialState, webSocketAuthenticated('id1'));
+        const state = webSocketReducer(initialState, WebSocketActions.authenticated('id1'));
 
         expect(state).toEqual(initialState);
     });
@@ -104,7 +97,7 @@ describe('web-socket reducer', () => {
     it('should start disconnecting on disconnect action if connecting', () => {
         const state = webSocketReducer(createState({
             isConnecting: true
-        }), webSocketDisconnect());
+        }), WebSocketActions.disconnect());
 
         expect(state).toMatchObject({
             isDisconnecting: true
@@ -114,7 +107,7 @@ describe('web-socket reducer', () => {
     it('should start disconnecting on disconnect action if connected', () => {
         const state = webSocketReducer(createState({
             isConnected: true
-        }), webSocketDisconnect());
+        }), WebSocketActions.disconnect());
 
         expect(state).toMatchObject({
             isDisconnecting: true
@@ -123,7 +116,7 @@ describe('web-socket reducer', () => {
 
     it('should ignore disconnecting action if not connected or connecting', () => {
         const initialState = createState();
-        const state = webSocketReducer(initialState, webSocketDisconnect());
+        const state = webSocketReducer(initialState, WebSocketActions.disconnect());
 
         expect(state).toMatchObject(initialState);
     });
@@ -133,7 +126,7 @@ describe('web-socket reducer', () => {
             isConnected: true,
             isDisconnecting: true,
             connectionId: 'id1'
-        }), webSocketDisconnected());
+        }), WebSocketActions.disconnected());
 
         expect(state).toMatchObject({
             isConnected: false,
