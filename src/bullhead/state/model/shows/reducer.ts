@@ -16,7 +16,6 @@ export const showsReducer = createResettingReducer(
                     return acc;
                 }, {});
             case PUSH_SHOW:
-                console.log('PUSH');
                 return {
                     ...state,
                     [action.payload.show.id]: action.payload.show

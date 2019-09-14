@@ -96,7 +96,7 @@ describe('web-socket reducer', () => {
             isConnected: true,
             isAuthenticating: false
         });
-        const state = webSocketReducer(initialState, webSocketAuthenticated());
+        const state = webSocketReducer(initialState, webSocketAuthenticated('id1'));
 
         expect(state).toEqual(initialState);
     });
