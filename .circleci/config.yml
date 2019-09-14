@@ -18,5 +18,7 @@ jobs:
           paths:
             - ./node_modules
       - run:
-          name: tests
-          command: npm test
+          name: tests and coverage
+          command: npm run test-coverage
+      - store_artifacts:
+          path: coverage
