@@ -60,7 +60,7 @@ const PureLightBullContentContainer = (props: Props) => {
 };
 
 const mapStateToProps = (state: LightBullState) => ({
-    ...state.navigation
+    ...state.ui.navigation
 });
 
 export const LightBullContentContainer = connect(

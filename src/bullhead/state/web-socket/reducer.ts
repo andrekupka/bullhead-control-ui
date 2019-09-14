@@ -13,6 +13,7 @@ export interface WebSocketState {
     isAuthenticated: boolean;
     isConnecting: boolean;
     isDisconnecting: boolean;
+    connectionId?: string;
 }
 
 export const INITIAL_STATE: WebSocketState = {
@@ -51,7 +52,8 @@ export const webSocketReducer = (state: WebSocketState = INITIAL_STATE, action: 
             return {
                 ...state,
                 isAuthenticating: false,
-                isAuthenticated: true
+                isAuthenticated: true,
+                connectionId: action.payload.connectionId
             };
         case WEB_SOCKET_DISCONNECT:
             if (!(state.isConnected || state.isConnecting)) {
@@ -67,7 +69,8 @@ export const webSocketReducer = (state: WebSocketState = INITIAL_STATE, action: 
                 isConnected: false,
                 isDisconnecting: false,
                 isAuthenticating: false,
-                isAuthenticated: false
+                isAuthenticated: false,
+                connectionId: undefined
             };
         default:
             return state;

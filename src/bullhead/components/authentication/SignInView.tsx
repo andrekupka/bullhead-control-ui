@@ -4,7 +4,6 @@ import React, {useState} from 'react';
 import {connect} from 'react-redux';
 import {Redirect, RouteProps} from 'react-router-dom';
 import {LightBullState} from '../../state';
-import {AuthenticationError} from '../../state/authentication/actions';
 import {signIn} from '../../state/authentication/thunks';
 import {LightBullThunkDispatch} from '../../types/redux';
 import {PasswordInput} from '../common/form/PasswordInput';
@@ -12,16 +11,11 @@ import {ProgressAwareButton} from '../common/form/ProgressAwareButton';
 import {StandaloneContainer} from '../common/StandaloneContainer';
 import {AuthenticationLostInfo} from './AuthenticationLostInfo';
 
-const MESSAGES = new Map<AuthenticationError, string>();
-MESSAGES.set(AuthenticationError.WRONG_PASSWORD, 'Invalid password');
-MESSAGES.set(AuthenticationError.TIMEOUT, 'Server took too long to respond');
-MESSAGES.set(AuthenticationError.UNKNOWN_ERROR, 'An unknown error occurred');
-
 interface Props extends RouteProps {
     isAuthenticated: boolean;
     isAuthenticating: boolean;
     authenticationLost: boolean;
-    authenticationError: AuthenticationError | undefined;
+    authenticationError?: string;
     signIn: (password: string) => void;
 }
 
@@ -63,8 +57,6 @@ export const PureLoginView = (props: Props) => {
     };
 
     const hasError = props.authenticationError !== undefined;
-    const errorMessage = props.authenticationError !== undefined ? MESSAGES.get(props.authenticationError) : null;
-
 
     return (
         <StandaloneContainer>
@@ -80,7 +72,7 @@ export const PureLoginView = (props: Props) => {
                                label='Password'
                                variant='outlined'
                                error={hasError}
-                               helperText={errorMessage}
+                               helperText={props.authenticationError}
                                disabled={props.isAuthenticating}
                                required
                                fullWidth

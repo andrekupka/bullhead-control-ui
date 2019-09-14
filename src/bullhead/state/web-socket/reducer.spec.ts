@@ -73,19 +73,20 @@ describe('web-socket reducer', () => {
             isConnected: true,
             isConnecting: false,
             isAuthenticating: true
-        }), webSocketAuthenticated());
+        }), webSocketAuthenticated('id1'));
 
         expect(state).toMatchObject({
             isConnected: true,
             isConnecting: false,
             isAuthenticating: false,
-            isAuthenticated: true
+            isAuthenticated: true,
+            connectionId: 'id1'
         });
     });
 
     it('should ignore authenticated action if not connected', () => {
         const initialState = createState();
-        const state = webSocketReducer(createState(initialState), webSocketAuthenticated());
+        const state = webSocketReducer(createState(initialState), webSocketAuthenticated('id1'));
 
         expect(state).toEqual(initialState);
     });
@@ -95,7 +96,7 @@ describe('web-socket reducer', () => {
             isConnected: true,
             isAuthenticating: false
         });
-        const state = webSocketReducer(initialState, webSocketAuthenticated());
+        const state = webSocketReducer(initialState, webSocketAuthenticated('id1'));
 
         expect(state).toEqual(initialState);
     });
@@ -130,12 +131,14 @@ describe('web-socket reducer', () => {
     it ('should be disconnected on disconnected action', () => {
         const state = webSocketReducer(createState({
             isConnected: true,
-            isDisconnecting: true
+            isDisconnecting: true,
+            connectionId: 'id1'
         }), webSocketDisconnected());
 
         expect(state).toMatchObject({
             isConnected: false,
-            isDisconnecting: false
+            isDisconnecting: false,
+            connectionId: undefined
         });
     });
 });

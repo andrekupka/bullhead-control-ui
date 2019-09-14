@@ -1,4 +1,4 @@
-import {createAuthenticationAwareReducer, DeauthAware} from '../authentication/utils';
+import {createResettingReducer, ResetAware} from '../utils';
 import {
     LOADING_SHOWS_FAILURE,
     LOADING_SHOWS_REQUEST,
@@ -27,8 +27,8 @@ const INITIAL_STATE: LoadingState = {
     }
 };
 
-export const loadingReducer = createAuthenticationAwareReducer(
-        (state: LoadingState = INITIAL_STATE, action: DeauthAware<LoadingActionTypes>) => {
+export const loadingReducer = createResettingReducer(
+        (state: LoadingState = INITIAL_STATE, action: ResetAware<LoadingActionTypes>) => {
             switch (action.type) {
                 case LOADING_ENABLE:
                     return {

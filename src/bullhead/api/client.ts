@@ -42,15 +42,12 @@ class ApiClient {
     }
 }
 
-type TokenProvider = () => string | null | undefined;
+type HeaderConfigurer = (headers: any) => void;
 
-export const createApi = (baseUrl: string, tokenProvider: TokenProvider, timeout: number): ApiClient => {
+export const createApi = (baseUrl: string, headerConfigurer: HeaderConfigurer, timeout: number): ApiClient => {
     const api = new ApiClient(baseUrl, timeout);
     api.useRequestInterceptor(config => {
-        const token = tokenProvider();
-        if (token) {
-            config.headers.Authorization = `Bearer ${token}`;
-        }
+        headerConfigurer(config.headers);
         return config;
     });
     return api;

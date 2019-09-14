@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import React, {Dispatch} from 'react';
 import {connect} from 'react-redux';
 import {LightBullState} from '../../state';
-import {NavigationActionTypes, showNavigation} from '../../state/navigation/actions';
+import {NavigationActionTypes, showNavigation} from '../../state/ui/navigation/actions';
 import {NavigationAware} from '../../types/navigation/NavigationAware';
 import {SignOutButton} from '../authentication/SignOutButton';
 import {NavigationBreadcrumbs} from './NavigationBreadcrumbs';
@@ -75,7 +75,7 @@ const PureNavigationBar = (props: Props) => {
 };
 
 const mapStateToProps = (state: LightBullState) => ({
-    ...state.navigation,
+    ...state.ui.navigation,
     isAuthenticated: state.authentication.isAuthenticated
 });
 

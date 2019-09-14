@@ -1,4 +1,5 @@
 import {Dispatch, MiddlewareAPI} from 'redux';
+import {Show} from '../../model/Show';
 import {LightBullMessage} from '../../types/types';
 import {
     AUTHENTICATION_CLEAR,
@@ -8,10 +9,10 @@ import {
     authenticationLost
 } from '../authentication/actions';
 import {LightBullState} from '../index';
+import {pushShow, ShowsActionTypes} from '../model/shows/actions';
 import {
     WEB_SOCKET_CONNECT,
     WEB_SOCKET_DISCONNECT,
-    WEB_SOCKET_SEND,
     WebSocketActionTypes,
     webSocketAuthenticate,
     webSocketAuthenticated,
@@ -52,10 +53,19 @@ export const webSocketMiddleware = () => {
     };
 
     const onMessage = (api: WSMiddlewareAPI) => (event: MessageEvent) => {
-        const {type} = JSON.parse(event.data);
+        const {type, connectionId, payload} = JSON.parse(event.data);
+        const ownConnectionId = api.getState().webSocket.connectionId;
+        if (connectionId && connectionId === ownConnectionId) {
+            return;
+        }
+
         switch (type) {
             case 'authenticated':
-                api.dispatch(webSocketAuthenticated());
+                if (payload && payload.connectionId) {
+                    api.dispatch(webSocketAuthenticated(payload.connectionId));
+                } else {
+                    api.dispatch(authenticationLost())
+                }
                 break;
             case 'unauthenticated':
                 api.dispatch(authenticationLost());
@@ -99,13 +109,6 @@ export const webSocketMiddleware = () => {
                 socket.onclose = onClose(api);
                 socket.onerror = onError(api);
                 return connectResult;
-            case WEB_SOCKET_SEND:
-                const {isConnected, isAuthenticated} = api.getState().webSocket;
-                if (!isConnected || !isAuthenticated) {
-                    throw new Error('Cannot send message, unauthenticated');
-                }
-                send(action.payload.message);
-                break;
             case WEB_SOCKET_DISCONNECT:
                 if (action.payload.permanent) {
                     reconnect = false;

@@ -24,11 +24,9 @@ export const PureShowDetailView = (props: Props) => {
     );
 };
 
-const mapStateToProps = (state: LightBullState, ownProps: Props) => {
-    return ({
-        show: state.shows.collection.find(show => show.id === ownProps.match.params.id)
-    });
-};
+const mapStateToProps = (state: LightBullState, ownProps: Props) => ({
+    show: state.model.shows[ownProps.match.params.id]
+});
 
 export const ShowDetailView = connect(
     mapStateToProps

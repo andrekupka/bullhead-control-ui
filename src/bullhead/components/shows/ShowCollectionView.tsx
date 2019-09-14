@@ -4,7 +4,7 @@ import React, {Dispatch} from 'react';
 import {connect} from 'react-redux';
 import {ShowCollection} from '../../model/Show';
 import {LightBullState} from '../../state';
-import {ShowActionTypes, startAddShow} from '../../state/shows/actions';
+import {ShowActionTypes, addShowStart} from '../../state/ui/shows/actions';
 import {AddShowDialog} from './AddShowDialog';
 import {ShowCard} from './ShowCard';
 
@@ -47,11 +47,11 @@ export const PureShowCollectionView = (props: Props) => {
 };
 
 const mapStateToProps = (state: LightBullState) => ({
-    shows: state.shows.collection
+    shows: Object.keys(state.model.shows).map(showId => state.model.shows[showId])
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<ShowActionTypes>) => ({
-    openAddShow: () => dispatch(startAddShow())
+    openAddShow: () => dispatch(addShowStart())
 });
 
 export const ShowCollectionView = connect(
