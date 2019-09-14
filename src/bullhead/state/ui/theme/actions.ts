@@ -1,7 +1,8 @@
-export const TOGGLE_THEME = '@theme/TOGGLE_THEME';
+import {ActionType} from 'typesafe-actions';
+import {createEmptyAction} from '../../utils';
 
-export const toggleTheme = () => ({
-    type: TOGGLE_THEME as typeof TOGGLE_THEME
-});
+export const ThemeActions = {
+    toggle: createEmptyAction('@theme/TOGGLE_THEME')
+};
 
-export type ThemeActionTypes = ReturnType<typeof toggleTheme>;
+export type ThemeAction = ActionType<typeof ThemeActions>;

@@ -1,5 +1,4 @@
 import {Dispatch, MiddlewareAPI} from 'redux';
-import {Show} from '../../model/Show';
 import {LightBullMessage} from '../../types/types';
 import {
     AUTHENTICATION_CLEAR,
@@ -9,7 +8,6 @@ import {
     authenticationLost
 } from '../authentication/actions';
 import {LightBullState} from '../index';
-import {pushShow, ShowsActionTypes} from '../model/shows/actions';
 import {
     WEB_SOCKET_CONNECT,
     WEB_SOCKET_DISCONNECT,

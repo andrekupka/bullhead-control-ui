@@ -1,22 +1,14 @@
+import {ActionType, createAction} from 'typesafe-actions';
 import {Show, ShowCollection} from '../../../model/Show';
 
-export const INITIALIZE_SHOWS = '@model/shows/INITIALIZE';
-export const PUSH_SHOW = '@model/shows/PUSH';
+export const ShowsActions = {
+    initialize: createAction('@model/shows/INITIALIZE', action => (shows: ShowCollection) =>
+        action({shows})
+    ),
 
-export const initializeShows = (shows: ShowCollection) => ({
-    type: INITIALIZE_SHOWS as typeof INITIALIZE_SHOWS,
-    payload: {
-        shows: shows
-    }
-});
+    add: createAction('@model/shows/ADD', action => (show: Show) =>
+        action({show})
+    )
+};
 
-export const pushShow = (show: Show) => ({
-    type: PUSH_SHOW as typeof PUSH_SHOW,
-    payload: {
-        show: show
-    }
-});
-
-export type ShowsActionTypes =
-    ReturnType<typeof initializeShows>
-    | ReturnType<typeof pushShow>;
+export type ShowsAction = ActionType<typeof ShowsActions>;

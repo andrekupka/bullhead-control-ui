@@ -1,7 +1,5 @@
 import {authenticationClear, authenticationLost} from '../../authentication/actions';
-import {addShowSuccess} from '../../ui/shows/actions';
-import {uiShowsReducer} from '../../ui/shows/reducer';
-import {initializeShows, pushShow} from './actions';
+import {ShowsActions} from './actions';
 import {showsReducer} from './reducer';
 
 describe('ui shows reducer', () => {
@@ -40,14 +38,14 @@ describe('ui shows reducer', () => {
             name: 'Special Show'
         };
 
-        const state = showsReducer(undefined, initializeShows([show]));
+        const state = showsReducer(undefined, ShowsActions.initialize([show]));
 
         expect(state).toEqual({
             [show.id]: show
         });
     });
 
-    it('should insert show on push show action', () => {
+    it('should insert show on add show action', () => {
         const show = {
             id: '1',
             name: 'Special Show'
@@ -58,7 +56,7 @@ describe('ui shows reducer', () => {
             name: 'Special Show'
         };
 
-        const state = showsReducer({[show.id]: show}, pushShow(newShow));
+        const state = showsReducer({[show.id]: show}, ShowsActions.add(newShow));
 
         expect(state).toEqual({
             [show.id]: show,

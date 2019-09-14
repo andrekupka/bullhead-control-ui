@@ -1,26 +1,20 @@
+import {createReducer} from 'typesafe-actions';
 import {ShowMap} from '../../../model/Show';
 import {createResettingReducer, ResetAware} from '../../utils';
-import {INITIALIZE_SHOWS, PUSH_SHOW, ShowsActionTypes} from './actions';
+import {ShowsActions, ShowsAction} from './actions';
 
 export type ShowsState = ShowMap;
 
-
 const INITIAL_STATE: ShowsState = {};
 
-export const showsReducer = createResettingReducer(
-    (state: ShowsState = INITIAL_STATE, action: ResetAware<ShowsActionTypes>): ShowsState => {
-        switch (action.type) {
-            case INITIALIZE_SHOWS:
-                return action.payload.shows.reduce((acc: ShowsState, val) => {
-                    acc[val.id] = val;
-                    return acc;
-                }, {});
-            case PUSH_SHOW:
-                return {
-                    ...state,
-                    [action.payload.show.id]: action.payload.show
-                };
-            default:
-                return state;
-        }
-    });
+const pureShowsReducer = createReducer<ShowsState, ResetAware<ShowsAction>>(INITIAL_STATE)
+    .handleAction(ShowsActions.initialize, (state, action) => action.payload.shows.reduce((acc: ShowsState, val) => {
+        acc[val.id] = val;
+        return acc;
+    }, {}))
+    .handleAction(ShowsActions.add, (state, action) => ({
+        ...state,
+        [action.payload.show.id]: action.payload.show
+    }));
+
+export const showsReducer = createResettingReducer(pureShowsReducer);

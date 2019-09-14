@@ -3,7 +3,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import React, {Dispatch} from 'react';
 import {connect} from 'react-redux';
 import {LightBullState} from '../../state';
-import {NavigationActionTypes, showNavigation} from '../../state/ui/navigation/actions';
+import {NavigationAction, NavigationActions} from '../../state/ui/navigation/actions';
 import {NavigationAware} from '../../types/navigation/NavigationAware';
 import {NavigationList} from './NavigationList';
 
@@ -55,8 +55,8 @@ const mapStateToProps = (state: LightBullState) => ({
     ...state.ui.navigation
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<NavigationActionTypes>) => ({
-    closeNavigation: () => dispatch(showNavigation(false))
+const mapDispatchToProps = (dispatch: Dispatch<NavigationAction>) => ({
+    closeNavigation: () => dispatch(NavigationActions.show(false))
 });
 
 export const NavigationDrawer = connect(

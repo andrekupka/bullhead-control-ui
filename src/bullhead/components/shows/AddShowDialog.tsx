@@ -3,7 +3,7 @@ import React, {FormEvent, useState} from 'react';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import {LightBullState} from '../../state';
-import {addShowEnd} from '../../state/ui/shows/actions';
+import {UiShowsActions} from '../../state/ui/shows/actions';
 import {addShow} from '../../state/ui/shows/thunks';
 import {LightBullThunkDispatch} from '../../types/redux';
 import {ProgressAwareButton} from '../common/form/ProgressAwareButton';
@@ -79,7 +79,7 @@ const mapStateToProps = (state: LightBullState) => ({
 
 const mapDispatchToProps = (dispatch: LightBullThunkDispatch) => ({
     addShow: (name: string) => dispatch(addShow(name)),
-    finishAdding: () => dispatch(addShowEnd())
+    finishAdding: () => dispatch(UiShowsActions.addEnd())
 });
 
 export const AddShowDialog = connect(

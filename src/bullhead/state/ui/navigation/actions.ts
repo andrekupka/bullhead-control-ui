@@ -1,10 +1,7 @@
-export const SHOW_NAVIGATION = '@ui/navigation/SHOW_NAVIGATION';
+import { createAction, ActionType } from "typesafe-actions";
 
-export const showNavigation = (show: boolean) => ({
-    type: SHOW_NAVIGATION as typeof SHOW_NAVIGATION,
-    payload: {
-        show: show
-    }
-});
+export const NavigationActions = {
+    show: createAction('@ui/navigation/SHOW_NAVIGATION', action => (show: boolean) => action({show}))
+};
 
-export type NavigationActionTypes = ReturnType<typeof showNavigation>;
+export type NavigationAction = ActionType<typeof NavigationActions>;

@@ -1,4 +1,4 @@
-import {showNavigation} from './actions';
+import {NavigationActions} from './actions';
 import {navigationReducer} from './reducer';
 
 describe('navigation reducers', () => {
@@ -16,7 +16,7 @@ describe('navigation reducers', () => {
             const state = navigationReducer({
                 isNavigationOpen: initial,
                 navigationWidth: 240
-            }, showNavigation(action));
+            }, NavigationActions.show(action));
 
             expect(state).toMatchObject({
                 isNavigationOpen: expected

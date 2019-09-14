@@ -1,11 +1,12 @@
 import {Action, Reducer} from 'redux';
 import {WEB_SOCKET_DISCONNECTED, WebSocketActionTypes} from './web-socket/actions';
 import {AUTHENTICATION_CLEAR, AUTHENTICATION_LOST, DeauthenticationActionTypes} from './authentication/actions';
+import {TypeConstant, createAction} from 'typesafe-actions';
 
 export type ResetAware<A extends Action> = A | DeauthenticationActionTypes | WebSocketActionTypes;
 
 export const createResettingReducer = <S, A extends Action>(reducer: Reducer<S, ResetAware<A>>)
-        : Reducer<S, ResetAware<A>> => {
+    : Reducer<S, ResetAware<A>> => {
     return (state, action) => {
         switch (action.type) {
             case AUTHENTICATION_CLEAR:
@@ -17,3 +18,5 @@ export const createResettingReducer = <S, A extends Action>(reducer: Reducer<S, 
         }
     };
 };
+
+export const createEmptyAction = <T extends TypeConstant>(type: T) => createAction(type, action => () => action());

@@ -1,12 +1,6 @@
 import {createResettingReducer, ResetAware} from '../../utils';
-import {
-    ADD_SHOW_END,
-    ADD_SHOW_FAILURE,
-    ADD_SHOW_REQUEST,
-    ADD_SHOW_START,
-    ADD_SHOW_SUCCESS,
-    ShowActionTypes
-} from './actions';
+import {UiShowsAction, UiShowsActions} from './actions';
+import {createReducer} from 'typesafe-actions';
 
 export interface UiShowsState {
     isActive: boolean;
@@ -15,48 +9,39 @@ export interface UiShowsState {
     error?: string;
 }
 
-const INITIAL_ADD_MODE_STATE: UiShowsState = {
+const INITIAL_STATE: UiShowsState = {
     isActive: false,
     isPending: false
 };
 
-export const uiShowsReducer = createResettingReducer(
-    (state: UiShowsState = INITIAL_ADD_MODE_STATE, action: ResetAware<ShowActionTypes>): UiShowsState => {
-        switch (action.type) {
-            case ADD_SHOW_START:
-                return {
-                    ...state,
-                    isActive: true,
-                    isPending: false,
-                    newShowId: undefined,
-                    error: undefined
-                };
-            case ADD_SHOW_END:
-                return {
-                    ...state,
-                    isActive: false,
-                    isPending: false,
-                    newShowId: undefined,
-                    error: undefined
-                };
-            case ADD_SHOW_REQUEST:
-                return {
-                    ...state,
-                    isPending: true
-                };
-            case ADD_SHOW_SUCCESS:
-                return {
-                    ...state,
-                    isPending: false,
-                    newShowId: action.payload.showId
-                };
-            case ADD_SHOW_FAILURE:
-                return {
-                    ...state,
-                    isPending: false,
-                    error: action.payload.error
-                };
-            default:
-                return state;
-        }
-    });
+export const pureUiShowsReducer = createReducer<UiShowsState, ResetAware<UiShowsAction>>(INITIAL_STATE)
+    .handleAction(UiShowsActions.addStart, state => ({
+        ...state,
+        isActive: true,
+        isPending: false,
+        newShowId: undefined,
+        error: undefined
+    }))
+    .handleAction(UiShowsActions.addEnd, state => ({
+        ...state,
+        isActive: false,
+        isPending: false,
+        newShowId: undefined,
+        error: undefined
+    }))
+    .handleAction(UiShowsActions.addRequest, state => ({
+        ...state,
+        isPending: true
+    }))
+    .handleAction(UiShowsActions.addSuccess, (state, action) => ({
+        ...state,
+        isPending: false,
+        newShowId: action.payload.showId
+    }))
+    .handleAction(UiShowsActions.addFailure, (state, action) => ({
+        ...state,
+        isPending: false,
+        error: action.payload.error
+    }));
+
+export const uiShowsReducer = createResettingReducer(pureUiShowsReducer);
