@@ -2,7 +2,8 @@ import {Button, Card, createStyles, makeStyles, Theme, Toolbar} from '@material-
 import React, {Dispatch} from 'react';
 import {connect} from 'react-redux';
 import {LightBullState} from '../../state';
-import {ShowsFilterAction, ShowsFilterActions} from '../../state/ui/shows/filter/actions';
+import {ShowsFilterAction, ShowsFilterActions} from '../../state/ui/shows/actions';
+import {selectShowsFavoritesOnly, selectShowsFilter} from '../../state/ui/shows/selectors';
 import {LabelledSwitch} from '../common/form/LabelledSwitch';
 import {SearchInput} from '../common/form/SearchInput';
 import ClearIcon from '@material-ui/icons/Clear';
@@ -57,8 +58,8 @@ export const PureShowsFilterToolbar = (props: Props) => {
 };
 
 const mapStateToProps = (state: LightBullState) => ({
-    filter: state.ui.shows.filter.filter,
-    favoritesOnly: state.ui.shows.filter.favoritesOnly
+    filter: selectShowsFilter(state),
+    favoritesOnly: selectShowsFavoritesOnly(state)
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<ShowsFilterAction>) => ({
