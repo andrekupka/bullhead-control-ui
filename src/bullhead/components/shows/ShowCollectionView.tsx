@@ -1,19 +1,24 @@
-import {Fab, Grid, makeStyles} from '@material-ui/core';
+import {createStyles, Fab, Grid, makeStyles, Theme} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import React, {Dispatch} from 'react';
 import {connect} from 'react-redux';
 import {ShowCollection} from '../../model/Show';
 import {LightBullState} from '../../state';
-import {UiShowsAction, UiShowsActions} from '../../state/ui/shows/actions';
+import {ShowAddModeAction, ShowAddModeActions} from '../../state/ui/shows/add-mode/actions';
+import {selectFilteredShows} from '../../state/ui/shows/selectors';
 import {AddShowDialog} from './AddShowDialog';
 import {ShowCard} from './ShowCard';
+import {ShowsFilterToolbar} from './ShowsFilterToolbar';
 
 interface Props {
     shows: ShowCollection;
     openAddShow: () => void;
 }
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme: Theme) => createStyles({
+    gridContainer: {
+        marginTop: theme.spacing(2)
+    },
     gridItem: {
         height: 100
     },
@@ -21,15 +26,15 @@ const useStyles = makeStyles({
         justifyContent: 'center',
         alignItems: 'center'
     }
-});
+}));
 
 export const PureShowCollectionView = (props: Props) => {
     const classes = useStyles();
 
     return (
         <div>
-            <h1>Shows</h1>
-            <Grid container spacing={3}>
+            <ShowsFilterToolbar/>
+            <Grid container spacing={3} className={classes.gridContainer}>
                 {props.shows.map(show =>
                     <Grid item xs={4} key={show.id} className={classes.gridItem}>
                         <ShowCard show={show}/>
@@ -47,11 +52,11 @@ export const PureShowCollectionView = (props: Props) => {
 };
 
 const mapStateToProps = (state: LightBullState) => ({
-    shows: Object.keys(state.model.shows).map(showId => state.model.shows[showId])
+    shows: selectFilteredShows(state)
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<UiShowsAction>) => ({
-    openAddShow: () => dispatch(UiShowsActions.addStart())
+const mapDispatchToProps = (dispatch: Dispatch<ShowAddModeAction>) => ({
+    openAddShow: () => dispatch(ShowAddModeActions.addStart())
 });
 
 export const ShowCollectionView = connect(

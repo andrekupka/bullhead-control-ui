@@ -3,8 +3,8 @@ import React, {FormEvent, useState} from 'react';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import {LightBullState} from '../../state';
-import {UiShowsActions} from '../../state/ui/shows/actions';
-import {addShow} from '../../state/ui/shows/thunks';
+import {ShowAddModeActions} from '../../state/ui/shows/add-mode/actions';
+import {addShow} from '../../state/ui/shows/add-mode/thunks';
 import {LightBullThunkDispatch} from '../../types/redux';
 import {ProgressAwareButton} from '../common/form/ProgressAwareButton';
 
@@ -71,15 +71,15 @@ const PureAddShowDialog = (props: Props) => {
 };
 
 const mapStateToProps = (state: LightBullState) => ({
-    isOpen: state.ui.shows.isActive,
-    isPending: state.ui.shows.isPending,
-    newShowId: state.ui.shows.newShowId,
-    error: state.ui.shows.error
+    isOpen: state.ui.shows.addMode.isActive,
+    isPending: state.ui.shows.addMode.isPending,
+    newShowId: state.ui.shows.addMode.newShowId,
+    error: state.ui.shows.addMode.error
 });
 
 const mapDispatchToProps = (dispatch: LightBullThunkDispatch) => ({
     addShow: (name: string) => dispatch(addShow(name)),
-    finishAdding: () => dispatch(UiShowsActions.addEnd())
+    finishAdding: () => dispatch(ShowAddModeActions.addEnd())
 });
 
 export const AddShowDialog = connect(

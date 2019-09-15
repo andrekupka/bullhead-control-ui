@@ -1,4 +1,5 @@
 import {combineReducers} from 'redux';
+import {StateType} from 'typesafe-actions';
 import {authenticationReducer} from './authentication/reducer';
 import {connectionReducer} from './connection/reducer';
 import {loadingReducer} from './loading/reducer';
@@ -16,4 +17,4 @@ export const lightBullReducer = combineReducers({
     ui: uiReducer,
 });
 
-export type LightBullState = ReturnType<typeof lightBullReducer>;
+export type LightBullState = StateType<typeof lightBullReducer>;
