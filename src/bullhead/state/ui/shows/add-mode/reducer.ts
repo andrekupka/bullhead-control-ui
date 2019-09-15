@@ -1,6 +1,6 @@
-import {createResettingReducer, ResetAware} from '../../../reducer-utils';
-import {ShowAddModeAction, ShowAddModeActions} from './actions';
 import {createReducer} from 'typesafe-actions';
+import {ResetAware} from '../../../reducer-utils';
+import {ShowAddModeAction, ShowAddModeActions} from './actions';
 
 export interface ShowAddModeState {
     isActive: boolean;
