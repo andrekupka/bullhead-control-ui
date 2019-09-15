@@ -40,6 +40,8 @@ export const PureShowsFilterToolbar = (props: Props) => {
         props.setFavoritesOnly(false);
     };
 
+    const clearDisabled = !props.filter && !props.favoritesOnly;
+
     return (
         <Card>
             <Toolbar className={classes.toolbar}>
@@ -48,7 +50,7 @@ export const PureShowsFilterToolbar = (props: Props) => {
                                 onChange={event => props.setFavoritesOnly(event.target.checked)}
                                 label='Favorites only'/>
                 <span className={classes.grow}/>
-                <Button color='secondary' variant='contained' onClick={() => clearFilters()}>
+                <Button color='secondary' variant='contained' disabled={clearDisabled} onClick={() => clearFilters()}>
                     <ClearIcon className={classes.leftIcon}/>
                     Clear
                 </Button>
