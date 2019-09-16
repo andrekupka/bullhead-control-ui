@@ -88,7 +88,7 @@ export const PureShowCard = ({show, isUpdating, toggleFavorite}: Props) => {
 
     return (
         <Card className={cardClasses} onClick={open}>
-            <CardHeader className={classes.header} avatar={favoriteButton} title={title}/>
+            <CardHeader className={classes.header} avatar={favoriteButton} title={title} disableTypography/>
         </Card>
     );
 };
