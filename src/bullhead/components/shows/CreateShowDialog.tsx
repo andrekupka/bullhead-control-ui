@@ -14,19 +14,19 @@ interface Props {
     newShowId?: string;
     error?: string;
 
-    finishAdding: () => void;
+    finishCreation: () => void;
     addShow: (name: string) => void;
 }
 
-const PureAddShowDialog = (props: Props) => {
+const PureCreateShowDialog = (props: Props) => {
     const [name, setName] = useState('');
 
     const close = () => {
-        props.finishAdding();
+        props.finishCreation();
     };
 
     if (props.newShowId) {
-        close();;
+        close();
         return <Redirect to={`/shows/${props.newShowId}`}/>;
     }
 
@@ -74,13 +74,13 @@ const mapStateToProps = (state: LightBullState) => ({
 
 const mapDispatchToProps = (dispatch: LightBullThunkDispatch) => ({
     addShow: (name: string) => dispatch(addShow(name)),
-    finishAdding: () => {
+    finishCreation: () => {
         dispatch(ShowCreateActions.reset());
-        dispatch(UiShowActions.finishAdd());
+        dispatch(UiShowActions.finishCreate());
     }
 });
 
-export const AddShowDialog = connect(
+export const CreateShowDialog = connect(
     mapStateToProps,
     mapDispatchToProps
-)(PureAddShowDialog);
+)(PureCreateShowDialog);

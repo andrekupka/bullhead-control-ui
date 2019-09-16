@@ -1,6 +1,6 @@
 import {LightBullState} from '../../index';
 
-export const selectShowsAddModeActive = (state: LightBullState) => state.ui.shows.addModeActive;
+export const selectShowsCreateModeActive = (state: LightBullState) => state.ui.shows.createModeActive;
 
 export const selectShowsFilter = (state: LightBullState) => state.ui.shows.filter;
 

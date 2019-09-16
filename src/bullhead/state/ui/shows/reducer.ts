@@ -3,9 +3,9 @@ import {createReducer} from 'typesafe-actions';
 import {createResettingReducer} from '../../reducer-utils';
 import {UiShowAction, UiShowActions} from './actions';
 
-export const addModeActiveReducer = createReducer<boolean, UiShowAction>(false)
-    .handleAction(UiShowActions.startAdd, () => true)
-    .handleAction(UiShowActions.finishAdd, () => false);
+export const createModeActiveReducer = createReducer<boolean, UiShowAction>(false)
+    .handleAction(UiShowActions.startCreate, () => true)
+    .handleAction(UiShowActions.finishCreate, () => false);
 
 export const filterReducer = createReducer<string, UiShowAction>('')
     .handleAction(UiShowActions.setFilter, (state, action) => action.payload.filter);
@@ -13,9 +13,8 @@ export const filterReducer = createReducer<string, UiShowAction>('')
 export const favoritesOnlyReducer = createReducer<boolean, UiShowAction>(false)
     .handleAction(UiShowActions.setFavoritesOnly, (state, action) => action.payload.favoritesOnly);
 
-
 export const uiShowsReducer = createResettingReducer(combineReducers({
-    addModeActive: addModeActiveReducer,
+    createModeActive: createModeActiveReducer,
     filter: filterReducer,
     favoritesOnly: favoritesOnlyReducer
 }));
