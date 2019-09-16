@@ -1,5 +1,5 @@
 import {AuthenticationActions} from '../../authentication/actions';
-import {ShowsActions} from './actions';
+import {ShowModelActions} from './actions';
 import {showsReducer} from './reducer';
 
 describe('shows reducer', () => {
@@ -38,7 +38,7 @@ describe('shows reducer', () => {
             name: 'Special Show'
         };
 
-        const state = showsReducer(undefined, ShowsActions.initialize([show]));
+        const state = showsReducer(undefined, ShowModelActions.initialize([show]));
 
         expect(state).toEqual({
             [show.id]: show
@@ -56,7 +56,7 @@ describe('shows reducer', () => {
             name: 'Special Show'
         };
 
-        const state = showsReducer({[show.id]: show}, ShowsActions.add(newShow));
+        const state = showsReducer({[show.id]: show}, ShowModelActions.add(newShow));
 
         expect(state).toEqual({
             [show.id]: show,

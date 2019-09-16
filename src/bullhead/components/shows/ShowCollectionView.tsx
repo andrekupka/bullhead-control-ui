@@ -5,13 +5,15 @@ import {connect} from 'react-redux';
 import {ShowCollection} from '../../model/Show';
 import {LightBullState} from '../../state';
 import {selectFilteredShows} from '../../state/model/shows/selectors';
-import {ShowAddModeAction, ShowAddModeActions} from '../../state/ui/shows/add-mode/actions';
+import {UiShowAction, UiShowActions} from '../../state/ui/shows/actions';
+import {selectShowsAddModeActive} from '../../state/ui/shows/selectors';
 import {AddShowDialog} from './AddShowDialog';
 import {ShowCard} from './ShowCard';
 import {ShowsFilterToolbar} from './ShowsFilterToolbar';
 
 interface Props {
     shows: ShowCollection;
+    isAddModeActive: boolean;
     openAddShow: () => void;
 }
 
@@ -46,17 +48,18 @@ export const PureShowCollectionView = (props: Props) => {
                     </Fab>
                 </Grid>
             </Grid>
-            <AddShowDialog/>
+            {props.isAddModeActive && <AddShowDialog/>}
         </div>
     );
 };
 
 const mapStateToProps = (state: LightBullState) => ({
+    isAddModeActive: selectShowsAddModeActive(state),
     shows: selectFilteredShows(state)
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<ShowAddModeAction>) => ({
-    openAddShow: () => dispatch(ShowAddModeActions.addStart())
+const mapDispatchToProps = (dispatch: Dispatch<UiShowAction>) => ({
+    openAddShow: () => dispatch(UiShowActions.startAdd())
 });
 
 export const ShowCollectionView = connect(

@@ -1,7 +1,7 @@
 import React, {Dispatch} from 'react';
 import {connect} from 'react-redux';
 import {LightBullState} from '../../state';
-import {ShowsFilterAction, ShowsFilterActions} from '../../state/ui/shows/actions';
+import {UiShowAction, UiShowActions} from '../../state/ui/shows/actions';
 import {selectShowsFavoritesOnly, selectShowsFilter} from '../../state/ui/shows/selectors';
 import {FilterToolbar} from '../common/FilterToolbar';
 import {LabelledSwitch} from '../common/form/LabelledSwitch';
@@ -38,9 +38,9 @@ const mapStateToProps = (state: LightBullState) => ({
     favoritesOnly: selectShowsFavoritesOnly(state)
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<ShowsFilterAction>) => ({
-    setFilter: (filter: string) => dispatch(ShowsFilterActions.setFilter(filter)),
-    setFavoritesOnly: (favoritesOnly: boolean) => dispatch(ShowsFilterActions.setFavoritesOnly(favoritesOnly))
+const mapDispatchToProps = (dispatch: Dispatch<UiShowAction>) => ({
+    setFilter: (filter: string) => dispatch(UiShowActions.setFilter(filter)),
+    setFavoritesOnly: (favoritesOnly: boolean) => dispatch(UiShowActions.setFavoritesOnly(favoritesOnly))
 });
 
 export const ShowsFilterToolbar = connect(

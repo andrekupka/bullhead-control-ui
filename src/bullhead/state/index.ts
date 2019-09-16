@@ -1,5 +1,6 @@
 import {combineReducers} from 'redux';
 import {StateType} from 'typesafe-actions';
+import {appReducer} from './app/reducer';
 import {authenticationReducer} from './authentication/reducer';
 import {connectionReducer} from './connection/reducer';
 import {loadingReducer} from './loading/reducer';
@@ -13,6 +14,7 @@ export const lightBullReducer = combineReducers({
     webSocket: webSocketReducer,
     loading: loadingReducer,
 
+    app: appReducer,
     model: modelReducer,
     ui: uiReducer,
 });

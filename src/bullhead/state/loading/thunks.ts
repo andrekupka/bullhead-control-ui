@@ -2,7 +2,7 @@ import {Api} from '../../store';
 import {LightBullThunkDispatch} from '../../types/redux';
 import {delay} from '../../utils';
 import {LightBullState} from '../index';
-import {ShowsActions} from '../model/shows/actions';
+import {ShowModelActions} from '../model/shows/actions';
 import {LoadingActions} from './actions';
 
 export const startLoading = () => (dispatch: LightBullThunkDispatch) => {
@@ -16,7 +16,7 @@ export const loadShows = () => async (dispatch: LightBullThunkDispatch, getState
     try {
         const shows = await Api.loadShows();
         if (isLoadingEnabled()) {
-            dispatch(ShowsActions.initialize(shows))
+            dispatch(ShowModelActions.initialize(shows))
             dispatch(LoadingActions.showsSuccess());
         }
     } catch (error) {
