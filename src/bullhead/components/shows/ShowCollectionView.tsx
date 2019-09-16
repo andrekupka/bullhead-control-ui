@@ -1,6 +1,5 @@
 import {Box, createStyles, Fab, Grid, makeStyles, Theme} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import classNames from 'classnames';
 import React, {Dispatch} from 'react';
 import {connect} from 'react-redux';
 import {ShowCollection} from '../../model/Show';

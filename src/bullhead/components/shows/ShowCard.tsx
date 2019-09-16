@@ -1,23 +1,23 @@
 import {
     Box,
     Card,
-    CardContent,
-    CardHeader, CircularProgress,
+    CardHeader,
+    CircularProgress,
     createStyles,
-    IconButton, LinearProgress,
-    makeStyles, Slide,
+    IconButton,
+    makeStyles,
     Theme,
     Typography
 } from '@material-ui/core';
 import StarIcon from '@material-ui/icons/Star';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
+import classNames from 'classnames';
 import React, {useState} from 'react';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import {Show} from '../../model/Show';
 import {updateShow} from '../../state/app/shows/thunks';
 import {LightBullThunkDispatch} from '../../types/redux';
-import classNames from 'classnames';
 
 interface Props {
     show: Show;
