@@ -4,7 +4,7 @@ import {LightBullThunkDispatch} from '../../types/redux';
 import {LightBullMessage} from '../../types/types';
 import {AuthenticationActions} from '../authentication/actions';
 import {LightBullState} from '../index';
-import {ShowsActions} from '../model/shows/actions';
+import {ShowModelActions} from '../model/shows/actions';
 import {WebSocketActions} from '../web-socket/actions';
 import {ConnectionAction, ConnectionActions} from './actions';
 
@@ -42,7 +42,7 @@ export const connectionMiddleware = () => {
 
         const handleMessageIdentified = (type: string, payload: any) => {
             if (type === 'addShow') {
-                api.dispatch(ShowsActions.add(payload.show));
+                api.dispatch(ShowModelActions.add(payload.show));
             }
         };
 

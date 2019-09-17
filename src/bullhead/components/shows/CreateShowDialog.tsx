@@ -3,28 +3,26 @@ import React, {FormEvent, useState} from 'react';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import {LightBullState} from '../../state';
-import {UiShowsActions} from '../../state/ui/shows/actions';
-import {addShow} from '../../state/ui/shows/thunks';
+import {ShowCreateActions} from '../../state/app/shows/create/actions';
+import {addShow} from '../../state/app/shows/thunks';
+import {UiShowActions} from '../../state/ui/shows/actions';
 import {LightBullThunkDispatch} from '../../types/redux';
 import {ProgressAwareButton} from '../common/form/ProgressAwareButton';
 
 interface Props {
-    isOpen: boolean;
     isPending: boolean;
     newShowId?: string;
     error?: string;
 
-    finishAdding: () => void;
+    finishCreation: () => void;
     addShow: (name: string) => void;
 }
 
-const PureAddShowDialog = (props: Props) => {
+const PureCreateShowDialog = (props: Props) => {
     const [name, setName] = useState('');
 
     const close = () => {
-        if (!props.isPending) {
-            props.finishAdding();
-        }
+        props.finishCreation();
     };
 
     if (props.newShowId) {
@@ -42,7 +40,7 @@ const PureAddShowDialog = (props: Props) => {
     };
 
     return (
-        <Dialog open={props.isOpen} onClose={close}>
+        <Dialog open={true} onClose={close}>
             <DialogTitle>Add a new show</DialogTitle>
             <DialogContent>
                 <form name='addShow' onSubmit={addShow}>
@@ -53,15 +51,15 @@ const PureAddShowDialog = (props: Props) => {
                 </form>
             </DialogContent>
             <DialogActions>
-                <Button variant='outlined' onClick={close}>
+                <Button variant='outlined' disabled={props.isPending} onClick={close}>
                     Cancel
                 </Button>
 
                 <ProgressAwareButton variant='contained'
-                        color='primary'
-                        disabled={!canSubmit}
+                                     color='primary'
+                                     disabled={!canSubmit}
                                      hasProgress={props.isPending}
-                        onClick={addShow}>
+                                     onClick={addShow}>
                     Add Show
                 </ProgressAwareButton>
 
@@ -71,18 +69,18 @@ const PureAddShowDialog = (props: Props) => {
 };
 
 const mapStateToProps = (state: LightBullState) => ({
-    isOpen: state.ui.shows.isActive,
-    isPending: state.ui.shows.isPending,
-    newShowId: state.ui.shows.newShowId,
-    error: state.ui.shows.error
+    ...state.app.shows.create
 });
 
 const mapDispatchToProps = (dispatch: LightBullThunkDispatch) => ({
     addShow: (name: string) => dispatch(addShow(name)),
-    finishAdding: () => dispatch(UiShowsActions.addEnd())
+    finishCreation: () => {
+        dispatch(ShowCreateActions.reset());
+        dispatch(UiShowActions.finishCreate());
+    }
 });
 
-export const AddShowDialog = connect(
+export const CreateShowDialog = connect(
     mapStateToProps,
     mapDispatchToProps
-)(PureAddShowDialog);
+)(PureCreateShowDialog);

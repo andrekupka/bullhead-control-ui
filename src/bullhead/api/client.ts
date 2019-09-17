@@ -40,6 +40,11 @@ class ApiClient {
         });
         return response.data
     }
+
+    async updateShow(show: Show): Promise<Show> {
+        const response = await this.axiosClient.put(`/api/shows/${show.id}`, show);
+        return response.data;
+    }
 }
 
 type HeaderConfigurer = (headers: any) => void;
