@@ -1,5 +1,5 @@
 import {UiShowActions} from './actions';
-import {createModeActiveReducer, favoritesOnlyReducer, filterReducer} from './reducer';
+import {favoritesOnlyReducer, filterReducer} from './reducer';
 
 describe('ui shows reducer', () => {
     describe('filter reducer', () => {
