@@ -1,13 +1,12 @@
 import {createReducer} from 'typesafe-actions';
 import {ShowMap} from '../../../model/Show';
-import {createResettingReducer, ResetAware} from '../../reducer-utils';
-import {ShowModelActions, ShowModelAction} from './actions';
+import {ShowModelAction, ShowModelActions} from './actions';
 
 export type ShowsState = ShowMap;
 
 const INITIAL_STATE: ShowsState = {};
 
-const pureShowsReducer = createReducer<ShowsState, ResetAware<ShowModelAction>>(INITIAL_STATE)
+export const showsReducer = createReducer<ShowsState, ShowModelAction>(INITIAL_STATE)
     .handleAction(ShowModelActions.initialize, (state, action) =>
         action.payload.shows.reduce((acc: ShowsState, val) => {
             acc[val.id] = val;
@@ -29,5 +28,3 @@ const pureShowsReducer = createReducer<ShowsState, ResetAware<ShowModelAction>>(
         }
         return state;
     });
-
-export const showsReducer = createResettingReducer(pureShowsReducer);

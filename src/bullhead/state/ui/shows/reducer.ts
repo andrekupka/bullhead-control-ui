@@ -1,6 +1,6 @@
 import {combineReducers} from 'redux';
 import {createReducer} from 'typesafe-actions';
-import {createResettingReducer} from '../../reducer-utils';
+import {asResetAwareReducer} from '../../reset/reset-aware-utils';
 import {UiShowAction, UiShowActions} from './actions';
 
 export const createModeActiveReducer = createReducer<boolean, UiShowAction>(false)
@@ -13,7 +13,7 @@ export const filterReducer = createReducer<string, UiShowAction>('')
 export const favoritesOnlyReducer = createReducer<boolean, UiShowAction>(false)
     .handleAction(UiShowActions.setFavoritesOnly, (state, action) => action.payload.favoritesOnly);
 
-export const uiShowsReducer = createResettingReducer(combineReducers({
+export const uiShowsReducer = asResetAwareReducer(combineReducers({
     createModeActive: createModeActiveReducer,
     filter: filterReducer,
     favoritesOnly: favoritesOnlyReducer

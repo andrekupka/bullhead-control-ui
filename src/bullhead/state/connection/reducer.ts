@@ -1,4 +1,4 @@
-import {createResettingReducer, ResetAware} from '../reducer-utils';
+import {asResetAwareReducer, ResetAware} from '../reset/reset-aware-utils';
 import {ConnectionAction, ConnectionActions} from './actions';
 import { createReducer } from 'typesafe-actions';
 
@@ -23,4 +23,4 @@ const pureConnectionReducer = createReducer<ConnectionState, ResetAware<Connecti
         isIdentifying: false
     }));
 
-export const connectionReducer = createResettingReducer(pureConnectionReducer);
+export const connectionReducer = asResetAwareReducer(pureConnectionReducer);

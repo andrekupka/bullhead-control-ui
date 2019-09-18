@@ -7,6 +7,7 @@ import {AuthenticationActions} from './state/authentication/actions';
 import {tokenPersistingMiddleware} from './state/authentication/token-persisting-middleware';
 import {connectionMiddleware} from './state/connection/connection-middleware';
 import {lifecycleMiddleware} from './state/lifecycle-middleware';
+import {resetAwareMiddleware} from './state/reset/reset-aware-middleware';
 import {webSocketMiddleware} from './state/web-socket/web-socket-middleware';
 
 export const LOCAL_STORAGE_TOKEN_KEY = 'token';
@@ -22,6 +23,7 @@ const initializeState = (store: Store<LightBullState>) => {
 const initializeStore = () => {
     const middlewares = [
         thunk,
+        resetAwareMiddleware(),
         lifecycleMiddleware(),
         tokenPersistingMiddleware(LOCAL_STORAGE_TOKEN_KEY),
         webSocketMiddleware(),
@@ -33,7 +35,6 @@ const initializeStore = () => {
         composeWithDevTools(applyMiddleware(...middlewares)),
     );
 };
-
 
 export const store = initializeStore();
 

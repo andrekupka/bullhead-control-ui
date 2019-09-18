@@ -1,9 +1,21 @@
+import {ResetActions} from '../reset/actions';
 import {ConnectionActions} from './actions';
 import {connectionReducer} from './reducer';
 
 describe('connection reducer', () => {
     it('should return unidentified initial state', () => {
         const state = connectionReducer(undefined, {} as any);
+
+        expect(state).toEqual({
+            isIdentifying: false
+        });
+    });
+
+    it('should be reset aware', () => {
+        const state = connectionReducer({
+            isIdentifying: false,
+            connectionId: 'id1'
+        }, ResetActions.reset());
 
         expect(state).toEqual({
             isIdentifying: false
@@ -39,7 +51,7 @@ describe('connection reducer', () => {
         });
     });
 
-    it ('should reset identification when connection is destroyed', () => {
+    it('should reset identification when connection is destroyed', () => {
         const state = connectionReducer({
             isIdentifying: false,
             connectionId: 'id1'
@@ -48,5 +60,5 @@ describe('connection reducer', () => {
         expect(state).toEqual({
             isIdentifying: false
         });
-    })
+    });
 });
