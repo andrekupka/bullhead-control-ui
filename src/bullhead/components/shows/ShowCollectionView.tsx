@@ -1,22 +1,18 @@
 import {Box, createStyles, Fab, Grid, makeStyles, Theme} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
-import React, {Dispatch} from 'react';
+import React, {useState} from 'react';
 import {connect} from 'react-redux';
 import {ShowCollection} from '../../model/Show';
 import {LightBullState} from '../../state';
 import {ShowUpdatingState} from '../../state/app/shows/updating/reducer';
 import {selectFilteredShows} from '../../state/model/shows/selectors';
-import {UiShowAction, UiShowActions} from '../../state/ui/shows/actions';
-import {selectShowsCreateModeActive} from '../../state/ui/shows/selectors';
 import {CreateShowDialog} from './CreateShowDialog';
 import {ShowCard} from './ShowCard';
 import {ShowsFilterToolbar} from './ShowsFilterToolbar';
 
 interface Props {
     shows: ShowCollection;
-    isCreateModeActive: boolean;
     isUpdating: ShowUpdatingState,
-    openAddShow: () => void;
 }
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
@@ -35,6 +31,8 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 export const PureShowCollectionView = (props: Props) => {
     const classes = useStyles();
 
+    const [createDialogOpen, setCreateDialogOpen] = useState(false);
+
     return (
         <div>
             <ShowsFilterToolbar/>
@@ -46,28 +44,22 @@ export const PureShowCollectionView = (props: Props) => {
                 )}
                 <Grid item xs={4} className={classes.gridItem}>
                     <Box display='flex' flexDirection='column' justifyContent='center' height='100%'>
-                        <Fab color='primary' onClick={() => props.openAddShow()}>
+                        <Fab color='primary' onClick={() => setCreateDialogOpen(true)}>
                             <AddIcon/>
                         </Fab>
                     </Box>
                 </Grid>
             </Grid>
-            {props.isCreateModeActive && <CreateShowDialog/>}
+            {createDialogOpen && <CreateShowDialog close={() => setCreateDialogOpen(false)}/>}
         </div>
     );
 };
 
 const mapStateToProps = (state: LightBullState) => ({
-    isCreateModeActive: selectShowsCreateModeActive(state),
     isUpdating: state.app.shows.updating,
     shows: selectFilteredShows(state)
 });
 
-const mapDispatchToProps = (dispatch: Dispatch<UiShowAction>) => ({
-    openAddShow: () => dispatch(UiShowActions.startCreate())
-});
-
 export const ShowCollectionView = connect(
     mapStateToProps,
-    mapDispatchToProps
 )(PureShowCollectionView);
