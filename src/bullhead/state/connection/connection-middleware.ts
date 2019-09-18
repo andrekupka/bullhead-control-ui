@@ -43,6 +43,8 @@ export const connectionMiddleware = () => {
         const handleMessageIdentified = (type: string, payload: any) => {
             if (type === 'addShow') {
                 api.dispatch(ShowModelActions.add(payload.show));
+            } else if (type === 'updateShow') {
+                api.dispatch(ShowModelActions.update(payload.show));
             }
         };
 

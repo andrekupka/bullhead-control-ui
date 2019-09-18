@@ -3,7 +3,7 @@ import React, {FormEvent, useState} from 'react';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import {LightBullState} from '../../state';
-import {ShowCreateActions} from '../../state/app/shows/create/actions';
+import {ShowCreationActions} from '../../state/app/shows/create/actions';
 import {addShow} from '../../state/app/shows/thunks';
 import {UiShowActions} from '../../state/ui/shows/actions';
 import {LightBullThunkDispatch} from '../../types/redux';
@@ -62,20 +62,19 @@ const PureCreateShowDialog = (props: Props) => {
                                      onClick={addShow}>
                     Add Show
                 </ProgressAwareButton>
-
             </DialogActions>
         </Dialog>
     );
 };
 
 const mapStateToProps = (state: LightBullState) => ({
-    ...state.app.shows.create
+    ...state.app.shows.creation
 });
 
 const mapDispatchToProps = (dispatch: LightBullThunkDispatch) => ({
     addShow: (name: string) => dispatch(addShow(name)),
     finishCreation: () => {
-        dispatch(ShowCreateActions.reset());
+        dispatch(ShowCreationActions.reset());
         dispatch(UiShowActions.finishCreate());
     }
 });
