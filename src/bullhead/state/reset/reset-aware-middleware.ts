@@ -1,14 +1,13 @@
-import {Dispatch, MiddlewareAPI} from 'redux';
+import {AnyAction, Dispatch, MiddlewareAPI} from 'redux';
 import {isOfType, TypeConstant} from 'typesafe-actions';
-import {LightBullState} from '../index';
-import {ResetAction, ResetActions} from './actions';
+import {ResetActions} from './actions';
 
-type RAMAction = ResetAction;
+type RAMAction = AnyAction;
 type RAMDispatch = Dispatch<RAMAction>;
-type RAMMiddlewwareAPI = MiddlewareAPI<RAMDispatch, LightBullState>;
+export type RAMMiddlewwareAPI<S> = MiddlewareAPI<RAMDispatch, S>;
 
-export const resetAwareMiddleware = (resettingActionTypes: Array<TypeConstant>) => {
-    return (api: RAMMiddlewwareAPI) => (next: RAMDispatch) => (action: RAMAction) => {
+export const resetAwareMiddleware = <S>(resettingActionTypes: Array<TypeConstant>) => {
+    return (api: RAMMiddlewwareAPI<S>) => (next: RAMDispatch) => (action: RAMAction) => {
         const result = next(action);
         if (isOfType(resettingActionTypes, action)) {
             api.dispatch(ResetActions.reset());
