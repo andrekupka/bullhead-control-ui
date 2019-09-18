@@ -5,11 +5,12 @@ import {Redirect} from 'react-router-dom';
 import {LightBullState} from '../../state';
 import {ShowCreationActions} from '../../state/app/shows/create/actions';
 import {addShow} from '../../state/app/shows/thunks';
-import {UiShowActions} from '../../state/ui/shows/actions';
 import {LightBullThunkDispatch} from '../../types/redux';
 import {ProgressAwareButton} from '../common/form/ProgressAwareButton';
 
 interface Props {
+    close: () => void;
+
     isPending: boolean;
     newShowId?: string;
     error?: string;
@@ -22,6 +23,7 @@ const PureCreateShowDialog = (props: Props) => {
     const [name, setName] = useState('');
 
     const close = () => {
+        props.close();
         props.finishCreation();
     };
 
@@ -73,10 +75,7 @@ const mapStateToProps = (state: LightBullState) => ({
 
 const mapDispatchToProps = (dispatch: LightBullThunkDispatch) => ({
     addShow: (name: string) => dispatch(addShow(name)),
-    finishCreation: () => {
-        dispatch(ShowCreationActions.reset());
-        dispatch(UiShowActions.finishCreate());
-    }
+    finishCreation: () => dispatch(ShowCreationActions.reset())
 });
 
 export const CreateShowDialog = connect(
