@@ -1,28 +1,28 @@
 import {createReducer} from 'typesafe-actions';
-import {ShowCreateAction, ShowCreateActions} from './actions';
+import {ShowCreationAction, ShowCreationActions} from './actions';
 
-export interface ShowCreateState {
+export interface ShowCreationState {
     isPending: boolean;
     newShowId?: string;
     error?: string;
 }
 
-const INITIAL_STATE: ShowCreateState = {
+const INITIAL_STATE: ShowCreationState = {
     isPending: false
 };
 
-export const showCreateReducer = createReducer<ShowCreateState, ShowCreateAction>(INITIAL_STATE)
-    .handleAction(ShowCreateActions.request, () => ({
+export const showCreationReducer = createReducer<ShowCreationState, ShowCreationAction>(INITIAL_STATE)
+    .handleAction(ShowCreationActions.request, () => ({
         isPending: true,
         newShowId: undefined,
         error: undefined
     }))
-    .handleAction(ShowCreateActions.success, (state, action) => ({
+    .handleAction(ShowCreationActions.success, (state, action) => ({
         isPending: false,
         newShowId: action.payload.showId
     }))
-    .handleAction(ShowCreateActions.failure, (state, action) => ({
+    .handleAction(ShowCreationActions.failure, (state, action) => ({
         isPending: false,
         error: action.payload.error
     }))
-    .handleAction(ShowCreateActions.reset, () => INITIAL_STATE);
+    .handleAction(ShowCreationActions.reset, () => INITIAL_STATE);

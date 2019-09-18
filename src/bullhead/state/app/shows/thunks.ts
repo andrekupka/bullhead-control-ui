@@ -2,17 +2,17 @@ import {Dispatch} from 'react';
 import {Show} from '../../../model/Show';
 import {Api} from '../../../store';
 import {ShowModelAction, ShowModelActions} from '../../model/shows/actions';
-import {ShowCreateAction, ShowCreateActions} from './create/actions';
+import {ShowCreationAction, ShowCreationActions} from './create/actions';
 import {ShowUpdatingAction, ShowUpdatingActions} from './updating/actions';
 
-export const addShow = (name: string) => async (dispatch: Dispatch<ShowModelAction | ShowCreateAction>) => {
-    dispatch(ShowCreateActions.request());
+export const addShow = (name: string) => async (dispatch: Dispatch<ShowModelAction | ShowCreationAction>) => {
+    dispatch(ShowCreationActions.request());
     try {
         const show = await Api.createShow(name);
         dispatch(ShowModelActions.add(show));
-        dispatch(ShowCreateActions.success(show.id));
+        dispatch(ShowCreationActions.success(show.id));
     } catch (error) {
-        dispatch(ShowCreateActions.failure(error.message));
+        dispatch(ShowCreationActions.failure(error.message));
     }
 };
 
