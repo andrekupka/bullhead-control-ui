@@ -1,6 +1,6 @@
 import {combineReducers} from 'redux';
 import {createReducer, StateType} from 'typesafe-actions';
-import {createResettingReducer, ResetAware} from '../reducer-utils';
+import {asResetAwareReducer, ResetAware} from '../reset/reset-aware-utils';
 import {LoadingAction, LoadingActions} from './actions';
 
 export interface LoadingInfo {
@@ -43,4 +43,4 @@ export const pureLoadingReducer = combineReducers({
 
 export type LoadingState = StateType<typeof pureLoadingReducer>;
 
-export const loadingReducer = createResettingReducer(pureLoadingReducer);
+export const loadingReducer = asResetAwareReducer(pureLoadingReducer);

@@ -1,7 +1,7 @@
 import {combineReducers} from 'redux';
-import {createResettingReducer} from '../reducer-utils';
+import {asResetAwareReducer} from '../reset/reset-aware-utils';
 import {showsReducer} from './shows/reducer';
 
-export const modelReducer = createResettingReducer(combineReducers({
+export const modelReducer = asResetAwareReducer(combineReducers({
     shows: showsReducer
 }));

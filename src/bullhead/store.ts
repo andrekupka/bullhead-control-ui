@@ -1,12 +1,15 @@
 import {applyMiddleware, createStore, Store} from 'redux';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
+import {getType} from 'typesafe-actions';
 import {BASE_URL, createApi, DEFAULT_TIMEOUT} from './api/client';
 import {lightBullReducer, LightBullState} from './state';
 import {AuthenticationActions} from './state/authentication/actions';
 import {tokenPersistingMiddleware} from './state/authentication/token-persisting-middleware';
 import {connectionMiddleware} from './state/connection/connection-middleware';
 import {lifecycleMiddleware} from './state/lifecycle-middleware';
+import {resetAwareMiddleware} from './state/reset/reset-aware-middleware';
+import {WebSocketActions} from './state/web-socket/actions';
 import {webSocketMiddleware} from './state/web-socket/web-socket-middleware';
 
 export const LOCAL_STORAGE_TOKEN_KEY = 'token';
@@ -19,9 +22,16 @@ const initializeState = (store: Store<LightBullState>) => {
     }
 };
 
+const RESETTING_ACTION_TYPES = [
+    AuthenticationActions.lost,
+    AuthenticationActions.clear,
+    WebSocketActions.disconnected]
+    .map(creator => getType(creator));
+
 const initializeStore = () => {
     const middlewares = [
         thunk,
+        resetAwareMiddleware(RESETTING_ACTION_TYPES),
         lifecycleMiddleware(),
         tokenPersistingMiddleware(LOCAL_STORAGE_TOKEN_KEY),
         webSocketMiddleware(),
@@ -30,10 +40,9 @@ const initializeStore = () => {
 
     return createStore(
         lightBullReducer,
-        composeWithDevTools(applyMiddleware(...middlewares)),
+        composeWithDevTools(applyMiddleware(...middlewares))
     );
 };
-
 
 export const store = initializeStore();
 
