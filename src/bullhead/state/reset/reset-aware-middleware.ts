@@ -1,18 +1,16 @@
-import {isActionOf} from 'typesafe-actions';
-import {AuthenticationActions} from '../authentication/actions';
-import {LightBullState} from '../index';
-import {WebSocketActions} from '../web-socket/actions';
-import {ResetAction, ResetActions} from './actions';
 import {Dispatch, MiddlewareAPI} from 'redux';
+import {isOfType, TypeConstant} from 'typesafe-actions';
+import {LightBullState} from '../index';
+import {ResetAction, ResetActions} from './actions';
 
 type RAMAction = ResetAction;
 type RAMDispatch = Dispatch<RAMAction>;
 type RAMMiddlewwareAPI = MiddlewareAPI<RAMDispatch, LightBullState>;
 
-export const resetAwareMiddleware = () => {
+export const resetAwareMiddleware = (resettingActionTypes: Array<TypeConstant>) => {
     return (api: RAMMiddlewwareAPI) => (next: RAMDispatch) => (action: RAMAction) => {
         const result = next(action);
-        if (isActionOf([AuthenticationActions.lost, AuthenticationActions.clear, WebSocketActions.disconnected], action)) {
+        if (isOfType(resettingActionTypes, action)) {
             api.dispatch(ResetActions.reset());
         }
         return result;
