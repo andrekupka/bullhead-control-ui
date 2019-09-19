@@ -8,8 +8,8 @@ const INITIAL_STATE: ShowsState = {};
 
 export const showsReducer = createReducer<ShowsState, ShowModelAction>(INITIAL_STATE)
     .handleAction(ShowModelActions.initialize, (state, action) =>
-        action.payload.shows.reduce((acc: ShowsState, val) => {
-            acc[val.id] = val;
+        action.payload.shows.reduce((acc: ShowsState, show) => {
+            acc[show.id] = show;
             return acc;
         }, {})
     )

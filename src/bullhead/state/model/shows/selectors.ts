@@ -20,7 +20,9 @@ const showComparator = (show1: Show, show2: Show): number => {
     return show1.name.localeCompare(show2.name);
 };
 
-const selectShows = (state: LightBullState) => state.model.shows;
+export const selectShows = (state: LightBullState) => state.model.shows;
+
+export const selectShow = (state: LightBullState, showId: string) => state.model.shows[showId];
 
 export const selectShowList = createSelector(
     [selectShows],

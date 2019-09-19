@@ -6,7 +6,10 @@ export const LoadingActions = {
     disable: createEmptyAction('@loading/DISABLE'),
     showsRequest: createEmptyAction('@loading/SHOWS_REQUEST'),
     showsSuccess: createEmptyAction('@loading/SHOWS_SUCCESS'),
-    showsFailure: createEmptyAction('@loading/SHOWS_FAILURE')
+    showsFailure: createEmptyAction('@loading/SHOWS_FAILURE'),
+    visualsRequest: createEmptyAction('@loading/VISUALS_REQUEST'),
+    visualsSuccess: createEmptyAction('@loading/VISUALS_SUCCESS'),
+    visualsFailure: createEmptyAction('@loading/VISUALS_FAILURE')
 };
 
 export type LoadingAction = ActionType<typeof LoadingActions>;
