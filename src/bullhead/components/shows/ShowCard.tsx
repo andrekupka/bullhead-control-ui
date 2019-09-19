@@ -16,6 +16,8 @@ import React, {useState} from 'react';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import {Show} from '../../model/Show';
+import {LightBullState} from '../../state';
+import {selectIsShowUpdating} from '../../state/app/shows/selectors';
 import {updateShow} from '../../state/app/shows/thunks';
 import {LightBullThunkDispatch} from '../../types/redux';
 
@@ -93,6 +95,12 @@ export const PureShowCard = ({show, isUpdating, toggleFavorite}: Props) => {
     );
 };
 
+type OwnProps = Pick<Props, 'show'>
+
+const mapStateToProps = (state: LightBullState, ownProps: OwnProps) => ({
+    isUpdating: selectIsShowUpdating(state, ownProps.show.id)
+});
+
 const mapDispatchToProps = (dispatch: LightBullThunkDispatch) => ({
     toggleFavorite: (show: Show) => {
         const updatedShow = {
@@ -100,10 +108,10 @@ const mapDispatchToProps = (dispatch: LightBullThunkDispatch) => ({
             favorite: !show.favorite
         };
         dispatch(updateShow(updatedShow));
-    }
+    },
 });
 
 export const ShowCard = connect(
-    null,
+    mapStateToProps,
     mapDispatchToProps
 )(PureShowCard);

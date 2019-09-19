@@ -1,4 +1,4 @@
-import {createStyles, Icon, IconButton, makeStyles, Snackbar, Theme} from '@material-ui/core';
+import {createStyles, IconButton, makeStyles, Snackbar, Theme} from '@material-ui/core';
 import {amber, green} from '@material-ui/core/colors';
 import {SnackbarOrigin} from '@material-ui/core/Snackbar';
 import {SvgIconProps} from '@material-ui/core/SvgIcon';
@@ -62,7 +62,7 @@ export const PureSnackbarMessageContainer = ({message}: Props) => {
         return <></>;
     }
 
-    const {id, text, variant} = message;
+    const {text, variant} = message;
 
     const Icon = variantIcons[variant];
 

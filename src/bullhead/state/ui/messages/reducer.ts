@@ -19,7 +19,7 @@ export const pureMessagesReducer = createReducer<MessagesState, ResetAware<Messa
         messages: [...state.messages, action.payload.message]
     }))
     .handleAction(MessagesActions.drop, (state, action) => {
-        if (state.messages && state.messages[0].id === action.payload.messageId) {
+        if (state.messages.length > 0 && state.messages[0].id === action.payload.messageId) {
             return {
                 ...state,
                 messages: state.messages.slice(1)
