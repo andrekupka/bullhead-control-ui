@@ -1,33 +1,27 @@
+import {Box} from '@material-ui/core';
 import React from 'react';
 import {connect} from 'react-redux';
 import {LightBullState} from '../state';
 import {LightBullContentContainer} from './LightBullContentContainer';
-import {NavigationBar} from './navigation/NavigationBar';
-import {makeStyles} from '@material-ui/core';
 import {LoadingView} from './loading/LoadingView';
+import {SnackbarMessageContainer} from './messages/SnackbarMessageContainer';
+import {NavigationBar} from './navigation/NavigationBar';
 
 interface Props {
     finishedLoading: boolean;
 }
 
-const useStyles = makeStyles({
-    frame: {
-        display: 'flex'
-    }
-});
-
 const PureLightBullFrame = (props: Props) => {
-    const classes = useStyles();
-
     if (!props.finishedLoading) {
         return <LoadingView/>;
     }
 
     return (
-        <div className={classes.frame}>
+        <Box component='div' display='flex'>
             <NavigationBar/>
             <LightBullContentContainer/>
-        </div>
+            <SnackbarMessageContainer/>
+        </Box>
     );
 };
 

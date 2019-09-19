@@ -3,6 +3,19 @@ import {ResetActions} from '../../reset/actions';
 import {ShowModelActions} from './actions';
 import {showsReducer} from './reducer';
 
+
+const firstShow = {
+    id: '1',
+    name: 'First Show',
+    favorite: false
+};
+
+const secondShow = {
+    id: '2',
+    name: 'Second Show',
+    favorite: true
+};
+
 describe('shows reducer', () => {
     it('should return empty show map as initial state', () => {
         const state = showsReducer(undefined, {} as any);
@@ -11,38 +24,47 @@ describe('shows reducer', () => {
     });
 
     it('should initialize shows on initialize shows action', () => {
-        const show = {
-            id: '1',
-            name: 'Special Show',
-            favorite: true
-        };
-
-        const state = showsReducer(undefined, ShowModelActions.initialize([show]));
+        const state = showsReducer(undefined, ShowModelActions.initialize([firstShow]));
 
         expect(state).toEqual({
-            [show.id]: show
+            [firstShow.id]: firstShow
         });
     });
 
     it('should insert show on add show action', () => {
-        const show = {
-            id: '1',
-            name: 'Special Show',
-            favorite: false
-        };
+        const state = showsReducer({
+            [firstShow.id]: firstShow
+        }, ShowModelActions.add(secondShow));
 
-        const newShow = {
+        expect(state).toEqual({
+            [firstShow.id]: firstShow,
+            [secondShow.id]: secondShow
+        });
+    });
+
+    it('should update existing show', () => {
+        const updatedShow = {
             id: '1',
-            name: 'Special Show',
+            name: 'Updated Show',
             favorite: true
         };
 
-        const state = showsReducer({[show.id]: show}, ShowModelActions.add(newShow));
+        const state = showsReducer({
+            [firstShow.id]: firstShow
+        }, ShowModelActions.update(updatedShow));
 
         expect(state).toEqual({
-            [show.id]: show,
-            [newShow.id]: newShow
+            [firstShow.id]: updatedShow
         });
+    });
 
+    it('should ignore update for none existing show', () => {
+        const state = showsReducer({
+            [secondShow.id]: secondShow
+        }, ShowModelActions.update(firstShow));
+
+        expect(state).toEqual({
+            [secondShow.id]: secondShow
+        });
     });
 });
