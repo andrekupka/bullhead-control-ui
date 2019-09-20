@@ -1,4 +1,4 @@
-import {CircularProgress, IconButton, makeStyles, Typography} from '@material-ui/core';
+import {CircularProgress, IconButton, Typography} from '@material-ui/core';
 import StarIcon from '@material-ui/icons/Star';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import React, {useState} from 'react';

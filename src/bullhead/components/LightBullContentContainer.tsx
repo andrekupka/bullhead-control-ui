@@ -21,6 +21,7 @@ const useStyles = makeStyles<Theme, Props>((theme: Theme) => createStyles({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen
         }),
+        marginTop: theme.spacing(1),
         marginLeft: props => props.isNavigationOpen ? 0 : -240,
         padding: theme.spacing(3)
     },
