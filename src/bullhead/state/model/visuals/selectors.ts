@@ -1,4 +1,3 @@
-import {Show} from '../../../model/Show';
 import {Visual} from '../../../model/Visual';
 import {LightBullState} from '../../index';
 import {selectShow} from '../shows/selectors';
@@ -12,5 +11,6 @@ export const selectVisualsOfShow = (state: LightBullState, showId: string) => {
     if (!show) {
         return [];
     }
+    // TODO what happens if visual does not exist
     return show.visualIds.map(visualId => state.model.visuals[visualId]).sort(visualComparator);
 };

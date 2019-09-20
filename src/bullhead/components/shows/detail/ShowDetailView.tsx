@@ -1,3 +1,4 @@
+import {Grid} from '@material-ui/core';
 import React from 'react';
 import {connect} from 'react-redux';
 import {Show} from '../../../model/Show';
@@ -6,6 +7,8 @@ import {VisualCollection} from '../../../model/Visual';
 import {LightBullState} from '../../../state';
 import {selectShow} from '../../../state/model/shows/selectors';
 import {selectVisualsOfShow} from '../../../state/model/visuals/selectors';
+import {CardGrid} from '../../common/card-grid/CardGrid';
+import {VisualCard} from './VisualCard';
 
 interface Params {
     id: string;
@@ -20,16 +23,17 @@ export const PureShowDetailView = (props: Props) => {
     if (!props.show) {
         return <Redirect to='/shows'/>;
     }
+
+    const visualCards = props.visuals.map(visual => ({
+        id: visual.id,
+        element: <VisualCard visual={visual}/>
+    }));
+
     return (
         <div>
             <h1>{props.show.name}</h1>
-            <p>Show with id {props.show.id}</p>
-            <div>
-                <h3>Visuals</h3>
-                {props.visuals.map(visual => <div key={visual.id}>
-                    {visual.id} - {visual.name}
-                </div>)}
-            </div>
+            <h2>Visuals</h2>
+            <CardGrid cards={visualCards} action={<div></div>}/>
         </div>
     );
 };
