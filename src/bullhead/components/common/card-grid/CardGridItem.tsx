@@ -29,6 +29,11 @@ const useStyles = makeStyles({
     },
     darken: {
         filter: 'brightness(80%)'
+    },
+    titleWrapper: {
+        '& > *:first-child': {
+            flexGrow: 1
+        }
     }
 });
 
@@ -45,7 +50,9 @@ export const CardGridItem = (props: Props) => {
         shouldShowHover && classes.showCardHover
     );
 
-    const title = <Box display='flex' flexDirection='horizontal'>{props.title}</Box>;
+    const title = <Box display='flex' flexDirection='horizontal' className={classes.titleWrapper}>
+        {props.title}
+    </Box>;
 
     return (
         <Card className={cardClasses} onClick={() => props.onClick && props.onClick()}>

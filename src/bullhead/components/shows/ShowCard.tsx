@@ -17,15 +17,8 @@ interface Props {
     toggleFavorite: (show: Show) => void;
 }
 
-const useStyles = makeStyles({
-    title: {
-        flexGrow: 1
-    }
-});
-
 export const PureShowCard = ({show, isUpdating, toggleFavorite}: Props) => {
     const [shouldOpen, setShouldOpen] = useState(false);
-    const classes = useStyles();
 
     if (shouldOpen) {
         return <Redirect to={`/shows/${show.id}`}/>;
@@ -50,7 +43,7 @@ export const PureShowCard = ({show, isUpdating, toggleFavorite}: Props) => {
 
     const title = (
         <>
-            <Typography variant='h5' component='div' noWrap className={classes.title}>
+            <Typography variant='h5' component='div' noWrap>
                 {show.name}
             </Typography>
             {isUpdating && <CircularProgress size={32}/>}

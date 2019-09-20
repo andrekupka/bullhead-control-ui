@@ -7,18 +7,10 @@ interface Props {
     visual: Visual;
 }
 
-const useStyles = makeStyles({
-    title: {
-        flexGrow: 1
-    }
-});
-
 export const VisualCard = ({visual}: Props) => {
-    const classes = useStyles();
-
     const title = (
         <>
-            <Typography variant='h5' component='div' noWrap className={classes.title}>
+            <Typography variant='h5' component='div' noWrap>
                 {visual.name}
             </Typography>
         </>
