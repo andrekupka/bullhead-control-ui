@@ -49,6 +49,11 @@ export const EditableName = ({label, name, updateName, isUpdating, iconAction}: 
     const [isEditing, setEditing] = useState(false);
     const [inputValue, setInputValue] = useState(name);
 
+    useEffect(() => {
+        if (!isEditing) {
+            setInputValue(name);
+        }
+    }, [name, isEditing]);
 
     if (!isEditing) {
         const startEditing = () => setEditing(true);
@@ -100,63 +105,4 @@ export const EditableName = ({label, name, updateName, isUpdating, iconAction}: 
             </form>
         </ClickAwayListener>
     </div>;
-
-    /*
-    useEffect(() => {
-        if (!isEditing) {
-            setInputValue(name);
-        }
-    }, [name, isEditing]);
-
-    if (!isEditing) {
-        const startEditing = () => setEditing(true);
-
-        return (
-            <Typography variant='h4' className={classes.title}>
-                {iconAction}
-                <span onClick={startEditing} className={classNames(isUpdating && classes.darken)}>{name}</span>
-                <IconButton disabled={isUpdating} onClick={startEditing} className={classes.editIcon}>
-                    {isUpdating ? <CircularProgress size={24}/> : <EditIcon/>}
-                </IconButton>
-            </Typography>
-        );
-    }
-
-    const stopEditing = (reset: boolean = true) => {
-        setEditing(false);
-        if (reset) {
-            setInputValue(name);
-        }
-    };
-
-    const performUpdate = (event: FormEvent) => {
-        event.preventDefault();
-        updateName(inputValue);
-        stopEditing(false);
-    };
-
-    const closeButton = (
-        <InputAdornment position='end'>
-            <IconButton onClick={() => stopEditing()}>
-                <CloseIcon/>
-            </IconButton>
-        </InputAdornment>
-    );
-
-    return (
-        <ClickAwayListener onClickAway={() => stopEditing()}>
-            <Typography variant='h4' className={classes.shrink}>
-                <form onSubmit={event => performUpdate(event)}>
-                    <TextField autoFocus
-                               variant='outlined'
-                               label='Show name'
-                               value={inputValue} onChange={event => setInputValue(event.target.value)}
-                               InputProps={{
-                                   endAdornment: closeButton
-                               }}/>
-                </form>
-            </Typography>
-        </ClickAwayListener>
-    );
-     */
 };
