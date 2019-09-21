@@ -16,17 +16,8 @@ interface Props {
     updateShow: (show: Show) => void;
 }
 
-const useStyles = makeStyles((theme: Theme) => createStyles({
-    buttonMargin: {
-        marginRight: theme.spacing(2),
-        padding: 0
-    }
-}));
-
 export const PureShowName = ({show, isUpdating, updateShow}: Props) => {
-    const classes = useStyles();
-
-    const performUpdate = (name: string) => {
+    const updateName = (name: string) => {
         const newShow = {
             ...show,
             name: name
@@ -34,11 +25,21 @@ export const PureShowName = ({show, isUpdating, updateShow}: Props) => {
         updateShow(newShow);
     };
 
+    const toggleFavorite = () => {
+        const newShow = {
+            ...show,
+            favorite: !show.favorite
+        };
+        updateShow(newShow);
+    };
+
+
     const favoriteIcon = show.favorite ? <StarIcon fontSize='large'/> : <StarBorderIcon fontSize='large'/>;
 
     const favoriteButton = (
-        <IconButton className={classes.buttonMargin} disabled={isUpdating} onClick={event => {
+        <IconButton disabled={isUpdating} onClick={event => {
             event.stopPropagation();
+            toggleFavorite();
         }}>
             {favoriteIcon}
         </IconButton>
@@ -46,7 +47,7 @@ export const PureShowName = ({show, isUpdating, updateShow}: Props) => {
 
     return <EditableName label='Show name'
                          name={show.name}
-                         updateName={name => performUpdate(name)}
+                         updateName={name => updateName(name)}
                          isUpdating={isUpdating}
                          iconAction={favoriteButton}/>;
 };

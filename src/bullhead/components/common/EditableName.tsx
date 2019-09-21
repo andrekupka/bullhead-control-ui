@@ -52,13 +52,17 @@ export const EditableName = ({label, name, updateName, isUpdating, iconAction}: 
         const startEditing = () => setEditing(true);
 
         return <Typography variant='h4' className={classes.wrapper}>
-                <span onClick={startEditing}
-                      className={classNames(classes.title,isUpdating && classes.darken)}>
+            {iconAction && <div>
+                {iconAction}
+            </div>}
+            <span onClick={startEditing}
+                  className={classNames(classes.title, isUpdating && classes.darken)}>
                 {name}
                 </span>
             <IconButton disabled={isUpdating} onClick={startEditing}>
-                {isUpdating ? <CircularProgress/> : <EditIcon/>}
+                <EditIcon/>
             </IconButton>
+            {isUpdating && <CircularProgress/>}
         </Typography>;
     }
 
