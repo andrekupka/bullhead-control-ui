@@ -5,7 +5,7 @@ import {Show} from '../../../model/Show';
 import {VisualCollection} from '../../../model/Visual';
 import {LightBullState} from '../../../state';
 import {selectShow} from '../../../state/model/shows/selectors';
-import {selectVisualsOfShow} from '../../../state/model/visuals/selectors';
+import {selectFilteredVisualsOfShow} from '../../../state/model/visuals/selectors';
 import {CardGrid} from '../../common/card-grid/CardGrid';
 import {ShowDetailsFilterToolbar} from './ShowDetailsFilterToolbar';
 import {ShowName} from './ShowName';
@@ -43,7 +43,7 @@ const mapStateToProps = (state: LightBullState, ownProps: Props) => {
     const showId = ownProps.match.params.id;
     return {
         show: selectShow(state, showId),
-        visuals: selectVisualsOfShow(state, showId),
+        visuals: selectFilteredVisualsOfShow(state, showId),
     };
 };
 

@@ -26,7 +26,7 @@ const mapStateToProps = (state: LightBullState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<UiShowDetailsAction>) => ({
-    setShowFilter: (filter: string) => dispatch(UiShowDetailsActions.setVisualsFilter(filter))
+    setFilter: (filter: string) => dispatch(UiShowDetailsActions.setVisualsFilter(filter))
 });
 
 export const ShowDetailsFilterToolbar = connect(

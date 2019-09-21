@@ -41,7 +41,7 @@ const mapStateToProps = (state: LightBullState) => ({
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<UiShowAction>) => ({
-    setShowFilter: (filter: string) => dispatch(UiShowActions.setShowFilter(filter)),
+    setFilter: (filter: string) => dispatch(UiShowActions.setShowFilter(filter)),
     setFavoritesOnly: (favoritesOnly: boolean) => dispatch(UiShowActions.setFavoritesOnly(favoritesOnly))
 });
 
