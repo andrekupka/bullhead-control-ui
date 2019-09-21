@@ -1,7 +1,7 @@
 import {createSelector} from 'reselect';
 import {Show} from '../../../model/Show';
 import {LightBullState} from '../../index';
-import {selectShowsFavoritesOnly, selectShowsFilter} from '../../ui/shows/selectors';
+import {selectShowsFavoritesOnly, selectShowFilter} from '../../ui/shows/selectors';
 
 
 type ShowFilter = (show: Show) => boolean;
@@ -30,7 +30,7 @@ export const selectShowList = createSelector(
 );
 
 export const selectFilteredShows = createSelector(
-    [selectShowList, selectShowsFilter, selectShowsFavoritesOnly],
+    [selectShowList, selectShowFilter, selectShowsFavoritesOnly],
     (shows, filter, favoritesOnly) => {
         const filteredShows = favoritesOnly ? shows.filter(show => show.favorite) : shows;
         return filteredShows.filter(getShowFilter(filter)).sort(showComparator);

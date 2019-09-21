@@ -3,6 +3,9 @@ import ClearIcon from '@material-ui/icons/Clear';
 import React, {FunctionComponent} from 'react';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
+    toolbarCard: {
+        marginTop: theme.spacing(1)
+    },
     toolbar: {
         display: 'flex'
     },
@@ -27,12 +30,12 @@ export const FilterToolbar: FunctionComponent<Props> = (props) => {
     const classes = useStyles();
 
     return (
-        <Card>
+        <Card className={classes.toolbarCard}>
             <Toolbar className={classes.toolbar}>
                 <div className={classes.toolbarActions}>
                     {props.children}
                 </div>
-                <Button color='secondary' variant='contained' disabled={props.hasFilter}
+                <Button color='secondary' variant='contained' disabled={!props.hasFilter}
                         onClick={() => props.onClear()}>
                     <ClearIcon className={classes.leftIcon}/>
                     Clear

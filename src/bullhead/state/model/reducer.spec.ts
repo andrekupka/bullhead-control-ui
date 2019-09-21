@@ -10,7 +10,8 @@ describe('model reducer', () => {
         const state = modelReducer(undefined, ShowModelActions.add({
             id: 'id1',
             name: 'Test Show',
-            favorite: false
+            favorite: false,
+            visualIds: []
         }));
 
         const resetState = modelReducer(state, ResetActions.reset());

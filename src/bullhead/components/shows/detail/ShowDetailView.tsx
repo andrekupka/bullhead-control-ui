@@ -7,6 +7,7 @@ import {LightBullState} from '../../../state';
 import {selectShow} from '../../../state/model/shows/selectors';
 import {selectVisualsOfShow} from '../../../state/model/visuals/selectors';
 import {CardGrid} from '../../common/card-grid/CardGrid';
+import {ShowDetailsFilterToolbar} from './ShowDetailsFilterToolbar';
 import {ShowName} from './ShowName';
 import {VisualCard} from './VisualCard';
 
@@ -32,6 +33,7 @@ export const PureShowDetailView = ({show, visuals}: Props) => {
     return (
         <div>
             <ShowName show={show}/>
+            <ShowDetailsFilterToolbar/>
             <CardGrid cards={visualCards}/>
         </div>
     );

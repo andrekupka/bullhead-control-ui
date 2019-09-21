@@ -8,7 +8,7 @@ import {selectFilteredShows} from '../../state/model/shows/selectors';
 import {CardGrid} from '../common/card-grid/CardGrid';
 import {CreateShowDialog} from './CreateShowDialog';
 import {ShowCard} from './ShowCard';
-import {ShowsFilterToolbar} from './ShowsFilterToolbar';
+import {ShowFilterToolbar} from './ShowFilterToolbar';
 
 interface Props {
     shows: ShowCollection;
@@ -30,7 +30,7 @@ export const PureShowCollectionView = (props: Props) => {
 
     return (
         <div>
-            <ShowsFilterToolbar/>
+            <ShowFilterToolbar/>
             <CardGrid cards={showCards} action={addShow}/>
             {createDialogOpen && <CreateShowDialog close={() => setCreateDialogOpen(false)}/>}
         </div>
