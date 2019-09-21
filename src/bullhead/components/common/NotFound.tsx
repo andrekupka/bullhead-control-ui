@@ -15,7 +15,6 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 export const NotFound = () => {
     const classes = useStyles();
 
-
     return (
         <div className={classes.contentAlign}>
             <Typography variant='h1'>404</Typography>

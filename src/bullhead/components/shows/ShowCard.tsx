@@ -1,17 +1,6 @@
-import {
-    Box,
-    Card,
-    CardHeader,
-    CircularProgress,
-    createStyles,
-    IconButton,
-    makeStyles,
-    Theme,
-    Typography
-} from '@material-ui/core';
+import {CircularProgress, IconButton, Typography} from '@material-ui/core';
 import StarIcon from '@material-ui/icons/Star';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
-import classNames from 'classnames';
 import React, {useState} from 'react';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
@@ -20,6 +9,7 @@ import {LightBullState} from '../../state';
 import {selectIsShowUpdating} from '../../state/app/shows/selectors';
 import {updateShow} from '../../state/app/shows/thunks';
 import {LightBullThunkDispatch} from '../../types/redux';
+import {CardGridItem} from '../common/card-grid/CardGridItem';
 
 interface Props {
     show: Show;
@@ -27,34 +17,8 @@ interface Props {
     toggleFavorite: (show: Show) => void;
 }
 
-const useStyles = makeStyles((theme: Theme) => createStyles({
-    showCard: {
-        display: 'flex',
-        height: '100%',
-        justifyContent: 'left',
-        alignItems: 'center'
-    },
-    showCardHover: {
-        cursor: 'pointer',
-        '&:hover': {
-            boxShadow: '-1px 10px 29px 0px rgba(0,0,0,0.8);'
-        }
-    },
-    header: {
-        width: '100%',
-        height: '100%'
-    },
-    darken: {
-        filter: 'brightness(80%)'
-    },
-    title: {
-        flexGrow: 1
-    }
-}));
-
 export const PureShowCard = ({show, isUpdating, toggleFavorite}: Props) => {
     const [shouldOpen, setShouldOpen] = useState(false);
-    const classes = useStyles();
 
     if (shouldOpen) {
         return <Redirect to={`/shows/${show.id}`}/>;
@@ -78,20 +42,20 @@ export const PureShowCard = ({show, isUpdating, toggleFavorite}: Props) => {
     );
 
     const title = (
-        <Box display='flex' flexDirection='horizontal'>
-            <Typography variant='h5' component='div' noWrap className={classes.title}>
+        <>
+            <Typography variant='h5' component='div' noWrap>
                 {show.name}
             </Typography>
             {isUpdating && <CircularProgress size={32}/>}
-        </Box>
+        </>
     );
 
-    const cardClasses = classNames(classes.showCard, isUpdating && classes.darken, !isUpdating && classes.showCardHover);
-
     return (
-        <Card className={cardClasses} onClick={open}>
-            <CardHeader className={classes.header} avatar={favoriteButton} title={title} disableTypography/>
-        </Card>
+        <CardGridItem title={title}
+                      action={favoriteButton}
+                      isDisabled={isUpdating}
+                      showHover={!isUpdating}
+                      onClick={open}/>
     );
 };
 
@@ -108,7 +72,7 @@ const mapDispatchToProps = (dispatch: LightBullThunkDispatch) => ({
             favorite: !show.favorite
         };
         dispatch(updateShow(updatedShow));
-    },
+    }
 });
 
 export const ShowCard = connect(

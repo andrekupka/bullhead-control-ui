@@ -2,17 +2,14 @@ import {Box} from '@material-ui/core';
 import React from 'react';
 import {connect} from 'react-redux';
 import {LightBullState} from '../state';
+import {selectFinishedLoading} from '../state/loading/selectors';
 import {LightBullContentContainer} from './LightBullContentContainer';
 import {LoadingView} from './loading/LoadingView';
 import {SnackbarMessageContainer} from './messages/SnackbarMessageContainer';
 import {NavigationBar} from './navigation/NavigationBar';
 
-interface Props {
-    finishedLoading: boolean;
-}
-
-const PureLightBullFrame = (props: Props) => {
-    if (!props.finishedLoading) {
+const PureLightBullFrame = ({finishedLoading}: {finishedLoading: boolean}) => {
+    if (!finishedLoading) {
         return <LoadingView/>;
     }
 
@@ -26,7 +23,7 @@ const PureLightBullFrame = (props: Props) => {
 };
 
 const mapStateToProps = (state: LightBullState) => ({
-    finishedLoading: state.loading.shows.loaded && state.connection.connectionId !== undefined
+    finishedLoading: selectFinishedLoading(state)
 });
 
 export const LightBullFrame = connect(

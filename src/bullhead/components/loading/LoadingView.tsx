@@ -30,6 +30,10 @@ const PurePreLoadingView = (props: Props) => {
                                   loadedText='Loaded shows!'
                                   failedText='Failed to load shows'
                                   state={props.loading.shows}/>
+                <LoadingStateItem loadingText='Loading visuals...'
+                                  loadedText='Loaded visuals'
+                                  failedText='Failed to load visuals'
+                                  state={props.loading.visuals}/>
             </>;
     }
 
@@ -55,7 +59,7 @@ const mapStateToProps = (state: LightBullState) => ({
         loaded: state.webSocket.isConnected,
         failed: false
     },
-    loading: state.loading
+    loading: state.loading,
 });
 
 export const LoadingView = connect(

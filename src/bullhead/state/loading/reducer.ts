@@ -9,15 +9,15 @@ export interface LoadingInfo {
     failed: boolean;
 }
 
+const loadingEnabledReducer = createReducer<boolean, ResetAware<LoadingAction>>(false)
+    .handleAction(LoadingActions.enable, () => true)
+    .handleAction(LoadingActions.disable, () => false);
+
 const INITIAL_SHOWS_STATE: LoadingInfo = {
     loading: false,
     loaded: false,
     failed: false
 };
-
-const loadingEnabledReducer = createReducer<boolean, ResetAware<LoadingAction>>(false)
-    .handleAction(LoadingActions.enable, () => true)
-    .handleAction(LoadingActions.disable, () => false);
 
 const loadingShowsReducer = createReducer<LoadingInfo, ResetAware<LoadingAction>>(INITIAL_SHOWS_STATE)
     .handleAction(LoadingActions.showsRequest, state => ({
@@ -36,9 +36,33 @@ const loadingShowsReducer = createReducer<LoadingInfo, ResetAware<LoadingAction>
         failed: true
     }));
 
+const INITIAL_VISUALS_STATE: LoadingInfo = {
+    loading: false,
+    loaded: false,
+    failed: false
+};
+
+const loadingVisualsReducer = createReducer<LoadingInfo, ResetAware<LoadingAction>>(INITIAL_VISUALS_STATE)
+    .handleAction(LoadingActions.visualsRequest, state => ({
+        ...state,
+        loading: true,
+        failed: false
+    }))
+    .handleAction(LoadingActions.visualsSuccess, state => ({
+        ...state,
+        loading: false,
+        loaded: true
+    }))
+    .handleAction(LoadingActions.visualsFailure, state => ({
+        ...state,
+        loading: false,
+        failed: true
+    }));
+
 export const pureLoadingReducer = combineReducers({
     enabled: loadingEnabledReducer,
-    shows: loadingShowsReducer
+    shows: loadingShowsReducer,
+    visuals: loadingVisualsReducer
 });
 
 export type LoadingState = StateType<typeof pureLoadingReducer>;
