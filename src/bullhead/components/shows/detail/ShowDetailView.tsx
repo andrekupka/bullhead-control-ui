@@ -43,7 +43,7 @@ const mapStateToProps = (state: LightBullState, ownProps: Props) => {
         show: selectShow(state, showId),
         visuals: selectVisualsOfShow(state, showId),
     };
-}
+};
 
 export const ShowDetailView = connect(
     mapStateToProps,
