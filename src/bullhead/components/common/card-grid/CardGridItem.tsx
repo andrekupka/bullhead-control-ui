@@ -11,13 +11,13 @@ interface Props {
 }
 
 const useStyles = makeStyles({
-    showCard: {
+    card: {
         display: 'flex',
-        height: '100%',
         justifyContent: 'left',
-        alignItems: 'center'
+        alignItems: 'center',
+        height: '80px'
     },
-    showCardHover: {
+    cardHover: {
         cursor: 'pointer',
         '&:hover': {
             boxShadow: '-1px 10px 29px 0px rgba(0,0,0,0.8);'
@@ -37,7 +37,6 @@ const useStyles = makeStyles({
     }
 });
 
-
 export const CardGridItem = (props: Props) => {
     const classes = useStyles();
 
@@ -45,9 +44,9 @@ export const CardGridItem = (props: Props) => {
     const shouldShowDarken = props.isDisabled || false;
 
     const cardClasses = classNames(
-        classes.showCard,
+        classes.card,
         shouldShowDarken && classes.darken,
-        shouldShowHover && classes.showCardHover
+        shouldShowHover && classes.cardHover
     );
 
     const title = <Box display='flex' flexDirection='horizontal' className={classes.titleWrapper}>

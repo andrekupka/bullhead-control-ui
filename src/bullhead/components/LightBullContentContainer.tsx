@@ -21,11 +21,12 @@ const useStyles = makeStyles<Theme, Props>((theme: Theme) => createStyles({
             easing: theme.transitions.easing.sharp,
             duration: theme.transitions.duration.leavingScreen
         }),
-        marginTop: theme.spacing(1),
-        marginLeft: props => props.isNavigationOpen ? 0 : -240,
-        padding: theme.spacing(3)
+        marginLeft: props => props.isNavigationOpen ? 0 : -240
     },
-    contentShift: {
+    contentVerticalShift: {
+        ...theme.mixins.toolbar
+    },
+    contentHorizontalShift: {
         transition: theme.transitions.create('margin', {
             easing: theme.transitions.easing.easeOut,
             duration: theme.transitions.duration.enteringScreen
@@ -33,7 +34,10 @@ const useStyles = makeStyles<Theme, Props>((theme: Theme) => createStyles({
     },
     contentView: {
         width: '100%',
-        paddingTop: theme.mixins.toolbar.minHeight
+        padding: theme.spacing(3),
+        '& > *': {
+            marginBottom: theme.spacing(3)
+        }
     }
 }));
 
@@ -42,21 +46,24 @@ const PureLightBullContentContainer = (props: Props) => {
 
     const mainClasses = classNames(
         classes.content,
-        props.isNavigationOpen && classes.contentShift
+        props.isNavigationOpen && classes.contentHorizontalShift
     );
 
     return (
-        <main className={mainClasses}>
-            <div className={classes.contentView}>
-                <Switch>
-                    <Route exact path='/' component={Home}/>
-                    <Route exact path='/shows' component={ShowCollectionView}/>
-                    <Route path='/shows/:id' component={ShowDetailView}/>
-                    <Route path='/system' component={SystemView}/>
-                    <Route component={NotFound}/>
-                </Switch>
-            </div>
-        </main>
+        <>
+            <main className={mainClasses}>
+                <div className={classes.contentVerticalShift}/>
+                <div className={classes.contentView}>
+                    <Switch>
+                        <Route exact path='/' component={Home}/>
+                        <Route exact path='/shows' component={ShowCollectionView}/>
+                        <Route path='/shows/:id' component={ShowDetailView}/>
+                        <Route path='/system' component={SystemView}/>
+                        <Route component={NotFound}/>
+                    </Switch>
+                </div>
+            </main>
+        </>
     );
 };
 

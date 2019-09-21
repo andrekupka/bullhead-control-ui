@@ -29,11 +29,11 @@ export const PureShowCollectionView = (props: Props) => {
     );
 
     return (
-        <div>
+        <>
             <ShowFilterToolbar/>
             <CardGrid cards={showCards} action={addShow}/>
             {createDialogOpen && <CreateShowDialog close={() => setCreateDialogOpen(false)}/>}
-        </div>
+        </>
     );
 };
 

@@ -31,11 +31,11 @@ export const PureShowDetailView = ({show, visuals}: Props) => {
     }));
 
     return (
-        <div>
+        <>
             <ShowName show={show}/>
             <ShowDetailsFilterToolbar/>
             <CardGrid cards={visualCards}/>
-        </div>
+        </>
     );
 };
 

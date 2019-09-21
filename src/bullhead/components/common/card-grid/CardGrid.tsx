@@ -1,18 +1,5 @@
-import {Box, createStyles, Grid, makeStyles, Theme} from '@material-ui/core';
+import {Box, Grid} from '@material-ui/core';
 import React from 'react';
-
-const useStyles = makeStyles((theme: Theme) => createStyles({
-    gridContainer: {
-        marginTop: theme.spacing(2)
-    },
-    gridItem: {
-        height: 100
-    },
-    gridContent: {
-        justifyContent: 'center',
-        alignItems: 'center'
-    }
-}));
 
 interface Props {
     cards: Array<{ id: string, element: JSX.Element }>
@@ -20,17 +7,15 @@ interface Props {
 }
 
 export const CardGrid = (props: Props) => {
-    const classes = useStyles();
-
     return (
-        <Grid container spacing={3} className={classes.gridContainer}>
+        <Grid container spacing={2}>
             {props.cards.map(item =>
-                <Grid item xs={4} key={item.id} className={classes.gridItem}>
+                <Grid item xs={4} key={item.id}>
                     {item.element}
                 </Grid>
             )}
             {props.action &&
-                <Grid item xs={4} className={classes.gridItem}>
+                <Grid item xs={4}>
                     <Box display='flex' flexDirection='column' justifyContent='center' height='100%'>
                         {props.action}
                     </Box>
