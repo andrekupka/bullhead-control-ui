@@ -5,7 +5,7 @@ import {LightBullState} from '../index';
 import {ShowModelActions} from '../model/shows/actions';
 import {VisualModelActions} from '../model/visuals/actions';
 import {LoadingActions} from './actions';
-import { ConfigModelActions } from '../model/config/actions';
+import {ConfigModelActions} from '../model/config/actions';
 
 export const startLoading = () => (dispatch: LightBullThunkDispatch) => {
     dispatch(loadConfig());
