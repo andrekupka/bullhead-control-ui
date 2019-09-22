@@ -2,7 +2,7 @@ export interface Show {
     id: string;
     name: string;
     favorite: boolean;
-    visualIds: Array<string>;
+    visuals: Array<string>;
 }
 
 export type ShowCollection = Array<Show>;

@@ -1,6 +1,7 @@
 import axios, {AxiosInstance, AxiosRequestConfig} from 'axios';
 import {Show, ShowCollection} from '../model/Show';
 import {VisualCollection} from '../model/Visual';
+import {Config} from "../model/Config";
 
 export const BASE_URL = 'http://localhost:8080';
 export const DEFAULT_TIMEOUT = 10000;
@@ -28,6 +29,11 @@ class ApiClient {
         });
         const {token} = response.data;
         return await token;
+    }
+
+    async loadConfig(): Promise<Config> {
+        const response = await this.axiosClient.get('/api/config');
+        return response.data;
     }
 
     async loadShows(): Promise<ShowCollection> {

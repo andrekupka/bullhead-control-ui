@@ -21,11 +21,14 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 const PurePreLoadingView = (props: Props) => {
     const classes = useStyles();
 
-
     let loadingDataItems = null;
     if (props.loading.enabled) {
         loadingDataItems =
             <>
+                <LoadingStateItem loadingText='Loading config...'
+                                  loadedText='Loaded config!'
+                                  failedText='Failed to load config'
+                                  state={props.loading.config}/>
                 <LoadingStateItem loadingText='Loading shows...'
                                   loadedText='Loaded shows!'
                                   failedText='Failed to load shows'
