@@ -14,6 +14,6 @@ export const loadShow = createResourceLoadingThunkCreator(SHOW_DETAILS_LOADING_S
             visuals: showWithVisuals.visuals.map(visual => visual.id)
         };
         dispatch(ShowModelActions.set(show));
-        dispatch(VisualModelActions.initialize(showWithVisuals.visuals));
+        dispatch(VisualModelActions.setAll(showWithVisuals.visuals));
     }
 });
