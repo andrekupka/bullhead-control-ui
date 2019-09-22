@@ -6,7 +6,7 @@ import {showErrorMessage} from '../../ui/messages/thunks';
 import {ShowCreationActions} from './create/actions';
 import {ShowUpdatingActions} from './updating/actions';
 
-export const addShow = (name: string) => async (dispatch: LightBullThunkDispatch) => {
+export const createShow = (name: string) => async (dispatch: LightBullThunkDispatch) => {
     dispatch(ShowCreationActions.request());
     try {
         const show = await Api.createShow(name);
