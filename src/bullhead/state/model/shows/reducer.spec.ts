@@ -3,17 +3,18 @@ import {ResetActions} from '../../reset/actions';
 import {ShowModelActions} from './actions';
 import {showsReducer} from './reducer';
 
-
 const firstShow = {
     id: '1',
     name: 'First Show',
-    favorite: false
+    favorite: false,
+    visuals: []
 };
 
 const secondShow = {
     id: '2',
     name: 'Second Show',
-    favorite: true
+    favorite: true,
+    visuals: []
 };
 
 describe('shows reducer', () => {
@@ -46,7 +47,8 @@ describe('shows reducer', () => {
         const updatedShow = {
             id: '1',
             name: 'Updated Show',
-            favorite: true
+            favorite: true,
+            visuals: []
         };
 
         const state = showsReducer({
