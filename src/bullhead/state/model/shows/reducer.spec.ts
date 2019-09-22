@@ -1,5 +1,3 @@
-import {AuthenticationActions} from '../../authentication/actions';
-import {ResetActions} from '../../reset/actions';
 import {ShowModelActions} from './actions';
 import {showsReducer} from './reducer';
 
@@ -24,18 +22,18 @@ describe('shows reducer', () => {
         expect(state).toEqual({});
     });
 
-    it('should initialize shows on initialize shows action', () => {
-        const state = showsReducer(undefined, ShowModelActions.initialize([firstShow]));
+    it('should set all shows on set all action', () => {
+        const state = showsReducer(undefined, ShowModelActions.setAll([firstShow]));
 
         expect(state).toEqual({
             [firstShow.id]: firstShow
         });
     });
 
-    it('should insert show on add show action', () => {
+    it('should insert show on set action', () => {
         const state = showsReducer({
             [firstShow.id]: firstShow
-        }, ShowModelActions.add(secondShow));
+        }, ShowModelActions.set(secondShow));
 
         expect(state).toEqual({
             [firstShow.id]: firstShow,
@@ -43,7 +41,7 @@ describe('shows reducer', () => {
         });
     });
 
-    it('should update existing show', () => {
+    it('should update existing show on set action', () => {
         const updatedShow = {
             id: '1',
             name: 'Updated Show',
@@ -53,20 +51,10 @@ describe('shows reducer', () => {
 
         const state = showsReducer({
             [firstShow.id]: firstShow
-        }, ShowModelActions.update(updatedShow));
+        }, ShowModelActions.set(updatedShow));
 
         expect(state).toEqual({
             [firstShow.id]: updatedShow
-        });
-    });
-
-    it('should ignore update for none existing show', () => {
-        const state = showsReducer({
-            [secondShow.id]: secondShow
-        }, ShowModelActions.update(firstShow));
-
-        expect(state).toEqual({
-            [secondShow.id]: secondShow
         });
     });
 });

@@ -7,7 +7,7 @@ export type VisualsState = VisualMap;
 const INITIAL_STATE: VisualsState = {};
 
 export const visualsReducer = createReducer<VisualsState, VisualModelAction>(INITIAL_STATE)
-    .handleAction(VisualModelActions.initialize,(state, action) =>
+    .handleAction(VisualModelActions.setAll,(state, action) =>
         action.payload.visuals.reduce((acc: VisualsState, visual) => {
             acc[visual.id] = visual;
             return acc;

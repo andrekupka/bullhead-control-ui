@@ -1,6 +1,5 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {Redirect, RouteComponentProps} from 'react-router-dom';
 import {Show} from '../../../model/Show';
 import {VisualCollection} from '../../../model/Visual';
 import {LightBullState} from '../../../state';
@@ -11,20 +10,12 @@ import {ShowDetailsFilterToolbar} from './ShowDetailsFilterToolbar';
 import {ShowName} from './ShowName';
 import {VisualCard} from './VisualCard';
 
-interface Params {
-    id: string;
-}
-
-interface Props extends RouteComponentProps<Params> {
-    show?: Show;
+interface Props {
+    show: Show;
     visuals: VisualCollection;
 }
 
-export const PureShowDetailView = ({show, visuals}: Props) => {
-    if (!show) {
-        return <Redirect to='/shows'/>;
-    }
-
+const PureShowDetailsView = ({show, visuals}: Props) => {
     const visualCards = visuals.map(visual => ({
         id: visual.id,
         element: <VisualCard visual={visual}/>
@@ -39,14 +30,15 @@ export const PureShowDetailView = ({show, visuals}: Props) => {
     );
 };
 
-const mapStateToProps = (state: LightBullState, ownProps: Props) => {
-    const showId = ownProps.match.params.id;
-    return {
-        show: selectShow(state, showId),
-        visuals: selectFilteredVisualsOfShow(state, showId),
-    };
-};
+interface WrapperProps {
+    showId: string;
+}
 
-export const ShowDetailView = connect(
+const mapStateToProps = (state: LightBullState, {showId}: WrapperProps) => ({
+    show: selectShow(state, showId),
+    visuals: selectFilteredVisualsOfShow(state, showId)
+});
+
+export const ShowDetailsView = connect(
     mapStateToProps,
-)(PureShowDetailView);
+)(PureShowDetailsView);

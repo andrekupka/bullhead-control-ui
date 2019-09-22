@@ -2,7 +2,7 @@ import {ActionType, createAction} from 'typesafe-actions';
 import {VisualCollection} from '../../../model/Visual';
 
 export const VisualModelActions = {
-    initialize: createAction('@model/visuals/INITIALIZE', action => (visuals: VisualCollection) =>
+    setAll: createAction('@model/visuals/SET_ALL', action => (visuals: VisualCollection) =>
         action({visuals})
     )
 };

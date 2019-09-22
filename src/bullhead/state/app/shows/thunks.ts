@@ -10,7 +10,7 @@ export const addShow = (name: string) => async (dispatch: LightBullThunkDispatch
     dispatch(ShowCreationActions.request());
     try {
         const show = await Api.createShow(name);
-        dispatch(ShowModelActions.add(show));
+        dispatch(ShowModelActions.set(show));
         dispatch(ShowCreationActions.success(show.id));
     } catch (error) {
         dispatch(showErrorMessage(`Failed to add show: ${error.message}`));
@@ -22,7 +22,7 @@ export const updateShow = (show: Show) => async (dispatch: LightBullThunkDispatc
     try {
         dispatch(ShowUpdatingActions.request(show.id));
         const updatedShow = await Api.updateShow(show);
-        dispatch(ShowModelActions.update(updatedShow));
+        dispatch(ShowModelActions.set(updatedShow));
     } catch (error) {
         dispatch(showErrorMessage(`Failed to update show: ${error.message}`));
     } finally {

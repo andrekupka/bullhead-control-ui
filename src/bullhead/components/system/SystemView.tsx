@@ -5,14 +5,14 @@ import {LightBullState} from "../../state";
 import {selectConfig} from "../../state/model/config/selectors";
 
 
-const StringListView = ({title, names}: { title: string, names: Array<String> }) => {
+const StringListView = ({title, names}: { title: string, names: Array<string> }) => {
     if (!names || names.length <= 0) {
         return null;
     }
     return <>
         <h3>{title}</h3>
         <ul>
-            {names.map(name => <li>{name}</li>)}
+            {names.map(name => <li key={name}>{name}</li>)}
         </ul>
     </>
 };
@@ -24,7 +24,7 @@ const EffectView = ({effects}: { effects: EffectMap }) => {
     return <>
         <h3>Effects</h3>
         <ul>
-            {Object.keys(effects).map(key => <li>{key} &rarr; {effects[key]}</li>)}
+            {Object.keys(effects).map(key => <li key={key}>{key} &rarr; {effects[key]}</li>)}
         </ul>
     </>;
 };

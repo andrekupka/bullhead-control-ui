@@ -14,7 +14,7 @@ interface Props {
     shows: ShowCollection;
 }
 
-export const PureShowCollectionView = (props: Props) => {
+const PureShowCollectionView = (props: Props) => {
     const [createDialogOpen, setCreateDialogOpen] = useState(false);
 
     const showCards = props.shows.map(show => ({

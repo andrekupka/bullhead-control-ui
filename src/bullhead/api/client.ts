@@ -1,5 +1,5 @@
 import axios, {AxiosInstance, AxiosRequestConfig} from 'axios';
-import {Show, ShowCollection} from '../model/Show';
+import {Show, ShowCollection, ShowWithVisuals} from '../model/Show';
 import {VisualCollection} from '../model/Visual';
 import {Config} from "../model/Config";
 
@@ -46,6 +46,11 @@ class ApiClient {
             name: name
         });
         return response.data
+    }
+
+    async loadShow(showId: string): Promise<ShowWithVisuals> {
+        const response = await this.axiosClient.get(`/api/shows/${showId}`);
+        return response.data;
     }
 
     async updateShow(show: Show): Promise<Show> {
