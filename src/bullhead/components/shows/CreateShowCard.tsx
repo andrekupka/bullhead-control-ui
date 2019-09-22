@@ -17,6 +17,7 @@ import {
 } from "@material-ui/core";
 import CloseIcon from '@material-ui/icons/Close';
 import {handleEscape} from "../../utils";
+import {isPending} from 'q';
 
 interface Props {
     close: () => void;
@@ -71,6 +72,7 @@ const PureCreateShowCard = (props: Props) => {
                            label='Show Name'
                            fullWidth
                            variant='outlined'
+                           value={name}
                            onChange={event => setName(event.target.value)}
                            onKeyDown={handleEscape(() => close())}
                            InputProps={{
@@ -84,7 +86,7 @@ const PureCreateShowCard = (props: Props) => {
 
     return <ClickAwayListener onClickAway={() => close()}>
         <span>
-            <CardGridItem>
+            <CardGridItem showDarkened={props.isPending}>
                 <CardHeader title={nameForm} className={classes.header}/>
             </CardGridItem>
         </span>
