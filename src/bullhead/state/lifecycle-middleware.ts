@@ -4,8 +4,8 @@ import {LightBullThunkDispatch} from '../types/redux';
 import {AuthenticationAction, AuthenticationActions} from './authentication/actions';
 import {ConnectionAction, ConnectionActions} from './connection/actions';
 import {LightBullState} from './index';
-import {LoadingActions} from './loading/actions';
-import {startLoading} from './loading/thunks';
+import {InitializationActions} from './app/initialization/actions';
+import {startLoading} from './app/initialization/thunks';
 import {WebSocketAction, WebSocketActions} from './web-socket/actions';
 
 type LCAction = AuthenticationAction | ConnectionAction | WebSocketAction;
@@ -27,9 +27,9 @@ export const lifecycleMiddleware = () => {
             case getType(WebSocketActions.connected):
                 api.dispatch(ConnectionActions.identify());
                 break;
-            // start loading when connection is identified
+            // start initialization when connection is identified
             case getType(ConnectionActions.identified):
-                api.dispatch(LoadingActions.enable());
+                api.dispatch(InitializationActions.enable());
                 api.dispatch(startLoading());
                 break;
             // handle web-socket message in connection handler
@@ -38,7 +38,7 @@ export const lifecycleMiddleware = () => {
                 break;
             case getType(WebSocketActions.disconnected):
                 api.dispatch(ConnectionActions.destroy);
-                api.dispatch(LoadingActions.disable());
+                api.dispatch(InitializationActions.disable());
                 break;
             case getType(AuthenticationActions.lost):
             case getType(AuthenticationActions.clear):

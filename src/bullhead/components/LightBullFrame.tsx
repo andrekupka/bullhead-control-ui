@@ -2,21 +2,21 @@ import {Box} from '@material-ui/core';
 import React from 'react';
 import {connect} from 'react-redux';
 import {LightBullState} from '../state';
-import {selectFinishedLoading} from '../state/loading/selectors';
-import {LightBullContentContainer} from './LightBullContentContainer';
-import {LoadingView} from './loading/LoadingView';
+import {selectFinishedLoading} from '../state/app/initialization/selectors';
+import {LightBullPageContainer} from './LightBullPageContainer';
+import {InitializationView} from './initialization/InitializationView';
 import {SnackbarMessageContainer} from './messages/SnackbarMessageContainer';
 import {NavigationBar} from './navigation/NavigationBar';
 
 const PureLightBullFrame = ({finishedLoading}: {finishedLoading: boolean}) => {
     if (!finishedLoading) {
-        return <LoadingView/>;
+        return <InitializationView/>;
     }
 
     return (
         <Box component='div' display='flex'>
             <NavigationBar/>
-            <LightBullContentContainer/>
+            <LightBullPageContainer/>
             <SnackbarMessageContainer/>
         </Box>
     );

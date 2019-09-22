@@ -7,9 +7,9 @@ import {LightBullState} from '../state';
 import {NavigationAware} from '../types/navigation/NavigationAware';
 import {NotFound} from './common/NotFound';
 import {Home} from './home/Home';
-import {ShowCollectionView} from './shows/ShowCollectionView';
 import {ShowDetailView} from './shows/detail/ShowDetailView';
 import {SystemView} from './system/SystemView';
+import {ShowsPage} from "./shows/ShowsPage";
 
 interface Props extends NavigationAware {
 }
@@ -41,7 +41,7 @@ const useStyles = makeStyles<Theme, Props>((theme: Theme) => createStyles({
     }
 }));
 
-const PureLightBullContentContainer = (props: Props) => {
+const PureLightBullPageContainer = (props: Props) => {
     const classes = useStyles(props);
 
     const mainClasses = classNames(
@@ -56,7 +56,7 @@ const PureLightBullContentContainer = (props: Props) => {
                 <div className={classes.contentView}>
                     <Switch>
                         <Route exact path='/' component={Home}/>
-                        <Route exact path='/shows' component={ShowCollectionView}/>
+                        <Route exact path='/shows' component={ShowsPage}/>
                         <Route path='/shows/:id' component={ShowDetailView}/>
                         <Route path='/system' component={SystemView}/>
                         <Route component={NotFound}/>
@@ -71,6 +71,6 @@ const mapStateToProps = (state: LightBullState) => ({
     ...state.ui.navigation
 });
 
-export const LightBullContentContainer = connect(
+export const LightBullPageContainer = connect(
     mapStateToProps
-)(PureLightBullContentContainer);
+)(PureLightBullPageContainer);

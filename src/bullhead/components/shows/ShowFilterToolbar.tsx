@@ -2,7 +2,7 @@ import React, {Dispatch} from 'react';
 import {connect} from 'react-redux';
 import {LightBullState} from '../../state';
 import {UiShowAction, UiShowActions} from '../../state/ui/shows/actions';
-import {selectShowsFavoritesOnly, selectShowFilter} from '../../state/ui/shows/selectors';
+import {selectShowsFavoritesOnly, selectShowsFilter} from '../../state/ui/shows/selectors';
 import {FilterToolbar} from '../common/FilterToolbar';
 import {LabelledSwitch} from '../common/form/LabelledSwitch';
 import {SearchInput} from '../common/form/SearchInput';
@@ -36,7 +36,7 @@ export const PureShowFilterToolbar = (props: Props) => {
 };
 
 const mapStateToProps = (state: LightBullState) => ({
-    filter: selectShowFilter(state),
+    filter: selectShowsFilter(state),
     favoritesOnly: selectShowsFavoritesOnly(state)
 });
 

@@ -2,13 +2,13 @@ import {CircularProgress, ListItem, ListItemIcon, ListItemText, makeStyles} from
 import CheckIcon from '@material-ui/icons/Check';
 import ClearIcon from '@material-ui/icons/Clear';
 import React from 'react';
-import {LoadingInfo} from '../../state/loading/reducer';
+import {InitializationInfo} from '../../state/app/initialization/reducer';
 
 interface Props {
     loadingText: string;
     loadedText: string;
     failedText?: string;
-    state: LoadingInfo;
+    state: InitializationInfo;
 }
 
 const useStyles = makeStyles({
@@ -20,7 +20,7 @@ const useStyles = makeStyles({
     }
 });
 
-export const LoadingStateItem = (props: Props) => {
+export const InitializationStateItem = (props: Props) => {
     const classes = useStyles();
 
     const getIcon = () => {
