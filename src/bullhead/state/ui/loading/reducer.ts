@@ -6,14 +6,13 @@ export interface LoadingState {
     enabled: boolean;
     loading: boolean;
     loaded: boolean;
-    failed: boolean;
+    error?: Error;
 }
 
 const INITIAL_LOADING_STATE: LoadingState = {
     enabled: false,
     loading: false,
-    loaded: false,
-    failed: false,
+    loaded: false
 };
 
 export const createLoadingStateReducer = (type: string) => asResetAwareReducer(createReducer<LoadingState, ResetAware<LoadingAction>>(INITIAL_LOADING_STATE)
@@ -39,7 +38,7 @@ export const createLoadingStateReducer = (type: string) => asResetAwareReducer(c
                 ...state,
                 loading: true,
                 loaded: false,
-                failed: false
+                error: undefined
             }
         }
         return state;
@@ -50,7 +49,7 @@ export const createLoadingStateReducer = (type: string) => asResetAwareReducer(c
                 ...state,
                 loading: false,
                 loaded: true,
-                failed: false
+                error: undefined
             }
         }
         return state;
@@ -61,7 +60,7 @@ export const createLoadingStateReducer = (type: string) => asResetAwareReducer(c
                 ...state,
                 loading: false,
                 loaded: false,
-                failed: true
+                error: action.payload.error
             }
         }
         return state;

@@ -2,15 +2,11 @@ import {ActionType, createAction} from 'typesafe-actions';
 import {Show, ShowCollection} from '../../../model/Show';
 
 export const ShowModelActions = {
-    initialize: createAction('@model/shows/INITIALIZE', action => (shows: ShowCollection) =>
+    setAll: createAction('@model/shows/SET_ALL', action => (shows: ShowCollection) =>
         action({shows})
     ),
 
-    add: createAction('@model/shows/ADD', action => (show: Show) =>
-        action({show})
-    ),
-
-    update: createAction('@model/shows/UPDATE', action => (show: Show) =>
+    set: createAction('@model/shows/SET', action => (show: Show) =>
         action({show})
     )
 };

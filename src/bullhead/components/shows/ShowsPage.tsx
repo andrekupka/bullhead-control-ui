@@ -28,7 +28,7 @@ export const PureShowsPage = ({loadingState, enter, exit, loadShows}: Props) => 
     }, [loadShows]);
 
     if (loadingState.loaded) {
-        return <ShowCollectionView/>
+        return <ShowCollectionView/>;
     }
     return <div>
         <h1>Loading shows</h1>

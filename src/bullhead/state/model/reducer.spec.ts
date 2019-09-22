@@ -7,7 +7,7 @@ describe('model reducer', () => {
         const initialState = modelReducer(undefined, {} as any);
 
         // create some model state with child reducer
-        const state = modelReducer(undefined, ShowModelActions.add({
+        const state = modelReducer(undefined, ShowModelActions.set({
             id: 'id1',
             name: 'Test Show',
             favorite: false,

@@ -29,10 +29,6 @@ const PureInitializationView = (props: Props) => {
                                          loadedText='Loaded config!'
                                          failedText='Failed to load config'
                                          state={props.initialization.config}/>
-                <InitializationStateItem loadingText='Loading visuals...'
-                                         loadedText='Loaded visuals'
-                                         failedText='Failed to load visuals'
-                                         state={props.initialization.visuals}/>
             </>;
     }
 

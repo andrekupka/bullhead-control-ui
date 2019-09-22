@@ -3,7 +3,7 @@ import {createReducer, StateType} from 'typesafe-actions';
 import {asResetAwareReducer, ResetAware} from '../../reset/reset-aware-utils';
 import {InitializationAction, InitializationActions} from './actions';
 
-export type InitializableType = 'config' | 'visuals';
+export type InitializableType = 'config';
 
 export interface InitializationInfo {
     loading: boolean;
@@ -55,8 +55,7 @@ const createInitializationInfoReducer = (type: InitializableType) => createReduc
 
 export const pureInitializationReducer = combineReducers({
     enabled: initializationEnabledReducer,
-    config: createInitializationInfoReducer('config'),
-    visuals: createInitializationInfoReducer('visuals')
+    config: createInitializationInfoReducer('config')
 });
 
 export type InitializationState = StateType<typeof pureInitializationReducer>;

@@ -7,5 +7,5 @@ import {selectShowsLoadingState} from "./selectors";
 export const loadShows = createResourceLoadingThunkCreator(SHOWS_LOADING_STATE, {
     getLoadingState: state => selectShowsLoadingState(state),
     loader: () => Api.loadShows(),
-    resourceConsumer: (dispatch, shows) => dispatch(ShowModelActions.initialize(shows))
+    resourceConsumer: (dispatch, shows) => dispatch(ShowModelActions.setAll(shows))
 });

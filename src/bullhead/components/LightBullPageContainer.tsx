@@ -7,9 +7,9 @@ import {LightBullState} from '../state';
 import {NavigationAware} from '../types/navigation/NavigationAware';
 import {NotFound} from './common/NotFound';
 import {Home} from './home/Home';
-import {ShowDetailView} from './shows/detail/ShowDetailView';
 import {SystemView} from './system/SystemView';
 import {ShowsPage} from "./shows/ShowsPage";
+import {ShowDetailsPage} from "./shows/detail/ShowDetailsPage";
 
 interface Props extends NavigationAware {
 }
@@ -57,7 +57,7 @@ const PureLightBullPageContainer = (props: Props) => {
                     <Switch>
                         <Route exact path='/' component={Home}/>
                         <Route exact path='/shows' component={ShowsPage}/>
-                        <Route path='/shows/:id' component={ShowDetailView}/>
+                        <Route path='/shows/:id' component={ShowDetailsPage}/>
                         <Route path='/system' component={SystemView}/>
                         <Route component={NotFound}/>
                     </Switch>
