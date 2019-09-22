@@ -16,6 +16,7 @@ import {
     CircularProgress
 } from "@material-ui/core";
 import CloseIcon from '@material-ui/icons/Close';
+import {handleEscape} from "../../utils";
 
 interface Props {
     close: () => void;
@@ -71,6 +72,7 @@ const PureCreateShowCard = (props: Props) => {
                            fullWidth
                            variant='outlined'
                            onChange={event => setName(event.target.value)}
+                           onKeyDown={handleEscape(() => close())}
                            InputProps={{
                                endAdornment: <IconButton onClick={() => close()}>
                                    <CloseIcon/>

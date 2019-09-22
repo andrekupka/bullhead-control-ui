@@ -13,6 +13,7 @@ import {
 import EditIcon from '@material-ui/icons/Edit';
 import classNames from 'classnames';
 import React, {FormEvent, useEffect, useState} from 'react';
+import {handleEscape} from '../../utils';
 
 interface Props {
     label: string;
@@ -98,7 +99,9 @@ export const EditableName = ({label, name, updateName, isUpdating, iconAction}: 
                 <TextField autoFocus
                            variant='outlined'
                            label={label}
-                           value={inputValue} onChange={event => setInputValue(event.target.value)}
+                           value={inputValue}
+                           onChange={event => setInputValue(event.target.value)}
+                           onKeyDown={handleEscape(() => stopEditing())}
                            InputProps={{
                                endAdornment: closeButton
                            }}/>
