@@ -35,3 +35,6 @@ export const createResourceLoadingThunkCreator = <T, P>(type: string, config: Lo
             }
         }
     };
+
+export type ResourceLoadingThunkCreator<T, P> = (params: P | undefined) =>
+    (dispatch: LightBullThunkDispatch, getState: () => LightBullState) => void;

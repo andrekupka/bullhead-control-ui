@@ -1,38 +1,28 @@
 import {connect} from "react-redux";
-import React, {useEffect} from "react";
+import React from "react";
 import {LightBullThunkDispatch} from "../../types/redux";
 import {LightBullState} from "../../state";
 import {ShowCollectionView} from "./ShowCollectionView";
 import {LoadingState} from "../../state/ui/loading/reducer";
 import {loadShows} from "../../state/ui/shows/thunks";
 import {SHOWS_LOADING_STATE} from "../../state/ui/shows/reducer";
-import {LoadingActions} from "../../state/ui/loading/actions";
 import {selectShowsLoadingState} from "../../state/ui/shows/selectors";
+import {createResourceLoader, ResourceLoader, useLoader} from "../../state/ui/loading/hooks";
+import {LoadingPage} from "../common/LoadingPage";
 
 interface Props {
     loadingState: LoadingState
 
-    enter: () => void;
-    exit: () => void;
-    loadShows: () => void;
+    loader: ResourceLoader,
 }
 
-export const PureShowsPage = ({loadingState, enter, exit, loadShows}: Props) => {
-    useEffect(() => {
-        enter();
-        return () => exit();
-    }, [enter, exit]);
-
-    useEffect(() => {
-        loadShows();
-    }, [loadShows]);
+export const PureShowsPage = ({loadingState, loader}: Props) => {
+    useLoader(loader);
 
     if (loadingState.loaded) {
         return <ShowCollectionView/>;
     }
-    return <div>
-        <h1>Loading shows</h1>
-    </div>;
+    return <LoadingPage title='Loading shows' loadingState={loadingState}/>;
 };
 
 const mapStateToProps = (state: LightBullState) => ({
@@ -40,9 +30,7 @@ const mapStateToProps = (state: LightBullState) => ({
 });
 
 const mapDispatchToProps = (dispatch: LightBullThunkDispatch) => ({
-    enter: () => dispatch(LoadingActions.enable(SHOWS_LOADING_STATE)),
-    exit: () => dispatch(LoadingActions.disable(SHOWS_LOADING_STATE)),
-    loadShows: () => dispatch(loadShows())
+    loader: createResourceLoader(dispatch, SHOWS_LOADING_STATE, loadShows)
 });
 
 export const ShowsPage = connect(

@@ -42,7 +42,7 @@ const getDestination = (props: Props) => {
     return '/';
 };
 
-export const PureLoginView = (props: Props) => {
+const PureLoginView = (props: Props) => {
     const [password, setPassword] = useState('');
 
     const classes = useStyles();

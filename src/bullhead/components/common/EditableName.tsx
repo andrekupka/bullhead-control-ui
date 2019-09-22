@@ -1,3 +1,4 @@
+import CloseIcon from '@material-ui/icons/Close';
 import {
     CircularProgress,
     ClickAwayListener,
@@ -9,7 +10,6 @@ import {
     Theme,
     Typography
 } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
 import EditIcon from '@material-ui/icons/Edit';
 import classNames from 'classnames';
 import React, {FormEvent, useEffect, useState} from 'react';
