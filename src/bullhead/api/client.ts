@@ -1,7 +1,7 @@
 import axios, {AxiosInstance, AxiosRequestConfig} from 'axios';
+import {Config} from '../model/Config';
 import {Show, ShowCollection, ShowWithVisuals} from '../model/Show';
-import {VisualCollection} from '../model/Visual';
-import {Config} from "../model/Config";
+import {Visual} from '../model/Visual';
 
 export const BASE_URL = 'http://localhost:8080';
 export const DEFAULT_TIMEOUT = 10000;
@@ -58,8 +58,11 @@ class ApiClient {
         return response.data;
     }
 
-    async loadVisuals(): Promise<VisualCollection> {
-        const response = await this.axiosClient.get('/api/visuals');
+    async createVisual(showId: string, name: string): Promise<Visual> {
+        const response = await this.axiosClient.post(`/api/visuals`, {
+            show: showId,
+            name: name
+        });
         return response.data;
     }
 }

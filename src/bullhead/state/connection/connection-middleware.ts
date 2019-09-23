@@ -7,6 +7,7 @@ import {LightBullState} from '../index';
 import {ShowModelActions} from '../model/shows/actions';
 import {WebSocketActions} from '../web-socket/actions';
 import {ConnectionAction, ConnectionActions} from './actions';
+import {VisualModelActions} from '../model/visuals/actions';
 
 type CAction = ConnectionAction;
 type CDispatch = LightBullThunkDispatch;
@@ -45,6 +46,10 @@ export const connectionMiddleware = () => {
                 api.dispatch(ShowModelActions.set(payload.show));
             } else if (type === 'updateShow') {
                 api.dispatch(ShowModelActions.set(payload.show));
+            } else if (type === 'createVisual') {
+                const visual = payload.visual;
+                api.dispatch(VisualModelActions.set(visual));
+                api.dispatch(ShowModelActions.addVisual(payload.show, visual.id));
             }
         };
 

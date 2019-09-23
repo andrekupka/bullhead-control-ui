@@ -16,4 +16,19 @@ export const showsReducer = createReducer<ShowsState, ShowModelAction>(INITIAL_S
     .handleAction(ShowModelActions.set, (state, action) => ({
         ...state,
         [action.payload.show.id]: action.payload.show
-    }));
+    }))
+    .handleAction(ShowModelActions.addVisual, (state, action) => {
+        const showId = action.payload.showId;
+        const show = state[showId];
+        if (show) {
+            const newVisuals = [...show.visuals, action.payload.visualId];
+            return {
+                ...state,
+                [showId]: {
+                    ...show,
+                    visuals: newVisuals
+                }
+            };
+        }
+        return state;
+    });

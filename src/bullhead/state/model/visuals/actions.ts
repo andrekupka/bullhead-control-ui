@@ -1,9 +1,12 @@
 import {ActionType, createAction} from 'typesafe-actions';
-import {VisualCollection} from '../../../model/Visual';
+import {Visual, VisualCollection} from '../../../model/Visual';
 
 export const VisualModelActions = {
     setAll: createAction('@model/visuals/SET_ALL', action => (visuals: VisualCollection) =>
         action({visuals})
+    ),
+    set: createAction('@model/visuals/SET', action => (visual: Visual) =>
+        action({visual})
     )
 };
 

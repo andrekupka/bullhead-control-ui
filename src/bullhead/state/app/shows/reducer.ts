@@ -1,5 +1,5 @@
-import {showCreationReducer} from './create/reducer';
-import { combineReducers } from 'redux';
+import {showCreationReducer} from './creation/reducer';
+import {combineReducers} from 'redux';
 import {showUpdatingReducer} from './updating/reducer';
 
 export const appShowsReducer = combineReducers({
