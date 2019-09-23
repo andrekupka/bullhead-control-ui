@@ -6,33 +6,36 @@ import {ShowCollection} from '../../model/Show';
 import {LightBullState} from '../../state';
 import {selectFilteredShows} from '../../state/model/shows/selectors';
 import {CardGrid} from '../common/card-grid/CardGrid';
-import {CreateShowDialog} from './CreateShowDialog';
 import {ShowCard} from './ShowCard';
 import {ShowFilterToolbar} from './ShowFilterToolbar';
+import {CreateShowCard} from "./CreateShowCard";
 
 interface Props {
     shows: ShowCollection;
 }
 
 const PureShowCollectionView = (props: Props) => {
-    const [createDialogOpen, setCreateDialogOpen] = useState(false);
+    const [isCreating, setCreating] = useState(false);
 
     const showCards = props.shows.map(show => ({
         id: show.id,
-        element: <ShowCard show={show}/>
+        element: <ShowCard isDisabled={isCreating} show={show}/>
     }));
 
     const addShow = (
-        <Fab color='primary' onClick={() => setCreateDialogOpen(true)}>
+        <Fab color='primary' onClick={() => setCreating(true)}>
             <AddIcon/>
         </Fab>
     );
 
+    const createShowCard = <CreateShowCard close={() => setCreating(false)}/>;
+
+    const action = isCreating ? createShowCard : addShow;
+
     return (
         <>
             <ShowFilterToolbar/>
-            <CardGrid cards={showCards} action={addShow}/>
-            {createDialogOpen && <CreateShowDialog close={() => setCreateDialogOpen(false)}/>}
+            <CardGrid cards={showCards} action={action}/>
         </>
     );
 };

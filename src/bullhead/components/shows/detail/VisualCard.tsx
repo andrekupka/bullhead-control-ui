@@ -1,22 +1,16 @@
 import {Typography} from '@material-ui/core';
 import React from 'react';
 import {Visual} from '../../../model/Visual';
-import {CardGridItem} from '../../common/card-grid/CardGridItem';
+import {TitledActionCardGridItem} from '../../common/card-grid/TitledActionCardGridItem';
 
 interface Props {
     visual: Visual;
 }
 
 export const VisualCard = ({visual}: Props) => {
-    const title = (
-        <>
-            <Typography variant='h5' component='div' noWrap>
+    const title = <Typography variant='h5' component='div' noWrap>
                 {visual.name}
-            </Typography>
-        </>
-    );
+            </Typography>;
 
-    return (
-        <CardGridItem title={title}/>
-    );
+    return <TitledActionCardGridItem title={title}/>;
 };

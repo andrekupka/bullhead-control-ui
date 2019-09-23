@@ -9,23 +9,26 @@ import {LightBullState} from '../../state';
 import {selectIsShowUpdating} from '../../state/app/shows/selectors';
 import {updateShow} from '../../state/app/shows/thunks';
 import {LightBullThunkDispatch} from '../../types/redux';
-import {CardGridItem} from '../common/card-grid/CardGridItem';
+import {TitledActionCardGridItem} from '../common/card-grid/TitledActionCardGridItem';
 
 interface Props {
     show: Show;
     isUpdating: boolean;
+    isDisabled: boolean;
     toggleFavorite: (show: Show) => void;
 }
 
-export const PureShowCard = ({show, isUpdating, toggleFavorite}: Props) => {
+export const PureShowCard = ({show, isUpdating, isDisabled, toggleFavorite}: Props) => {
     const [shouldOpen, setShouldOpen] = useState(false);
 
     if (shouldOpen) {
         return <Redirect to={`/shows/${show.id}`}/>;
     }
 
+    const disabled = isDisabled || isUpdating;
+
     const open = () => {
-        if (!isUpdating) {
+        if (!disabled) {
             setShouldOpen(true);
         }
     };
@@ -33,7 +36,7 @@ export const PureShowCard = ({show, isUpdating, toggleFavorite}: Props) => {
     const favoriteIcon = show.favorite ? <StarIcon fontSize='large'/> : <StarBorderIcon fontSize='large'/>;
 
     const favoriteButton = (
-        <IconButton disabled={isUpdating} onClick={event => {
+        <IconButton disabled={disabled} onClick={event => {
             toggleFavorite(show);
             event.stopPropagation();
         }}>
@@ -51,11 +54,11 @@ export const PureShowCard = ({show, isUpdating, toggleFavorite}: Props) => {
     );
 
     return (
-        <CardGridItem title={title}
-                      action={favoriteButton}
-                      isDisabled={isUpdating}
-                      showHover={!isUpdating}
-                      onClick={open}/>
+        <TitledActionCardGridItem title={title}
+                                  action={favoriteButton}
+                                  isDisabled={disabled}
+                                  showHover={!disabled}
+                                  onClick={open}/>
     );
 };
 
