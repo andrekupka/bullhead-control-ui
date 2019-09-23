@@ -5,7 +5,7 @@ const firstShow = {
     id: '1',
     name: 'First Show',
     favorite: false,
-    visuals: []
+    visuals: ['v1']
 };
 
 const secondShow = {
@@ -55,6 +55,31 @@ describe('shows reducer', () => {
 
         expect(state).toEqual({
             [firstShow.id]: updatedShow
+        });
+    });
+
+    it('should add visual to existing show on add visual action', () => {
+        const state = showsReducer({
+            [firstShow.id]: firstShow
+        }, ShowModelActions.addVisual(firstShow.id, 'v2'));
+
+        expect(state).toEqual({
+            [firstShow.id]: {
+                id: firstShow.id,
+                name: firstShow.name,
+                favorite: firstShow.favorite,
+                visuals: ['v1', 'v2']
+            }
+        });
+    });
+
+    it('should ignore add visual action for unknown show id', () => {
+        const state = showsReducer({
+            [firstShow.id]: firstShow
+        }, ShowModelActions.addVisual('unknown', 'v2'));
+
+        expect(state).toEqual({
+            [firstShow.id]: firstShow
         });
     });
 });
