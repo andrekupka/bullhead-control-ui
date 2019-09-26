@@ -1,15 +1,13 @@
-import {connect} from "react-redux";
-import {LoadingState} from "../../../state/ui/loading/reducer";
-import {LightBullState} from "../../../state";
-import {selectShowDetailsLoadingState} from "../../../state/ui/show-details/selectors";
-import {LightBullThunkDispatch} from "../../../types/redux";
-import {SHOW_DETAILS_LOADING_STATE} from "../../../state/ui/show-details/reducer";
-import React from "react";
-import {ShowDetailsView} from "./ShowDetailsView";
-import {Redirect, RouteComponentProps} from "react-router";
-import {loadShow} from "../../../state/ui/show-details/thunks";
-import {createResourceLoader, ResourceLoader, useLoader} from "../../../state/ui/loading/hooks";
-import {LoadingPage} from "../../common/LoadingPage";
+import {connect} from 'react-redux';
+import {LightBullState} from '../../../state';
+import {LightBullThunkDispatch} from '../../../types/redux';
+import React from 'react';
+import {ShowDetailsView} from './ShowDetailsView';
+import {Redirect, RouteComponentProps} from 'react-router';
+import {LoadingPage} from '../../common/LoadingPage';
+import {HttpResourceLoader, useHttpLoader} from '../../../state/app/http/loader';
+import {selectHasSucceeded, selectRequestError} from '../../../state/app/http/selectors';
+import {createLabel, createShowDetailsLoader} from '../../../state/ui/show-details/loader';
 
 
 interface Params {
@@ -18,32 +16,38 @@ interface Params {
 
 interface Props {
     showId: string;
-    loadingState: LoadingState;
 
-    loader: ResourceLoader;
+    succeeded: boolean;
+    error?: Error;
+    loader: HttpResourceLoader;
 }
 
-const PureShowDetailsPage = ({showId, loadingState, loader}: Props) => {
-    useLoader(loader);
+const PureShowDetailsPage = ({showId, succeeded, error, loader}: Props) => {
+    useHttpLoader(loader);
 
-    if (loadingState.loaded) {
+    if (succeeded) {
         return <ShowDetailsView showId={showId}/>;
         // TODO 404 handling or retry
-    } else if (loadingState.error) {
+    } else if (error) {
         return <Redirect to='/shows'/>;
     }
-    return <LoadingPage title='Loading show details' loadingState={loadingState}/>;
+    return <LoadingPage title='Loading show details'/>;
 };
 
 type WrapperProps = RouteComponentProps<Params>;
 
-const mapStateToProps = (state: LightBullState, ownProps: WrapperProps) => ({
-    showId: ownProps.match.params.id,
-    loadingState: selectShowDetailsLoadingState(state)
-});
+const mapStateToProps = (state: LightBullState, ownProps: WrapperProps) => {
+    const showId = ownProps.match.params.id;
+    const label = createLabel(showId);
+    return {
+        showId: showId,
+        succeeded: selectHasSucceeded(state, label),
+        error: selectRequestError(state, label)
+    };
+};
 
 const mapDispatchToProps = (dispatch: LightBullThunkDispatch, ownProps: WrapperProps) => ({
-    loader: createResourceLoader(dispatch, SHOW_DETAILS_LOADING_STATE, loadShow, ownProps.match.params.id)
+    loader: createShowDetailsLoader(dispatch, ownProps.match.params.id)
 });
 
 export const ShowDetailsPage = connect(
