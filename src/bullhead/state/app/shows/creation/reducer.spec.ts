@@ -1,7 +1,7 @@
 import {ShowCreationActions} from './actions';
 import {showCreationReducer} from './reducer';
 
-describe('show create reducer', () => {
+describe('show creation reducer', () => {
     it('should return not pending as initial state', () => {
         const state = showCreationReducer(undefined, {} as any);
 

@@ -3,7 +3,7 @@ import {Api} from '../../../store';
 import {LightBullThunkDispatch} from '../../../types/redux';
 import {ShowModelActions} from '../../model/shows/actions';
 import {showErrorMessage} from '../../ui/messages/thunks';
-import {ShowCreationActions} from './create/actions';
+import {ShowCreationActions} from './creation/actions';
 import {ShowUpdatingActions} from './updating/actions';
 
 export const createShow = (name: string) => async (dispatch: LightBullThunkDispatch) => {
