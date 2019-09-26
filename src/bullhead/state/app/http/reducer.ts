@@ -1,5 +1,6 @@
 import {createReducer} from 'typesafe-actions';
 import {HttpAction, HttpActions} from './actions';
+import {asResetAwareReducer, ResetAware} from '../../reset/reset-aware-utils';
 
 export interface RequestState {
     isPending: boolean;
@@ -7,7 +8,7 @@ export interface RequestState {
     error?: Error;
 }
 
-export const INITIAL_REQUEST_STATE = {
+const INITIAL_REQUEST_STATE = {
     isPending: false,
     succeeded: false
 };
@@ -44,9 +45,9 @@ const httpRequestReducer = createReducer<RequestState, HttpAction>(INITIAL_REQUE
 
 export type HttpState = { [label: string]: RequestState };
 
-export const INITIAL_STATE: HttpState = {};
+const INITIAL_STATE: HttpState = {};
 
-export const httpReducer = createReducer<HttpState, HttpAction>(INITIAL_STATE)
+const pureHttpReducer = createReducer<HttpState, ResetAware<HttpAction>>(INITIAL_STATE)
     .handleAction([HttpActions.request, HttpActions.success, HttpActions.failure], (state, action) => {
         const {label} = action.payload;
         const requestState = state[label];
@@ -60,3 +61,5 @@ export const httpReducer = createReducer<HttpState, HttpAction>(INITIAL_STATE)
         const {[label]: _, ...mappedState} = state;
         return mappedState;
     });
+
+export const httpReducer = asResetAwareReducer(pureHttpReducer);

@@ -4,7 +4,7 @@ import {LightBullThunkDispatch} from '../../types/redux';
 import {LightBullState} from '../../state';
 import {ShowCollectionView} from './ShowCollectionView';
 import {LoadingPage} from '../common/LoadingPage';
-import {selectHasSucceeded} from '../../state/app/http/selectors';
+import {selectRequestHasSucceeded} from '../../state/app/http/selectors';
 import {HttpResourceLoader, useHttpLoader} from '../../state/app/http/loader';
 import {createShowsLoader, SHOWS_LOADING_STATE_LABEL} from '../../state/ui/shows/loader';
 
@@ -23,7 +23,7 @@ export const PureShowsPage = ({loader, succeeded}: Props) => {
 };
 
 const mapStateToProps = (state: LightBullState) => ({
-    succeeded: selectHasSucceeded(state, SHOWS_LOADING_STATE_LABEL)
+    succeeded: selectRequestHasSucceeded(state, SHOWS_LOADING_STATE_LABEL)
 });
 
 const mapDispatchToProps = (dispatch: LightBullThunkDispatch) => ({

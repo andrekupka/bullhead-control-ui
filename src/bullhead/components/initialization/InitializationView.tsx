@@ -2,13 +2,17 @@ import {createStyles, List, makeStyles, Theme, Typography} from '@material-ui/co
 import React from 'react';
 import {connect} from 'react-redux';
 import {LightBullState} from '../../state';
-import {InitializationInfo, InitializationState} from '../../state/app/initialization/reducer';
+import {InitializationState} from '../../state/app/initialization/reducer';
 import {StandaloneContainer} from '../common/StandaloneContainer';
-import {InitializationStateItem} from './InitializationStateItem';
+import {InitializationItem} from './InitializationItem';
+import {selectRequestState} from '../../state/app/http/selectors';
+import {LOAD_CONFIG_LABEL} from '../../state/app/initialization/thunks';
+import {RequestState} from '../../state/app/http/reducer';
 
 interface Props {
-    webSocket: InitializationInfo;
+    webSocketConnected: boolean;
     initialization: InitializationState;
+    config: RequestState;
 }
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
@@ -25,10 +29,12 @@ const PureInitializationView = (props: Props) => {
     if (props.initialization.enabled) {
         initializationDataItems =
             <>
-                <InitializationStateItem loadingText='Loading config...'
-                                         loadedText='Loaded config!'
-                                         failedText='Failed to load config'
-                                         state={props.initialization.config}/>
+                <InitializationItem initializingText='Loading config...'
+                                    initializedText='Loaded config!'
+                                    failedText='Failed to load config'
+                                    initialized={props.config ? props.config.succeeded : false}
+                                    error={props.config ? props.config.error : undefined}
+                />
             </>;
     }
 
@@ -39,9 +45,9 @@ const PureInitializationView = (props: Props) => {
             </Typography>
 
             <List className={classes.list}>
-                <InitializationStateItem loadingText='Establishing WebSocket connection...'
-                                         loadedText='Established WebSocket connection!'
-                                         state={props.webSocket}/>
+                <InitializationItem initializingText='Establishing WebSocket connection...'
+                                    initializedText='Established WebSocket connection!'
+                                    initialized={props.webSocketConnected}/>
                 {initializationDataItems}
             </List>
         </StandaloneContainer>
@@ -49,12 +55,9 @@ const PureInitializationView = (props: Props) => {
 };
 
 const mapStateToProps = (state: LightBullState) => ({
-    webSocket: {
-        loading: state.webSocket.isConnecting,
-        loaded: state.webSocket.isConnected,
-        failed: false
-    },
+    webSocketConnected: state.webSocket.isConnected,
     initialization: state.app.initialization,
+    config: selectRequestState(state, LOAD_CONFIG_LABEL),
 });
 
 export const InitializationView = connect(

@@ -42,6 +42,9 @@ export const httpMiddleware = (config: HttpMiddlewareConfig) => {
             }
         } catch (error) {
             if (isActive()) {
+                if (request.errorHandler) {
+                    request.errorHandler(error, dispatch);
+                }
                 dispatch(HttpActions.failure(label, error));
             }
         }

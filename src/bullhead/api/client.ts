@@ -1,6 +1,5 @@
 import axios, {AxiosInstance, AxiosRequestConfig} from 'axios';
-import {Config} from '../model/Config';
-import {Show, ShowCollection, ShowWithVisuals} from '../model/Show';
+import {Show} from '../model/Show';
 import {Visual} from '../model/Visual';
 
 export const BASE_URL = 'http://localhost:8080';
@@ -31,26 +30,11 @@ class ApiClient {
         return await token;
     }
 
-    async loadConfig(): Promise<Config> {
-        const response = await this.axiosClient.get('/api/config');
-        return response.data;
-    }
-
-    async loadShows(): Promise<ShowCollection> {
-        const response = await this.axiosClient.get('/api/shows');
-        return response.data;
-    }
-
     async createShow(name: string): Promise<Show> {
         const response = await this.axiosClient.post('/api/shows', {
             name: name
         });
         return response.data
-    }
-
-    async loadShow(showId: string): Promise<ShowWithVisuals> {
-        const response = await this.axiosClient.get(`/api/shows/${showId}`);
-        return response.data;
     }
 
     async updateShow(show: Show): Promise<Show> {

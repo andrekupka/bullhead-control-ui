@@ -4,7 +4,7 @@ export const selectRequestState = (state: LightBullState, label: string) => stat
 
 export const selectHasRequest = (state: LightBullState, label: string) => selectRequestState(state, label) !== undefined;
 
-export const selectHasSucceeded = (state: LightBullState, label: string) => {
+export const selectRequestHasSucceeded = (state: LightBullState, label: string) => {
     const requestState = selectRequestState(state, label);
     return requestState && requestState.succeeded;
 };

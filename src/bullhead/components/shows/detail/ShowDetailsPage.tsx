@@ -6,7 +6,7 @@ import {ShowDetailsView} from './ShowDetailsView';
 import {Redirect, RouteComponentProps} from 'react-router';
 import {LoadingPage} from '../../common/LoadingPage';
 import {HttpResourceLoader, useHttpLoader} from '../../../state/app/http/loader';
-import {selectHasSucceeded, selectRequestError} from '../../../state/app/http/selectors';
+import {selectRequestHasSucceeded, selectRequestError} from '../../../state/app/http/selectors';
 import {createLabel, createShowDetailsLoader} from '../../../state/ui/show-details/loader';
 
 
@@ -41,7 +41,7 @@ const mapStateToProps = (state: LightBullState, ownProps: WrapperProps) => {
     const label = createLabel(showId);
     return {
         showId: showId,
-        succeeded: selectHasSucceeded(state, label),
+        succeeded: selectRequestHasSucceeded(state, label),
         error: selectRequestError(state, label)
     };
 };
