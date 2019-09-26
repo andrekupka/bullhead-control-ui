@@ -1,24 +1,42 @@
 import {LightBullThunkDispatch} from '../../../types/redux';
 
-export type SuccessHandler<T> = (response: T, dispatch: LightBullThunkDispatch) => void;
+export type ResponseSuccessHandler<T> = (response: T, dispatch: LightBullThunkDispatch) => void;
+
+export type EmptyResponseSuccessHandler = (dispatch: LightBullThunkDispatch) => void;
 
 export type ErrorHandler = (error: Error, dispatch: LightBullThunkDispatch) => void;
 
-export interface RequestConfigBase {
+export interface RequestBase {
     path: string;
-}
-
-export interface GetRequestConfig<T> extends RequestConfigBase {
-    method: 'get';
-    successHandler: SuccessHandler<T>;
     errorHandler?: ErrorHandler;
 }
 
-export interface PostRequestConfig<T> extends RequestConfigBase {
-    method: 'post';
+export interface RequestWithResponseBase<T> extends RequestBase {
+    successHandler?: ResponseSuccessHandler<T>
+}
+
+export interface RequestWithEmptyResponseBase extends RequestBase {
+    successHandler?: EmptyResponseSuccessHandler
+}
+
+export interface RequestWithBodyBase extends RequestBase {
     body: any;
-    successHandler: SuccessHandler<T>;
-    errorHandler?: ErrorHandler;
 }
 
-export type RequestConfig<T> = GetRequestConfig<T> | PostRequestConfig<T>;
+export interface GetRequest<T> extends RequestWithResponseBase<T> {
+    method: 'get';
+}
+
+export interface PostRequest<T> extends RequestWithResponseBase<T>, RequestWithBodyBase {
+    method: 'post';
+}
+
+export interface PutRequest<T> extends RequestWithResponseBase<T>, RequestWithBodyBase {
+    method: 'put'
+}
+
+export interface DeleteRequest extends RequestWithEmptyResponseBase {
+    method: 'delete'
+}
+
+export type Request<T> = GetRequest<T> | PostRequest<T> | PutRequest<T> | DeleteRequest;

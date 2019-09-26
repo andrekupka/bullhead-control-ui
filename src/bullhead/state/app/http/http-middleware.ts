@@ -3,7 +3,7 @@ import {MiddlewareAPI} from 'redux';
 import {LightBullState} from '../../index';
 import axios, {AxiosRequestConfig} from 'axios';
 import {HttpAction, HttpActions} from './actions';
-import {GetRequestConfig} from './types';
+import {RequestBase, RequestWithEmptyResponseBase, RequestWithResponseBase} from './types';
 import {LightBullThunkDispatch} from '../../../types/redux';
 import {selectHasRequest, selectIsPending} from './selectors';
 
@@ -29,25 +29,52 @@ export const httpMiddleware = (config: HttpMiddlewareConfig) => {
         client.interceptors.request.use(interceptor);
     }
 
-    const performGet = async <T>(dispatch: HMDispatch, getState: () => LightBullState,
-                                 label: string, request: GetRequestConfig<T>) => {
-        const isActive = () => selectHasRequest(getState(), label);
-
-        try {
-            const response = await client.get(request.path);
-            const responseBody = response.data as T;
-            if (isActive()) {
-                request.successHandler(responseBody, dispatch);
+    const performRequestWithResponse = async <T>(dispatch: HMDispatch,
+                                                 getState: () => LightBullState,
+                                                 label: string,
+                                                 request: RequestWithResponseBase<T>,
+                                                 execution: () => Promise<T>) => {
+        await performRequest(dispatch, getState, label, request, async () => {
+            const response = await execution();
+            if (selectHasRequest(getState(), label)) {
+                if (request.successHandler) {
+                    request.successHandler(response, dispatch);
+                }
                 dispatch(HttpActions.success(label));
             }
+        });
+    };
+
+    const performRequestWithEmptyResponse = async <T>(dispatch: HMDispatch,
+                                                      getState: () => LightBullState,
+                                                      label: string,
+                                                      request: RequestWithEmptyResponseBase,
+                                                      execution: () => Promise<void>) => {
+        await performRequest(dispatch, getState, label, request, async () => {
+            await execution();
+            if (selectHasRequest(getState(), label)) {
+                if (request.successHandler) {
+                    request.successHandler(dispatch);
+                }
+                dispatch(HttpActions.success(label));
+            }
+        });
+    };
+
+    const performRequest = async <T>(dispatch: HMDispatch, getState: () => LightBullState,
+                                     label: string, request: RequestBase,
+                                     execution: () => Promise<void>) => {
+        try {
+            await execution();
         } catch (error) {
-            if (isActive()) {
+            if (selectHasRequest(getState(), label)) {
                 if (request.errorHandler) {
                     request.errorHandler(error, dispatch);
                 }
                 dispatch(HttpActions.failure(label, error));
             }
         }
+
     };
 
     return (api: HMMiddlewareAPI) => (next: HMDispatch) => (action: HMAction) => {
@@ -64,7 +91,27 @@ export const httpMiddleware = (config: HttpMiddlewareConfig) => {
 
         switch (request.method) {
             case 'get':
-                performGet(api.dispatch, () => api.getState(), label, request);
+                performRequestWithResponse(api.dispatch, () => api.getState(), label, request, async () => {
+                    const response = await client.get(request.path);
+                    return response.data;
+                });
+                break;
+            case 'post':
+                performRequestWithResponse(api.dispatch, () => api.getState(), label, request, async () => {
+                    const response = await client.post(request.path, request.body);
+                    return response.data;
+                });
+                break;
+            case 'put':
+                performRequestWithResponse(api.dispatch, () => api.getState(), label, request, async () => {
+                    const response = await client.put(request.path, request.body);
+                    return response.data;
+                });
+                break;
+            case 'delete':
+                performRequestWithEmptyResponse(api.dispatch, () => api.getState(), label, request, async () => {
+                    await client.delete(request.path);
+                });
                 break;
         }
 

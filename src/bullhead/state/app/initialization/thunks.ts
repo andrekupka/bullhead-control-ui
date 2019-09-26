@@ -14,6 +14,10 @@ export const LOAD_CONFIG_LABEL = 'get_config';
 export const loadConfig = () => async (dispatch: LightBullThunkDispatch, getState: () => LightBullState) => {
     const isInitializationEnabled = () => getState().app.initialization.enabled;
 
+    if (!isInitializationEnabled()) {
+        return;
+    }
+
     dispatch(HttpActions.request(LOAD_CONFIG_LABEL, {
         method: 'get',
         path: '/api/config',

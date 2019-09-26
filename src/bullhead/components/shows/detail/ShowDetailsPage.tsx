@@ -5,8 +5,8 @@ import React from 'react';
 import {ShowDetailsView} from './ShowDetailsView';
 import {Redirect, RouteComponentProps} from 'react-router';
 import {LoadingPage} from '../../common/LoadingPage';
-import {HttpResourceLoader, useHttpLoader} from '../../../state/app/http/loader';
-import {selectRequestHasSucceeded, selectRequestError} from '../../../state/app/http/selectors';
+import {selectRequestError, selectRequestHasSucceeded} from '../../../state/app/http/selectors';
+import {ParameterizedHttpResourceLoader, useParameterizedHttpLoader} from '../../../state/app/http/loader';
 import {createLabel, createShowDetailsLoader} from '../../../state/ui/show-details/loader';
 
 
@@ -19,11 +19,14 @@ interface Props {
 
     succeeded: boolean;
     error?: Error;
-    loader: HttpResourceLoader;
+
+    loader: ParameterizedHttpResourceLoader<string>;
 }
 
-const PureShowDetailsPage = ({showId, succeeded, error, loader}: Props) => {
-    useHttpLoader(loader);
+const PureShowDetailsPage = (props: Props) => {
+    const {showId, succeeded, error, loader} = props;
+
+    useParameterizedHttpLoader(loader, showId);
 
     if (succeeded) {
         return <ShowDetailsView showId={showId}/>;
@@ -46,8 +49,8 @@ const mapStateToProps = (state: LightBullState, ownProps: WrapperProps) => {
     };
 };
 
-const mapDispatchToProps = (dispatch: LightBullThunkDispatch, ownProps: WrapperProps) => ({
-    loader: createShowDetailsLoader(dispatch, ownProps.match.params.id)
+const mapDispatchToProps = (dispatch: LightBullThunkDispatch) => ({
+    loader: createShowDetailsLoader(dispatch)
 });
 
 export const ShowDetailsPage = connect(

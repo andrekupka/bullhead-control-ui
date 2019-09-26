@@ -6,7 +6,7 @@ export const selectHasRequest = (state: LightBullState, label: string) => select
 
 export const selectRequestHasSucceeded = (state: LightBullState, label: string) => {
     const requestState = selectRequestState(state, label);
-    return requestState && requestState.succeeded;
+    return requestState !== undefined ? requestState.succeeded || false : false;
 };
 
 export const selectRequestError = (state: LightBullState, label: string) => {

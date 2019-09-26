@@ -1,8 +1,8 @@
 import {ActionType, createAction} from 'typesafe-actions';
-import {RequestConfig} from './types';
+import {Request} from './types';
 
 export const HttpActions = {
-    request: createAction('@app/http/REQUEST', action => <T>(label: string, request: RequestConfig<T>) =>
+    request: createAction('@app/http/REQUEST', action => <T>(label: string, request: Request<T>) =>
         action({label, request})),
     success: createAction('@app/http/SUCCESS', action => (label: string) =>
         action({label})),
