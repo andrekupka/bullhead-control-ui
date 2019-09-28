@@ -6,31 +6,30 @@ import {HttpActions} from '../http/actions';
 import {Config} from '../../../model/Config';
 
 export const startInitialization = () => (dispatch: LightBullThunkDispatch) => {
-    dispatch(loadConfig());
+    dispatch(initializeConfig());
 };
 
-export const LOAD_CONFIG_LABEL = 'get_config';
+export const INITIALIZE_CONFIG_LABEL = 'get_config';
 
-export const loadConfig = () => async (dispatch: LightBullThunkDispatch, getState: () => LightBullState) => {
+export const initializeConfig = () => async (dispatch: LightBullThunkDispatch, getState: () => LightBullState) => {
     const isInitializationEnabled = () => getState().app.initialization.enabled;
 
     if (!isInitializationEnabled()) {
         return;
     }
 
-    dispatch(HttpActions.request(LOAD_CONFIG_LABEL, {
+    dispatch(HttpActions.request(INITIALIZE_CONFIG_LABEL, {
         method: 'get',
         path: '/api/config',
-        successHandler: (configJson: any) => {
-            const config = configJson as Config;
+        successHandler: (config: any) => {
             if (isInitializationEnabled()) {
-                dispatch(ConfigModelActions.initialize(config));
+                dispatch(ConfigModelActions.initialize(config as Config));
             }
         },
         errorHandler: (error: Error) => {
             delay(2000).then(() => {
                 if (isInitializationEnabled()) {
-                    dispatch(loadConfig());
+                    dispatch(initializeConfig());
                 }
             })
         }

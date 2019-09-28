@@ -3,20 +3,7 @@ import {Api} from '../../../store';
 import {LightBullThunkDispatch} from '../../../types/redux';
 import {ShowModelActions} from '../../model/shows/actions';
 import {showErrorMessage} from '../../ui/messages/thunks';
-import {ShowCreationActions} from './creation/actions';
 import {ShowUpdatingActions} from './updating/actions';
-
-export const createShow = (name: string) => async (dispatch: LightBullThunkDispatch) => {
-    dispatch(ShowCreationActions.request());
-    try {
-        const show = await Api.createShow(name);
-        dispatch(ShowModelActions.set(show));
-        dispatch(ShowCreationActions.success(show.id));
-    } catch (error) {
-        dispatch(showErrorMessage(`Failed to add show: ${error.message}`));
-        dispatch(ShowCreationActions.reset());
-    }
-};
 
 export const updateShow = (show: Show) => async (dispatch: LightBullThunkDispatch) => {
     try {

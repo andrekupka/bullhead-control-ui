@@ -1,6 +1,5 @@
 import axios, {AxiosInstance, AxiosRequestConfig} from 'axios';
 import {Show} from '../model/Show';
-import {Visual} from '../model/Visual';
 
 export const BASE_URL = 'http://localhost:8080';
 export const DEFAULT_TIMEOUT = 10000;
@@ -30,23 +29,8 @@ class ApiClient {
         return await token;
     }
 
-    async createShow(name: string): Promise<Show> {
-        const response = await this.axiosClient.post('/api/shows', {
-            name: name
-        });
-        return response.data
-    }
-
     async updateShow(show: Show): Promise<Show> {
         const response = await this.axiosClient.put(`/api/shows/${show.id}`, show);
-        return response.data;
-    }
-
-    async createVisual(showId: string, name: string): Promise<Visual> {
-        const response = await this.axiosClient.post(`/api/visuals`, {
-            show: showId,
-            name: name
-        });
         return response.data;
     }
 }

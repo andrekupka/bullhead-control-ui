@@ -5,7 +5,7 @@ import axios, {AxiosRequestConfig} from 'axios';
 import {HttpAction, HttpActions} from './actions';
 import {RequestBase, RequestWithEmptyResponseBase, RequestWithResponseBase} from './types';
 import {LightBullThunkDispatch} from '../../../types/redux';
-import {selectHasRequest, selectIsPending} from './selectors';
+import {selectHasRequest, selectRequestIsPending} from './selectors';
 
 type HMAction = HttpAction;
 type HMDispatch = LightBullThunkDispatch;
@@ -84,7 +84,7 @@ export const httpMiddleware = (config: HttpMiddlewareConfig) => {
 
         const {label, request} = action.payload;
 
-        const isPending = selectIsPending(api.getState(), label);
+        const isPending = selectRequestIsPending(api.getState(), label);
         if (isPending) {
             return next(action);
         }

@@ -14,7 +14,7 @@ export const selectRequestError = (state: LightBullState, label: string) => {
     return requestState ? requestState.error : undefined;
 };
 
-export const selectIsPending = (state: LightBullState, label: string) => {
+export const selectRequestIsPending = (state: LightBullState, label: string) => {
     const requestState = state.app.http[label];
     if (requestState) {
         return requestState.isPending || false;

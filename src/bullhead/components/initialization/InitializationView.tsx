@@ -6,7 +6,7 @@ import {InitializationState} from '../../state/app/initialization/reducer';
 import {StandaloneContainer} from '../common/StandaloneContainer';
 import {InitializationItem} from './InitializationItem';
 import {selectRequestState} from '../../state/app/http/selectors';
-import {LOAD_CONFIG_LABEL} from '../../state/app/initialization/thunks';
+import {INITIALIZE_CONFIG_LABEL} from '../../state/app/initialization/thunks';
 import {RequestState} from '../../state/app/http/reducer';
 
 interface Props {
@@ -57,7 +57,7 @@ const PureInitializationView = (props: Props) => {
 const mapStateToProps = (state: LightBullState) => ({
     webSocketConnected: state.webSocket.isConnected,
     initialization: state.app.initialization,
-    config: selectRequestState(state, LOAD_CONFIG_LABEL),
+    config: selectRequestState(state, INITIALIZE_CONFIG_LABEL),
 });
 
 export const InitializationView = connect(
