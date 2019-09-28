@@ -18,7 +18,6 @@ const createWebSocketUrl = (path: string) => {
     }
     url += '//' + current.host;
     url += path;
-    console.log(url);
     return url;
 };
 
