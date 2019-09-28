@@ -4,12 +4,13 @@ import React, {useState} from 'react';
 import {connect} from 'react-redux';
 import {Redirect, RouteProps} from 'react-router-dom';
 import {LightBullState} from '../../state';
-import {signIn} from '../../state/authentication/thunks';
 import {LightBullThunkDispatch} from '../../types/redux';
 import {PasswordInput} from '../common/form/PasswordInput';
 import {ProgressAwareButton} from '../common/form/ProgressAwareButton';
 import {StandaloneContainer} from '../common/StandaloneContainer';
 import {AuthenticationLostInfo} from './AuthenticationLostInfo';
+import {createLoginRequest, LOGIN_LABEL} from '../../state/authentication/requests';
+import {selectRequestIsPending} from '../../state/app/http/selectors';
 
 interface Props extends RouteProps {
     isAuthenticated: boolean;
@@ -95,13 +96,13 @@ const PureLoginView = (props: Props) => {
 
 const mapStateToProps = (state: LightBullState) => ({
     isAuthenticated: state.authentication.isAuthenticated,
-    isAuthenticating: state.authentication.isAuthenticating,
+    isAuthenticating: selectRequestIsPending(state, LOGIN_LABEL),
     authenticationLost: state.authentication.authenticationLost,
     authenticationError: state.authentication.authenticationError
 });
 
 const mapDispatchToProps = (dispatch: LightBullThunkDispatch) => ({
-    signIn: (password: string) => dispatch(signIn(password))
+    signIn: (password: string) => dispatch(createLoginRequest(password))
 });
 
 export const SignInView = connect(
