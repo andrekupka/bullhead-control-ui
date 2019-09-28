@@ -16,6 +16,8 @@ const visualComparator = (visual1: Visual, visual2: Visual): number => {
     return visual1.name.localeCompare(visual2.name);
 };
 
+export const selectVisual = (state: LightBullState, visualId: string) => state.model.visuals[visualId];
+
 export const selectVisualsOfShow = (state: LightBullState, showId: string) => {
     const show = selectShow(state, showId);
     if (!show) {

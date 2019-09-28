@@ -8,6 +8,20 @@ type WSAction = WebSocketAction;
 type WSDispatch = Dispatch<WSAction>;
 type WSMiddlewareAPI = MiddlewareAPI<WSDispatch, LightBullState>;
 
+const createWebSocketUrl = (path: string) => {
+    const current = window.location;
+    let url = '';
+    if (current.protocol === 'https:') {
+        url += 'wss:';
+    } else {
+        url += 'ws:';
+    }
+    url += '//' + current.host;
+    url += path;
+    console.log(url);
+    return url;
+};
+
 export const webSocketMiddleware = () => {
     let socket: WebSocket | null = null;
     let reconnect = false;
@@ -25,7 +39,7 @@ export const webSocketMiddleware = () => {
 
     const onMessage = (api: WSMiddlewareAPI) => (event: MessageEvent) => {
         const {type, payload, meta} = JSON.parse(event.data);
-        if (!type ){
+        if (!type) {
             return;
         }
 
@@ -57,7 +71,7 @@ export const webSocketMiddleware = () => {
 
                 const connectResult = next(action);
 
-                socket = new WebSocket('ws://localhost:8080');
+                socket = new WebSocket(createWebSocketUrl('/ws'));
                 socket.onopen = onOpen(api);
                 socket.onmessage = onMessage(api);
                 socket.onclose = onClose(api);

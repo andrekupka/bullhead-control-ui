@@ -7,7 +7,8 @@ import {LoadingPage} from '../common/LoadingPage';
 import {createShowLoader, getShowLabel} from '../../state/ui/show-details/loader';
 import {selectRequestHasSucceeded} from '../../state/app/http/selectors';
 import {LightBullThunkDispatch} from '../../types/redux';
-import {createVisualLoader} from '../../state/ui/visual/loader';
+import {createVisualLoader, getVisualLabel} from '../../state/ui/visual/loader';
+import {VisualView} from './VisualView';
 
 interface Params {
     showId: string;
@@ -28,13 +29,10 @@ const PureVisualPage = (props: Props) => {
     const {showId, visualId, succeeded, showLoader, visualLoader} = props;
 
     useParameterizedHttpLoader(showLoader, showId);
-    useParameterizedHttpLoader(visualLoader, showId);
+    useParameterizedHttpLoader(visualLoader, visualId);
 
     if (succeeded) {
-        return <div>
-            <p>Show {props.showId}</p>
-            <p>Visual {props.visualId}</p>
-        </div>;
+        return <VisualView showId={showId} visualId={visualId}/>
     }
     return <LoadingPage title='Loading visual details'/>;
 };
@@ -44,13 +42,14 @@ type WrapperProps = RouteComponentProps<Params>;
 const mapStateToProps = (state: LightBullState, ownProps: WrapperProps) => {
     const {showId, visualId} = ownProps.match.params;
 
-    const label = getShowLabel(showId);
+    const succeeded = selectRequestHasSucceeded(state, getShowLabel(showId)) &&
+        selectRequestHasSucceeded(state, getVisualLabel(visualId));
 
     return {
         showId: showId,
         visualId: visualId,
 
-        succeeded: selectRequestHasSucceeded(state, label)
+        succeeded: succeeded
     };
 };
 

@@ -14,7 +14,7 @@ type HMMiddlewareAPI = MiddlewareAPI<HMDispatch, LightBullState>;
 export type AxiosRequestInterceptor = (config: AxiosRequestConfig) => AxiosRequestConfig;
 
 export interface HttpMiddlewareConfig {
-    baseUrl: string;
+    baseUrl?: string;
     timeout?: number;
     interceptors?: Array<AxiosRequestInterceptor>;
 }
