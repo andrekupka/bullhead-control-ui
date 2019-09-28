@@ -6,10 +6,10 @@ import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
 import {Show} from '../../model/Show';
 import {LightBullState} from '../../state';
-import {selectIsShowUpdating} from '../../state/app/shows/selectors';
-import {updateShow} from '../../state/app/shows/thunks';
 import {LightBullThunkDispatch} from '../../types/redux';
 import {TitledActionCardGridItem} from '../common/card-grid/TitledActionCardGridItem';
+import {selectRequestIsPending} from '../../state/app/http/selectors';
+import {updateShowLabel, updateShowRequest} from '../../state/app/shows/requests';
 
 interface Props {
     show: Show;
@@ -65,7 +65,7 @@ export const PureShowCard = ({show, isUpdating, isDisabled, toggleFavorite}: Pro
 type OwnProps = Pick<Props, 'show'>
 
 const mapStateToProps = (state: LightBullState, ownProps: OwnProps) => ({
-    isUpdating: selectIsShowUpdating(state, ownProps.show.id)
+    isUpdating: selectRequestIsPending(state, updateShowLabel(ownProps.show.id))
 });
 
 const mapDispatchToProps = (dispatch: LightBullThunkDispatch) => ({
@@ -74,7 +74,7 @@ const mapDispatchToProps = (dispatch: LightBullThunkDispatch) => ({
             ...show,
             favorite: !show.favorite
         };
-        dispatch(updateShow(updatedShow));
+        dispatch(updateShowRequest(updatedShow));
     }
 });
 

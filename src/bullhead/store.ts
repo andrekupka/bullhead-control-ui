@@ -2,7 +2,6 @@ import {applyMiddleware, createStore, Store} from 'redux';
 import {composeWithDevTools} from 'redux-devtools-extension';
 import thunk from 'redux-thunk';
 import {getType} from 'typesafe-actions';
-import {BASE_URL, createApi, DEFAULT_TIMEOUT} from './api/client';
 import {lightBullReducer, LightBullState} from './state';
 import {AuthenticationActions} from './state/authentication/actions';
 import {tokenPersistingMiddleware} from './state/authentication/token-persisting-middleware';
@@ -42,8 +41,8 @@ const createHttpMiddleware = () => {
     };
 
     const httpConfig: HttpMiddlewareConfig = {
-        baseUrl: BASE_URL,
-        timeout: DEFAULT_TIMEOUT,
+        baseUrl: 'http://localhost:8080',
+        timeout: 10000,
         interceptors: [
             config => {
                 headerConfigurer(config.headers);
@@ -73,18 +72,5 @@ const initializeStore = () => {
 };
 
 export const store = initializeStore();
-
-const headerConfigurer = (headers: any) => {
-    const authorizationToken = store.getState().authentication.token;
-    if (authorizationToken) {
-        headers.Authorization = `Bearer ${authorizationToken}`;
-    }
-    const connectionId = store.getState().connection.connectionId;
-    if (connectionId) {
-        headers['X-Connection-Id'] = connectionId;
-    }
-};
-
-export const Api = createApi(BASE_URL, headerConfigurer, DEFAULT_TIMEOUT);
 
 initializeState(store);
