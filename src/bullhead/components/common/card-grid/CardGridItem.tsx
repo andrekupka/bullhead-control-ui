@@ -29,7 +29,7 @@ const useStyles = makeStyles({
 export const CardGridItem: FunctionComponent<Props> = props => {
     const classes = useStyles();
 
-    const shouldShowHover = props.showHover || true;
+    const shouldShowHover = props.showHover !== undefined ? props.showHover : true;
     const shouldShowDarkened = props.showDarkened || false;
 
     const cardClasses = classNames(

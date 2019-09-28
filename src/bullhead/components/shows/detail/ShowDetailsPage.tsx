@@ -7,7 +7,7 @@ import {Redirect, RouteComponentProps} from 'react-router';
 import {LoadingPage} from '../../common/LoadingPage';
 import {selectRequestError, selectRequestHasSucceeded} from '../../../state/app/http/selectors';
 import {ParameterizedHttpResourceLoader, useParameterizedHttpLoader} from '../../../state/app/http/loader';
-import {createLabel, createShowDetailsLoader} from '../../../state/ui/show-details/loader';
+import {getShowLabel, createShowLoader} from '../../../state/ui/show-details/loader';
 
 
 interface Params {
@@ -41,7 +41,7 @@ type WrapperProps = RouteComponentProps<Params>;
 
 const mapStateToProps = (state: LightBullState, ownProps: WrapperProps) => {
     const showId = ownProps.match.params.id;
-    const label = createLabel(showId);
+    const label = getShowLabel(showId);
     return {
         showId: showId,
         succeeded: selectRequestHasSucceeded(state, label),
@@ -50,7 +50,7 @@ const mapStateToProps = (state: LightBullState, ownProps: WrapperProps) => {
 };
 
 const mapDispatchToProps = (dispatch: LightBullThunkDispatch) => ({
-    loader: createShowDetailsLoader(dispatch)
+    loader: createShowLoader(dispatch)
 });
 
 export const ShowDetailsPage = connect(

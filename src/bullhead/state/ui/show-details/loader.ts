@@ -4,11 +4,11 @@ import {ShowWithVisuals} from '../../../model/Show';
 import {ShowModelActions} from '../../model/shows/actions';
 import {VisualModelActions} from '../../model/visuals/actions';
 
-export const createLabel = (showId: string) => `get_show_${showId}`;
+export const getShowLabel = (showId: string) => `get_show_${showId}`;
 
-export const createShowDetailsLoader = (dispatch: LightBullThunkDispatch) =>
+export const createShowLoader = (dispatch: LightBullThunkDispatch) =>
     createParameterizedHttpResourceLoader(dispatch,
-        (showId: string) => createLabel(showId),
+        (showId: string) => getShowLabel(showId),
         showId => `/api/shows/${showId}`,
         (showWithVisuals: ShowWithVisuals) => {
             const show = {
