@@ -12,9 +12,12 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {SnackbarMessageWithId} from '../../model/SnackbarMessage';
 import {LightBullState} from '../../state';
+import {LightBullThunkDispatch} from '../../types/redux';
+import {closeMessage} from '../../state/ui/messages/thunks';
 
 interface Props {
     message?: SnackbarMessageWithId;
+    closeMessage: (messageId: string) => void;
 }
 
 type VariantIconMap = { [variant: string]: React.ComponentType<SvgIconProps> };
@@ -55,7 +58,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     }
 }));
 
-export const PureSnackbarMessageContainer = ({message}: Props) => {
+export const PureSnackbarMessageContainer = ({message, closeMessage}: Props) => {
     const classes = useStyles();
 
     if (!message) {
@@ -84,7 +87,7 @@ export const PureSnackbarMessageContainer = ({message}: Props) => {
                       className: classNames(classes[variant], classes.content)
                   }}
                   action={
-                      <IconButton color='inherit'>
+                      <IconButton color='inherit' onClick={() => closeMessage(message.id)}>
                           <CloseIcon className={classes.icon}/>
                       </IconButton>
                   }>
@@ -96,6 +99,11 @@ const mapStateToProps = (state: LightBullState) => ({
     message: state.ui.messages.messages.length > 0 ? state.ui.messages.messages[0] : undefined
 });
 
+const mapDispatchToProps = (dispatch: LightBullThunkDispatch) => ({
+    closeMessage: (messageId: string) => dispatch(closeMessage(messageId))
+});
+
 export const SnackbarMessageContainer = connect(
-    mapStateToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(PureSnackbarMessageContainer);

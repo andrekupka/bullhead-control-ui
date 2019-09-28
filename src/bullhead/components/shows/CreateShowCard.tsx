@@ -1,26 +1,29 @@
 import {LightBullState} from '../../state';
 import {LightBullThunkDispatch} from '../../types/redux';
-import {createShow} from '../../state/app/shows/thunks';
-import {ShowCreationActions} from '../../state/app/shows/creation/actions';
+import {ShowsActions} from '../../state/app/shows/actions';
 import {connect} from 'react-redux';
 import {CreateNamedResourceCard} from '../common/CreateNamedResourceCard';
+import {selectRequestIsPending} from '../../state/app/http/selectors';
+import {HttpActions} from '../../state/app/http/actions';
+import {CREATE_SHOW_LABEL, createShowRequest} from '../../state/app/shows/requests';
 
 const mapStateToProps = (state: LightBullState) => {
-    const creation = state.app.shows.creation;
-    const newShowId = creation.newShowId;
+    const newShowId = state.app.shows.newShowId;
 
     return {
         label: 'Show Name',
 
-        isPending: creation.isPending,
+        isPending: selectRequestIsPending(state, CREATE_SHOW_LABEL),
         successRedirect: (newShowId ? `/shows/${newShowId}`: undefined),
-        error: creation.error
-    }
+    };
 };
 
 const mapDispatchToProps = (dispatch: LightBullThunkDispatch) => ({
-    createResource: (name: string) => dispatch(createShow(name)),
-    finishCreation: () => dispatch(ShowCreationActions.reset())
+    createResource: (name: string) => dispatch(createShowRequest(name)),
+    finishCreation: () => {
+        dispatch(HttpActions.reset(CREATE_SHOW_LABEL));
+        dispatch(ShowsActions.resetNewShowId());
+    }
 });
 
 export const CreateShowCard = connect(

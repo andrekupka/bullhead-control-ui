@@ -1,36 +1,33 @@
-import {connect} from "react-redux";
-import React from "react";
-import {LightBullThunkDispatch} from "../../types/redux";
-import {LightBullState} from "../../state";
-import {ShowCollectionView} from "./ShowCollectionView";
-import {LoadingState} from "../../state/ui/loading/reducer";
-import {loadShows} from "../../state/ui/shows/thunks";
-import {SHOWS_LOADING_STATE} from "../../state/ui/shows/reducer";
-import {selectShowsLoadingState} from "../../state/ui/shows/selectors";
-import {createResourceLoader, ResourceLoader, useLoader} from "../../state/ui/loading/hooks";
-import {LoadingPage} from "../common/LoadingPage";
+import {connect} from 'react-redux';
+import React from 'react';
+import {LightBullThunkDispatch} from '../../types/redux';
+import {LightBullState} from '../../state';
+import {ShowCollectionView} from './ShowCollectionView';
+import {LoadingPage} from '../common/LoadingPage';
+import {selectRequestHasSucceeded} from '../../state/app/http/selectors';
+import {HttpResourceLoader, useHttpLoader} from '../../state/app/http/loader';
+import {createShowsLoader, SHOWS_LOADING_STATE_LABEL} from '../../state/ui/shows/loader';
 
 interface Props {
-    loadingState: LoadingState
-
-    loader: ResourceLoader,
+    succeeded: boolean;
+    loader: HttpResourceLoader;
 }
 
-export const PureShowsPage = ({loadingState, loader}: Props) => {
-    useLoader(loader);
+export const PureShowsPage = ({loader, succeeded}: Props) => {
+    useHttpLoader(loader);
 
-    if (loadingState.loaded) {
+    if (succeeded) {
         return <ShowCollectionView/>;
     }
-    return <LoadingPage title='Loading shows' loadingState={loadingState}/>;
+    return <LoadingPage title='Loading shows'/>;
 };
 
 const mapStateToProps = (state: LightBullState) => ({
-    loadingState: selectShowsLoadingState(state)
+    succeeded: selectRequestHasSucceeded(state, SHOWS_LOADING_STATE_LABEL)
 });
 
 const mapDispatchToProps = (dispatch: LightBullThunkDispatch) => ({
-    loader: createResourceLoader(dispatch, SHOWS_LOADING_STATE, loadShows)
+    loader: createShowsLoader(dispatch)
 });
 
 export const ShowsPage = connect(

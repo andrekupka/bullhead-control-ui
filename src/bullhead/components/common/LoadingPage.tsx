@@ -1,10 +1,8 @@
-import {LoadingState} from "../../state/ui/loading/reducer";
-import React from "react";
-import {Box, CircularProgress, createStyles, makeStyles, Theme, Typography} from "@material-ui/core";
+import React from 'react';
+import {Box, CircularProgress, createStyles, makeStyles, Theme, Typography} from '@material-ui/core';
 
 interface Props {
     title: string;
-    loadingState: LoadingState;
 }
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
@@ -13,7 +11,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     }
 }));
 
-export const LoadingPage = ({title, loadingState}: Props) => {
+export const LoadingPage = ({title}: Props) => {
     const classes = useStyles();
 
     return <Box display='flex' justifyContent='center' alignItems='center' marginTop={4}>

@@ -20,7 +20,6 @@ interface Props {
 
     isPending: boolean;
     successRedirect?: string;
-    error?: string;
 
     finishCreation: () => void;
     createResource: (name: string) => void;

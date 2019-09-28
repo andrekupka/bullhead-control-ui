@@ -5,10 +5,10 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Show} from '../../../model/Show';
 import {LightBullState} from '../../../state';
-import {selectIsShowUpdating} from '../../../state/app/shows/selectors';
-import {updateShow} from '../../../state/app/shows/thunks';
 import {LightBullThunkDispatch} from '../../../types/redux';
 import {EditableName} from '../../common/EditableName';
+import {selectRequestIsPending} from '../../../state/app/http/selectors';
+import {updateShowLabel, updateShowRequest} from '../../../state/app/shows/requests';
 
 interface Props {
     show: Show;
@@ -55,11 +55,11 @@ export const PureShowName = ({show, isUpdating, updateShow}: Props) => {
 type OwnProps = Pick<Props, 'show'>
 
 const mapStateToProps = (state: LightBullState, {show}: OwnProps) => ({
-    isUpdating: selectIsShowUpdating(state, show.id)
+    isUpdating: selectRequestIsPending(state, updateShowLabel(show.id))
 });
 
 const mapDispatchToProps = (dispatch: LightBullThunkDispatch) => ({
-    updateShow: (show: Show) => dispatch(updateShow(show))
+    updateShow: (show: Show) => dispatch(updateShowRequest(show))
 });
 
 export const ShowName = connect(

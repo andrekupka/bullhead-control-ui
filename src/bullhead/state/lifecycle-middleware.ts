@@ -5,7 +5,7 @@ import {AuthenticationAction, AuthenticationActions} from './authentication/acti
 import {ConnectionAction, ConnectionActions} from './connection/actions';
 import {LightBullState} from './index';
 import {InitializationActions} from './app/initialization/actions';
-import {startLoading} from './app/initialization/thunks';
+import {startInitialization} from './app/initialization/thunks';
 import {WebSocketAction, WebSocketActions} from './web-socket/actions';
 
 type LCAction = AuthenticationAction | ConnectionAction | WebSocketAction;
@@ -30,7 +30,7 @@ export const lifecycleMiddleware = () => {
             // start initialization when connection is identified
             case getType(ConnectionActions.identified):
                 api.dispatch(InitializationActions.enable());
-                api.dispatch(startLoading());
+                api.dispatch(startInitialization());
                 break;
             // handle web-socket message in connection handler
             case getType(WebSocketActions.received):

@@ -10,7 +10,6 @@ describe('authentication reducer', () => {
 
         expect(state).toEqual({
             isAuthenticated: false,
-            isAuthenticating: false,
             authenticationLost: false
         });
     });
@@ -20,60 +19,24 @@ describe('authentication reducer', () => {
 
         expect(state).toEqual({
             isAuthenticated: true,
-            isAuthenticating: false,
             token: 'something',
             authenticationLost: false
         })
     });
 
-    it('should request authentication with progress on request action', () => {
-        const state = authenticationReducer(createState(), AuthenticationActions.request());
-
-        expect(state).toMatchObject({
-            isAuthenticated: false,
-            isAuthenticating: true,
-        });
-    });
-
-    it('should ignore request action if already authenticated', () => {
-        const state = authenticationReducer(createState({
-            isAuthenticated: true,
-            token: 'something'
-        }), AuthenticationActions.request());
-
-        expect(state).toMatchObject({
-            isAuthenticated: true,
-            isAuthenticating: false,
-            token: 'something'
-        });
-    });
-
-    it('should reset authentication error on request action', () => {
-        const state = authenticationReducer(createState({
-            authenticationError: 'Invalid password'
-        }), AuthenticationActions.request());
-
-        expect(state).toMatchObject({
-            authenticationError: undefined
-        });
-    });
-
     it('should sign in user, reset progress and store token on success action', () => {
         const state = authenticationReducer(createState({
             isAuthenticated: false,
-            isAuthenticating: true
         }), AuthenticationActions.success('something'));
 
         expect(state).toMatchObject({
             isAuthenticated: true,
-            isAuthenticating: false,
             token: 'something'
         });
     });
 
     it('should reset lost authentication on success action', () => {
         const state = authenticationReducer(createState({
-            isAuthenticating: true,
             authenticationLost: true
         }), AuthenticationActions.success('something'));
 
@@ -85,19 +48,16 @@ describe('authentication reducer', () => {
     it('should show error and reset progress on failure action', () => {
         const state = authenticationReducer(createState({
             isAuthenticated: false,
-            isAuthenticating: true
         }), AuthenticationActions.failure('Invalid password'));
 
         expect(state).toMatchObject({
             isAuthenticated: false,
-            isAuthenticating: false,
             authenticationError: 'Invalid password'
         });
     });
 
     it('should reset lost authentication on failure action', () => {
         const state = authenticationReducer(createState({
-            isAuthenticating: true,
             authenticationLost: true,
         }), AuthenticationActions.failure('Invalid password'));
 
@@ -122,13 +82,11 @@ describe('authentication reducer', () => {
     it('should sign out user and remove token on clear action', () => {
         const state = authenticationReducer(createState({
             isAuthenticated: true,
-            isAuthenticating: false,
             token: 'token'
         }), AuthenticationActions.clear());
 
         expect(state).toMatchObject({
             isAuthenticated: false,
-            isAuthenticating: false,
             token: undefined
         });
     });
