@@ -10,6 +10,7 @@ import {Home} from './home/Home';
 import {SystemView} from './system/SystemView';
 import {ShowsPage} from "./shows/ShowsPage";
 import {ShowDetailsPage} from "./shows/detail/ShowDetailsPage";
+import {VisualPage} from './visual/VisualPage';
 
 interface Props extends NavigationAware {
 }
@@ -57,8 +58,9 @@ const PureLightBullPageContainer = (props: Props) => {
                     <Switch>
                         <Route exact path='/' component={Home}/>
                         <Route exact path='/shows' component={ShowsPage}/>
-                        <Route path='/shows/:id' component={ShowDetailsPage}/>
-                        <Route path='/system' component={SystemView}/>
+                        <Route exact path='/shows/:id' component={ShowDetailsPage}/>
+                        <Route exact path='/shows/:showId/visuals/:visualId' component={VisualPage}/>
+                        <Route exact path='/system' component={SystemView}/>
                         <Route component={NotFound}/>
                     </Switch>
                 </div>

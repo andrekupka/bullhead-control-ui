@@ -14,7 +14,7 @@ interface Props {
     shows: ShowCollection;
 }
 
-const PureShowCollectionView = (props: Props) => {
+const PureShowsView = (props: Props) => {
     const [isCreating, setCreating] = useState(false);
 
     const showCards = props.shows.map(show => ({
@@ -44,6 +44,6 @@ const mapStateToProps = (state: LightBullState) => ({
     shows: selectFilteredShows(state)
 });
 
-export const ShowCollectionView = connect(
+export const ShowsView = connect(
     mapStateToProps
-)(PureShowCollectionView);
+)(PureShowsView);

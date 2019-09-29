@@ -23,7 +23,9 @@ const PureShowDetailsView = ({show, visuals}: Props) => {
 
     const visualCards = visuals.map(visual => ({
         id: visual.id,
-        element: <VisualCard visual={visual}/>
+        element: <VisualCard showId={show.id}
+                             isDisabled={isCreating}
+                             visual={visual}/>
     }));
 
     const addVisual = (

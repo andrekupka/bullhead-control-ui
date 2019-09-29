@@ -2,7 +2,7 @@ import {connect} from 'react-redux';
 import React from 'react';
 import {LightBullThunkDispatch} from '../../types/redux';
 import {LightBullState} from '../../state';
-import {ShowCollectionView} from './ShowCollectionView';
+import {ShowsView} from './ShowsView';
 import {LoadingPage} from '../common/LoadingPage';
 import {selectRequestHasSucceeded} from '../../state/app/http/selectors';
 import {HttpResourceLoader, useHttpLoader} from '../../state/app/http/loader';
@@ -17,7 +17,7 @@ export const PureShowsPage = ({loader, succeeded}: Props) => {
     useHttpLoader(loader);
 
     if (succeeded) {
-        return <ShowCollectionView/>;
+        return <ShowsView/>;
     }
     return <LoadingPage title='Loading shows'/>;
 };

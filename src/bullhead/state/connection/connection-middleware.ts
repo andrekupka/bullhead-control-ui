@@ -50,6 +50,8 @@ export const connectionMiddleware = () => {
                 const visual = payload.visual;
                 api.dispatch(VisualModelActions.set(visual));
                 api.dispatch(ShowModelActions.addVisual(payload.show, visual.id));
+            } else if (type === 'updateVisual') {
+                api.dispatch(VisualModelActions.set(payload.visual));
             }
         };
 
