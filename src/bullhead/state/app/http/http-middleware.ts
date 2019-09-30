@@ -5,7 +5,7 @@ import axios, {AxiosRequestConfig} from 'axios';
 import {HttpAction, HttpActions} from './actions';
 import {RequestBase, RequestWithEmptyResponseBase, RequestWithResponseBase} from './types';
 import {LightBullThunkDispatch} from '../../../types/redux';
-import {selectHasRequest, selectRequestIsPending} from './selectors';
+import {selectHasRequest, selectRequestCancelSource, selectRequestIsPending} from './selectors';
 
 type HMAction = HttpAction;
 type HMDispatch = LightBullThunkDispatch;
@@ -78,43 +78,67 @@ export const httpMiddleware = (config: HttpMiddlewareConfig) => {
     };
 
     return (api: HMMiddlewareAPI) => (next: HMDispatch) => (action: HMAction) => {
-        if (!isActionOf(HttpActions.request, action)) {
+        if (isActionOf(HttpActions.request, action)) {
+            const {label, request} = action.payload;
+
+            const isPending = selectRequestIsPending(api.getState(), label);
+            if (isPending) {
+                return next(action);
+            }
+
+            const cancelSource = axios.CancelToken.source();
+            api.dispatch(HttpActions.initRequest(label, cancelSource));
+
+            switch (request.method) {
+                case 'get':
+                    performRequestWithResponse(api.dispatch, () => api.getState(), label, request, async () => {
+                        const response = await client.get(request.path, {
+                            cancelToken: cancelSource.token
+                        });
+                        return response.data;
+                    });
+                    break;
+                case 'post':
+                    performRequestWithResponse(api.dispatch, () => api.getState(), label, request, async () => {
+                        const response = await client.post(request.path, request.body, {
+                            cancelToken: cancelSource.token
+                        });
+                        return response.data;
+                    });
+                    break;
+                case 'put':
+                    performRequestWithResponse(api.dispatch, () => api.getState(), label, request, async () => {
+                        const response = await client.put(request.path, request.body, {
+                            cancelToken: cancelSource.token
+                        });
+                        return response.data;
+                    });
+                    break;
+                case 'delete':
+                    performRequestWithEmptyResponse(api.dispatch, () => api.getState(), label, request, async () => {
+                        await client.delete(request.path, {
+                            cancelToken: cancelSource.token
+                        });
+                    });
+                    break;
+            }
+
+            return next(action);
+        } else if (isActionOf(HttpActions.reset, action)) {
+            const {label} = action.payload;
+
+            const isPending = selectRequestIsPending(api.getState(), label);
+            if (!isPending) {
+                return next(action);
+            }
+
+            const cancelSource = selectRequestCancelSource(api.getState(), label);
+            if (cancelSource) {
+                cancelSource.cancel(`Request ${label} was cancelled`);
+            }
+
             return next(action);
         }
-
-        const {label, request} = action.payload;
-
-        const isPending = selectRequestIsPending(api.getState(), label);
-        if (isPending) {
-            return next(action);
-        }
-
-        switch (request.method) {
-            case 'get':
-                performRequestWithResponse(api.dispatch, () => api.getState(), label, request, async () => {
-                    const response = await client.get(request.path);
-                    return response.data;
-                });
-                break;
-            case 'post':
-                performRequestWithResponse(api.dispatch, () => api.getState(), label, request, async () => {
-                    const response = await client.post(request.path, request.body);
-                    return response.data;
-                });
-                break;
-            case 'put':
-                performRequestWithResponse(api.dispatch, () => api.getState(), label, request, async () => {
-                    const response = await client.put(request.path, request.body);
-                    return response.data;
-                });
-                break;
-            case 'delete':
-                performRequestWithEmptyResponse(api.dispatch, () => api.getState(), label, request, async () => {
-                    await client.delete(request.path);
-                });
-                break;
-        }
-
         return next(action);
     };
 };

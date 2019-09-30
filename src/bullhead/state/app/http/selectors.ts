@@ -21,3 +21,8 @@ export const selectRequestIsPending = (state: LightBullState, label: string) => 
     }
     return false;
 };
+
+export const selectRequestCancelSource = (state: LightBullState, label: string) => {
+    const requestState = state.app.http[label];
+    return requestState ? requestState.cancelSource : undefined;
+};
