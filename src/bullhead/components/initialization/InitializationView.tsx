@@ -11,6 +11,7 @@ import {RequestState} from '../../state/app/http/reducer';
 
 interface Props {
     webSocketConnected: boolean;
+    connectionIdentified: boolean;
     initialization: InitializationState;
     config: RequestState;
 }
@@ -48,6 +49,11 @@ const PureInitializationView = (props: Props) => {
                 <InitializationItem initializingText='Establishing WebSocket connection...'
                                     initializedText='Established WebSocket connection!'
                                     initialized={props.webSocketConnected}/>
+                {props.webSocketConnected && <InitializationItem
+                    initializingText='Identifying WebSocket connection...'
+                    initializedText='Identified WebSocket connection!'
+                    initialized={props.connectionIdentified}/>
+                }
                 {initializationDataItems}
             </List>
         </StandaloneContainer>
@@ -56,8 +62,9 @@ const PureInitializationView = (props: Props) => {
 
 const mapStateToProps = (state: LightBullState) => ({
     webSocketConnected: state.webSocket.isConnected,
+    connectionIdentified: state.connection.connectionId !== undefined,
     initialization: state.app.initialization,
-    config: selectRequestState(state, INITIALIZE_CONFIG_LABEL),
+    config: selectRequestState(state, INITIALIZE_CONFIG_LABEL)
 });
 
 export const InitializationView = connect(

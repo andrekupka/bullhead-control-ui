@@ -13,7 +13,7 @@ export const createVisualRequest = (showId: string, name: string) => HttpActions
     method: 'post',
     path: '/api/visuals',
     body: {
-        show: showId,
+        showId: showId,
         name: name
     },
     successHandler: (response: any, dispatch) => {

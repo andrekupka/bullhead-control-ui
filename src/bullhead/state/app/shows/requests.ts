@@ -1,5 +1,5 @@
 import {HttpActions} from '../http/actions';
-import {Show} from '../../../model/Show';
+import {Show, ShowWithVisuals} from '../../../model/Show';
 import {ShowModelActions} from '../../model/shows/actions';
 import {ShowsActions} from './actions';
 import {showErrorMessage} from '../../ui/messages/thunks';
@@ -28,6 +28,12 @@ export const updateShowRequest = (show: Show) => HttpActions.request(updateShowL
     method: 'put',
     path: `/api/shows/${show.id}`,
     body: show,
-    successHandler: (response: any, dispatch) => dispatch(ShowModelActions.set(response as Show)),
+    successHandler: (response: any, dispatch) => {
+        const show = response as ShowWithVisuals;
+        dispatch(ShowModelActions.set({
+            ...show,
+            visualIds: show.visuals.map(visual => visual.id)
+        }));
+    },
     errorHandler: (error: Error, dispatch) => dispatch(showErrorMessage(`Failed to update show: ${error.message}`))
 });

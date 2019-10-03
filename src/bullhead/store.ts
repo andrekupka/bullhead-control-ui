@@ -36,7 +36,7 @@ const createHttpMiddleware = () => {
         }
         const connectionId = store.getState().connection.connectionId;
         if (connectionId) {
-            headers['X-Connection-Id'] = connectionId;
+            headers['X-Lightbull-Connection-Id'] = connectionId;
         }
     };
 

@@ -13,7 +13,7 @@ export const createShowLoader = (dispatch: LightBullThunkDispatch) =>
         (showWithVisuals: ShowWithVisuals) => {
             const show = {
                 ...showWithVisuals,
-                visuals: showWithVisuals.visuals.map(visual => visual.id)
+                visualIds: showWithVisuals.visuals.map(visual => visual.id)
             };
             dispatch(ShowModelActions.set(show));
             dispatch(VisualModelActions.setAll(showWithVisuals.visuals));

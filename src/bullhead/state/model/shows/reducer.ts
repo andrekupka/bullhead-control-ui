@@ -21,12 +21,12 @@ export const showsReducer = createReducer<ShowsState, ShowModelAction>(INITIAL_S
         const showId = action.payload.showId;
         const show = state[showId];
         if (show) {
-            const newVisuals = [...show.visuals, action.payload.visualId];
+            const newVisuals = [...show.visualIds, action.payload.visualId];
             return {
                 ...state,
                 [showId]: {
                     ...show,
-                    visuals: newVisuals
+                    visualIds: newVisuals
                 }
             };
         }

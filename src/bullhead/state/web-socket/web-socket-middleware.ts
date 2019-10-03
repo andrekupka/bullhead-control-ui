@@ -37,13 +37,13 @@ export const webSocketMiddleware = () => {
     };
 
     const onMessage = (api: WSMiddlewareAPI) => (event: MessageEvent) => {
-        const {type, payload, meta} = JSON.parse(event.data);
-        if (!type) {
+        const {topic, payload, meta} = JSON.parse(event.data);
+        if (!topic) {
             return;
         }
 
         api.dispatch(WebSocketActions.received({
-            type,
+            topic,
             payload,
             meta
         }));

@@ -18,40 +18,40 @@ export const connectionMiddleware = () => {
         const isIdentified = () => api.getState().connection.connectionId !== undefined;
 
         const handleMessage = (message: LightBullMessage) => {
-            const {type, payload, meta} = message;
+            const {topic, payload, meta} = message;
             if (isIdentified()) {
                 if (meta && meta.connectionId && meta.connectionId === api.getState().connection.connectionId) {
                     return;
                 }
-                handleMessageIdentified(type, payload);
+                handleMessageIdentified(topic, payload);
             } else {
-                handleMessageUnidentified(type, payload);
+                handleMessageUnidentified(topic, payload);
             }
         };
 
-        const handleMessageUnidentified = (type: string, payload: any) => {
-            if (type === 'identified') {
+        const handleMessageUnidentified = (topic: string, payload: any) => {
+            if (topic === 'identified') {
                 if (payload && payload.connectionId) {
                     api.dispatch(ConnectionActions.identified(payload.connectionId));
                 } else {
                     api.dispatch(AuthenticationActions.lost());
                 }
-            } else if (type === 'unidentified') {
+            } else if (topic === 'unidentified') {
                 api.dispatch(AuthenticationActions.lost());
             }
         };
 
-        const handleMessageIdentified = (type: string, payload: any) => {
-            if (type === 'createShow') {
-                api.dispatch(ShowModelActions.set(payload.show));
-            } else if (type === 'updateShow') {
-                api.dispatch(ShowModelActions.set(payload.show));
-            } else if (type === 'createVisual') {
-                const visual = payload.visual;
+        const handleMessageIdentified = (topic: string, payload: any) => {
+            if (topic === 'show_added') {
+                api.dispatch(ShowModelActions.set(payload));
+            } else if (topic === 'show_changed') {
+                api.dispatch(ShowModelActions.set(payload));
+            } else if (topic === 'visual_added') {
+                const visual = payload;
                 api.dispatch(VisualModelActions.set(visual));
                 api.dispatch(ShowModelActions.addVisual(payload.show, visual.id));
-            } else if (type === 'updateVisual') {
-                api.dispatch(VisualModelActions.set(payload.visual));
+            } else if (topic === 'visual_changed') {
+                api.dispatch(VisualModelActions.set(payload));
             }
         };
 
@@ -63,7 +63,7 @@ export const connectionMiddleware = () => {
                     throw new Error('Invalid state, token is not initialized');
                 }
                 api.dispatch(WebSocketActions.send({
-                    type: 'identify',
+                    topic: 'identify',
                     payload: {
                         token: token
                     }
