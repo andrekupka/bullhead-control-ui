@@ -9,7 +9,7 @@ export interface IdWithParent {
     parentId?: string;
 }
 
-export type RecursiveIdsByModel = {
+export type RelatedIdsByModel = {
     [K in ModelType]?: Array<IdWithParent>
 }
 
@@ -19,8 +19,8 @@ export const ModelActions = {
             action({model, modelId, parentId})
     ),
     removeRecursive: createAction('@model/REMOVE_RECURSIVE', action =>
-        (recursiveIds: RecursiveIdsByModel, model: ModelType, modelId: string, parentId?: string) =>
-            action({recursiveIds, model, modelId, parentId}))
+        (relatedIds: RelatedIdsByModel, model: ModelType, modelId: string, parentId?: string) =>
+            action({relatedIds, model, modelId, parentId}))
 };
 
 export type ModelAction = ShowModelAction | VisualModelAction | ActionType<typeof ModelActions>;

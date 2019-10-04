@@ -20,7 +20,7 @@ export const showsReducer = createReducer<ShowsState, ModelAction>(INITIAL_STATE
         [action.payload.show.id]: action.payload.show
     }))
     .handleAction(ModelActions.removeRecursive, (state, action) => {
-        const {recursiveIds, model, modelId, parentId} = action.payload;
+        const {relatedIds, model, modelId, parentId} = action.payload;
         if (model === 'visual' && parentId) {
             const show = state[parentId];
             return {
@@ -32,7 +32,7 @@ export const showsReducer = createReducer<ShowsState, ModelAction>(INITIAL_STATE
             }
         }
 
-        const showIds = recursiveIds['show'];
+        const showIds = relatedIds['show'];
         if (showIds) {
             const newState = {...state};
             showIds.forEach(showId => {

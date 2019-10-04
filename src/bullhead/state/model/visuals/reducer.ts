@@ -19,7 +19,7 @@ export const visualsReducer = createReducer<VisualsState, ModelAction>(INITIAL_S
         [action.payload.visual.id]: action.payload.visual
     }))
     .handleAction(ModelActions.removeRecursive, (state, action) => {
-        const visualIds = action.payload.recursiveIds['visual'];
+        const visualIds = action.payload.relatedIds['visual'];
         if (visualIds) {
             const newState = {...state};
             visualIds.forEach(visualId => {
