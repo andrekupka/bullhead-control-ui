@@ -2,7 +2,7 @@ import {createReducer} from 'typesafe-actions';
 import {ShowMap} from '../../../model/Show';
 import {ShowModelActions} from './actions';
 import {VisualModelActions} from '../visuals/actions';
-import {ModelAction} from '../actions';
+import {ModelAction, ModelActions} from '../actions';
 
 export type ShowsState = ShowMap;
 
@@ -19,10 +19,29 @@ export const showsReducer = createReducer<ShowsState, ModelAction>(INITIAL_STATE
         ...state,
         [action.payload.show.id]: action.payload.show
     }))
-    .handleAction(ShowModelActions.remove, (state, action) => {
-        const newState = {...state};
-        delete newState[action.payload.showId];
-        return newState;
+    .handleAction(ModelActions.removeRecursive, (state, action) => {
+        const {recursiveIds, model, modelId, parentId} = action.payload;
+        if (model === 'visual' && parentId) {
+            const show = state[parentId];
+            return {
+                ...state,
+                [show.id]: {
+                    ...show,
+                    visualIds: show.visualIds.filter(visualId => visualId !== modelId)
+                }
+            }
+        }
+
+        const showIds = recursiveIds['show'];
+        if (showIds) {
+            const newState = {...state};
+            showIds.forEach(showId => {
+                delete newState[showId.id];
+            });
+            return newState;
+        }
+
+        return state;
     })
     .handleAction(VisualModelActions.add, (state, action) => {
         const visual = action.payload.visual;

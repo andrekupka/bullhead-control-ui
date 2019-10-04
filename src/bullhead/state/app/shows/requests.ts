@@ -4,6 +4,7 @@ import {ShowModelActions} from '../../model/shows/actions';
 import {ShowsActions} from './actions';
 import {showErrorMessage, showSuccessMessage} from '../../ui/messages/thunks';
 import {selectShow} from '../../model/shows/selectors';
+import {ModelActions} from '../../model/actions';
 
 export const CREATE_SHOW_LABEL = 'create_show';
 
@@ -46,7 +47,7 @@ export const deleteShowReqeust = (showId: string) => HttpActions.request(deleteS
     path: `/api/shows/${showId}`,
     successHandler: (dispatch, getState) => {
         const show = selectShow(getState(), showId);
-        dispatch(ShowModelActions.remove(showId))
+        dispatch(ModelActions.remove('show', showId));
         if (show) {
             dispatch(showSuccessMessage(`Show ${show.name} has been deleted`));
         }
