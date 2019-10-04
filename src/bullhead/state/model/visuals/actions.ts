@@ -7,6 +7,9 @@ export const VisualModelActions = {
     ),
     set: createAction('@model/visuals/SET', action => (visual: Visual) =>
         action({visual})
+    ),
+    add: createAction('@model/visuals/ADD', action => (visual: Visual) =>
+        action({visual})
     )
 };
 

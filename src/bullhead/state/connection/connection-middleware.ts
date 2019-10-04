@@ -47,9 +47,7 @@ export const connectionMiddleware = () => {
             } else if (topic === 'show_changed') {
                 api.dispatch(ShowModelActions.set(payload));
             } else if (topic === 'visual_added') {
-                const visual = payload;
-                api.dispatch(VisualModelActions.set(visual));
-                api.dispatch(ShowModelActions.addVisual(payload.show, visual.id));
+                api.dispatch(VisualModelActions.add(payload));
             } else if (topic === 'visual_changed') {
                 api.dispatch(VisualModelActions.set(payload));
             }

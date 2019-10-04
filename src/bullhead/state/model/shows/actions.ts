@@ -8,10 +8,6 @@ export const ShowModelActions = {
 
     set: createAction('@model/shows/SET', action => (show: Show) =>
         action({show})
-    ),
-
-    addVisual: createAction('@model/shows/ADD_VISUAL', action => (showId: string, visualId: string) =>
-        action({showId, visualId})
     )
 };
 
