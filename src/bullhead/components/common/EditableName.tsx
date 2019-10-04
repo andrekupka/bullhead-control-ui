@@ -20,6 +20,7 @@ interface Props {
 
     name: string;
     updateName: (name: string) => void;
+    isDisabled: boolean;
     isUpdating: boolean;
 
     iconAction?: JSX.Element;
@@ -45,7 +46,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     }
 }));
 
-export const EditableName = ({label, name, updateName, isUpdating, iconAction}: Props) => {
+export const EditableName = ({label, name, updateName, isDisabled, isUpdating, iconAction}: Props) => {
     const classes = useStyles();
     const [isEditing, setEditing] = useState(false);
     const [inputValue, setInputValue] = useState(name);
@@ -57,17 +58,21 @@ export const EditableName = ({label, name, updateName, isUpdating, iconAction}: 
     }, [name, isEditing]);
 
     if (!isEditing) {
-        const startEditing = () => setEditing(true);
+        const startEditing = () => {
+            if (!isDisabled) {
+                setEditing(true);
+            }
+        };
 
         return <Typography variant='h4' className={classes.wrapper}>
             {iconAction && <div>
                 {iconAction}
             </div>}
             <span onClick={startEditing}
-                  className={classNames(classes.title, isUpdating && classes.darken)}>
+                  className={classNames(classes.title, (isUpdating || isDisabled) && classes.darken)}>
                 {name}
                 </span>
-            <IconButton disabled={isUpdating} onClick={startEditing}>
+            <IconButton disabled={isDisabled} onClick={startEditing}>
                 <EditIcon/>
             </IconButton>
             {isUpdating && <CircularProgress/>}
@@ -82,9 +87,11 @@ export const EditableName = ({label, name, updateName, isUpdating, iconAction}: 
     };
 
     const performUpdate = (event: FormEvent) => {
-        event.preventDefault();
-        updateName(inputValue);
-        stopEditing(false);
+        if (!isDisabled) {
+            event.preventDefault();
+            updateName(inputValue);
+            stopEditing(false);
+        }
     };
 
     const closeButton = <InputAdornment position='end'>
@@ -100,6 +107,7 @@ export const EditableName = ({label, name, updateName, isUpdating, iconAction}: 
                            variant='outlined'
                            label={label}
                            value={inputValue}
+                           disabled={isDisabled}
                            onChange={event => setInputValue(event.target.value)}
                            onKeyDown={handleEscape(() => stopEditing())}
                            InputProps={{

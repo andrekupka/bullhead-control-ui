@@ -9,11 +9,11 @@ import {LightBullThunkDispatch} from '../../types/redux';
 
 interface Props {
     visual: Visual;
-    isUpdating: boolean;
+    hasProgress: boolean;
     updateVisual: (visual: Visual) => void;
 }
 
-export const PureVisualName = ({visual, isUpdating, updateVisual}: Props) => {
+export const PureVisualName = ({visual, hasProgress, updateVisual}: Props) => {
     const updateName = (name: string) => {
         const newVisual = {
             ...visual,
@@ -25,13 +25,14 @@ export const PureVisualName = ({visual, isUpdating, updateVisual}: Props) => {
     return <EditableName label='Visual name'
                          name={visual.name}
                          updateName={name => updateName(name)}
-                         isUpdating={isUpdating}/>;
+                         isDisabled={false}
+                         isUpdating={hasProgress}/>;
 };
 
 type OwnProps = Pick<Props, 'visual'>
 
 const mapStateToProps = (state: LightBullState, {visual}: OwnProps) => ({
-    isUpdating: selectRequestIsPending(state, updateVisualLabel(visual.id))
+    hasProgress: selectRequestIsPending(state, updateVisualLabel(visual.id))
 });
 
 const mapDispatchToProps = (dispatch: LightBullThunkDispatch) => ({

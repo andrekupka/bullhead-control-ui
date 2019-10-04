@@ -13,14 +13,16 @@ import {Box, Fab} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import {CreateVisualCard} from './CreateVisualCard';
 import {DeleteShowButton} from './DeleteShowButton';
-import { Redirect } from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
+import {selectShowIsUpdating} from '../../../state/ui/show-details/selectors';
 
 interface Props {
     show?: Show;
     visuals: VisualCollection;
+    hasProgress: boolean;
 }
 
-const PureShowDetailsView = ({show, visuals}: Props) => {
+const PureShowDetailsView = ({show, visuals, hasProgress}: Props) => {
     const [isCreating, setCreating] = useState(false);
 
     if (!show) {
@@ -35,7 +37,7 @@ const PureShowDetailsView = ({show, visuals}: Props) => {
     }));
 
     const addVisual = (
-        <Fab color='primary' onClick={() => setCreating(true)}>
+        <Fab color='primary' disabled={hasProgress} onClick={() => setCreating(true)}>
             <AddIcon/>
         </Fab>
     );
@@ -47,9 +49,9 @@ const PureShowDetailsView = ({show, visuals}: Props) => {
     return (
         <>
             <Box display='flex'>
-                <ShowName show={show}/>
+                <ShowName isDisabled={hasProgress} show={show}/>
                 <Box flexGrow={1}/>
-                <DeleteShowButton showId={show.id}/>
+                <DeleteShowButton isDisabled={hasProgress} showId={show.id}/>
             </Box>
             <ShowDetailsFilterToolbar/>
             <CardGrid cards={visualCards} action={action}/>
@@ -63,7 +65,8 @@ interface WrapperProps {
 
 const mapStateToProps = (state: LightBullState, {showId}: WrapperProps) => ({
     show: selectShow(state, showId),
-    visuals: selectFilteredVisualsOfShow(state, showId)
+    visuals: selectFilteredVisualsOfShow(state, showId),
+    hasProgress: selectShowIsUpdating(state, showId)
 });
 
 export const ShowDetailsView = connect(

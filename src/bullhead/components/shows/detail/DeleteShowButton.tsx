@@ -11,12 +11,12 @@ interface WrapperProps {
 }
 
 const mapStateToProps = (state: LightBullState, {showId}: WrapperProps) => ({
-    isDisabled: selectRequestIsPending(state, deleteShowLabel(showId)),
+    hasProgress: selectRequestIsPending(state, deleteShowLabel(showId)),
     actionIcon: DeleteIcon
 });
 
 const mapDispatchToProps = (dispatch: LightBullThunkDispatch, {showId}: WrapperProps) => ({
-    performAction: () => dispatch(deleteShowReqeust(showId)),
+    performAction: () => dispatch(deleteShowReqeust(showId))
 });
 
 export const DeleteShowButton = connect(
