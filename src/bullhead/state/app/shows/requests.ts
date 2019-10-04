@@ -2,11 +2,15 @@ import {HttpActions} from '../http/actions';
 import {Show, ShowWithVisuals} from '../../../model/Show';
 import {ShowModelActions} from '../../model/shows/actions';
 import {ShowsActions} from './actions';
-import {showErrorMessage} from '../../ui/messages/thunks';
+import {showErrorMessage, showSuccessMessage} from '../../ui/messages/thunks';
+import {selectShow} from '../../model/shows/selectors';
+import {ModelActions} from '../../model/actions';
 
 export const CREATE_SHOW_LABEL = 'create_show';
 
 export const updateShowLabel = (showId: string) => `update_show_${showId}`;
+
+export const deleteShowLabel = (showId: string) => `delete_show_${showId}`;
 
 export const createShowRequest = (name: string) => HttpActions.request(CREATE_SHOW_LABEL, {
     method: 'post',
@@ -36,4 +40,17 @@ export const updateShowRequest = (show: Show) => HttpActions.request(updateShowL
         }));
     },
     errorHandler: (error: Error, dispatch) => dispatch(showErrorMessage(`Failed to update show: ${error.message}`))
+});
+
+export const deleteShowReqeust = (showId: string) => HttpActions.request(deleteShowLabel(showId), {
+    method: 'delete',
+    path: `/api/shows/${showId}`,
+    successHandler: (dispatch, getState) => {
+        const show = selectShow(getState(), showId);
+        dispatch(ModelActions.remove('show', showId));
+        if (show) {
+            dispatch(showSuccessMessage(`Show ${show.name} has been deleted`));
+        }
+    },
+    errorHandler: (error: Error, dispatch) => dispatch(showErrorMessage(`Failed to delete show: ${error.message}`))
 });

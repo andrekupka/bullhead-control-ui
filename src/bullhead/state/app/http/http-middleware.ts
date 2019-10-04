@@ -38,7 +38,7 @@ export const httpMiddleware = (config: HttpMiddlewareConfig) => {
             const response = await execution();
             if (selectHasRequest(getState(), label)) {
                 if (request.successHandler) {
-                    request.successHandler(response, dispatch);
+                    request.successHandler(response, dispatch, getState);
                 }
                 dispatch(HttpActions.success(label));
             }
@@ -54,7 +54,7 @@ export const httpMiddleware = (config: HttpMiddlewareConfig) => {
             await execution();
             if (selectHasRequest(getState(), label)) {
                 if (request.successHandler) {
-                    request.successHandler(dispatch);
+                    request.successHandler(dispatch, getState);
                 }
                 dispatch(HttpActions.success(label));
             }
@@ -69,7 +69,7 @@ export const httpMiddleware = (config: HttpMiddlewareConfig) => {
         } catch (error) {
             if (selectHasRequest(getState(), label)) {
                 if (request.errorHandler) {
-                    request.errorHandler(error, dispatch);
+                    request.errorHandler(error, dispatch, getState);
                 }
                 dispatch(HttpActions.failure(label, error));
             }

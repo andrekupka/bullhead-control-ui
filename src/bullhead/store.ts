@@ -11,6 +11,7 @@ import {resetAwareMiddleware} from './state/reset/reset-aware-middleware';
 import {WebSocketActions} from './state/web-socket/actions';
 import {webSocketMiddleware} from './state/web-socket/web-socket-middleware';
 import {httpMiddleware, HttpMiddlewareConfig} from './state/app/http/http-middleware';
+import {modelDeletingMiddleware} from './state/model/model-deleting-middleware';
 
 export const LOCAL_STORAGE_TOKEN_KEY = 'token';
 
@@ -61,7 +62,8 @@ const initializeStore = () => {
         tokenPersistingMiddleware(LOCAL_STORAGE_TOKEN_KEY),
         createHttpMiddleware(),
         webSocketMiddleware(),
-        connectionMiddleware()
+        connectionMiddleware(),
+        modelDeletingMiddleware()
     ];
 
     return createStore(

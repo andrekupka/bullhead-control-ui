@@ -12,11 +12,12 @@ import {updateShowLabel, updateShowRequest} from '../../../state/app/shows/reque
 
 interface Props {
     show: Show;
+    isDisabled: boolean;
     isUpdating: boolean;
     updateShow: (show: Show) => void;
 }
 
-export const PureShowName = ({show, isUpdating, updateShow}: Props) => {
+export const PureShowName = ({show, isDisabled, isUpdating, updateShow}: Props) => {
     const updateName = (name: string) => {
         const newShow = {
             ...show,
@@ -37,7 +38,7 @@ export const PureShowName = ({show, isUpdating, updateShow}: Props) => {
     const favoriteIcon = show.favorite ? <StarIcon fontSize='large'/> : <StarBorderIcon fontSize='large'/>;
 
     const favoriteButton = (
-        <IconButton disabled={isUpdating} onClick={event => {
+        <IconButton disabled={isDisabled} onClick={event => {
             event.stopPropagation();
             toggleFavorite();
         }}>
@@ -48,6 +49,7 @@ export const PureShowName = ({show, isUpdating, updateShow}: Props) => {
     return <EditableName label='Show name'
                          name={show.name}
                          updateName={name => updateName(name)}
+                         isDisabled={isDisabled}
                          isUpdating={isUpdating}
                          iconAction={favoriteButton}/>;
 };

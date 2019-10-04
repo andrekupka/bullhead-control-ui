@@ -8,24 +8,24 @@ import {Show} from '../../model/Show';
 import {LightBullState} from '../../state';
 import {LightBullThunkDispatch} from '../../types/redux';
 import {TitledActionCardGridItem} from '../common/card-grid/TitledActionCardGridItem';
-import {selectRequestIsPending} from '../../state/app/http/selectors';
-import {updateShowLabel, updateShowRequest} from '../../state/app/shows/requests';
+import {updateShowRequest} from '../../state/app/shows/requests';
+import {selectShowHasProgress} from '../../state/app/shows/selectors';
 
 interface Props {
     show: Show;
-    isUpdating: boolean;
+    hasProgress: boolean;
     isDisabled: boolean;
     toggleFavorite: (show: Show) => void;
 }
 
-export const PureShowCard = ({show, isUpdating, isDisabled, toggleFavorite}: Props) => {
+export const PureShowCard = ({show, hasProgress, isDisabled, toggleFavorite}: Props) => {
     const [shouldOpen, setShouldOpen] = useState(false);
 
     if (shouldOpen) {
         return <Redirect to={`/shows/${show.id}`}/>;
     }
 
-    const disabled = isDisabled || isUpdating;
+    const disabled = isDisabled || hasProgress;
 
     const open = () => {
         if (!disabled) {
@@ -49,7 +49,7 @@ export const PureShowCard = ({show, isUpdating, isDisabled, toggleFavorite}: Pro
             <Typography variant='h5' component='div' noWrap>
                 {show.name}
             </Typography>
-            {isUpdating && <CircularProgress size={32}/>}
+            {hasProgress && <CircularProgress size={32}/>}
         </>
     );
 
@@ -65,7 +65,7 @@ export const PureShowCard = ({show, isUpdating, isDisabled, toggleFavorite}: Pro
 type OwnProps = Pick<Props, 'show'>
 
 const mapStateToProps = (state: LightBullState, ownProps: OwnProps) => ({
-    isUpdating: selectRequestIsPending(state, updateShowLabel(ownProps.show.id))
+    hasProgress: selectShowHasProgress(state, ownProps.show.id)
 });
 
 const mapDispatchToProps = (dispatch: LightBullThunkDispatch) => ({

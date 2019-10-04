@@ -9,17 +9,27 @@ import {CardGrid} from '../../common/card-grid/CardGrid';
 import {ShowDetailsFilterToolbar} from './ShowDetailsFilterToolbar';
 import {ShowName} from './ShowName';
 import {VisualCard} from './VisualCard';
-import {Fab} from '@material-ui/core';
+import {Box, Fab} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import {CreateVisualCard} from './CreateVisualCard';
+import {DeleteShowButton} from './DeleteShowButton';
+import {Redirect} from 'react-router-dom';
+import {selectShowHasProgress} from '../../../state/app/shows/selectors';
 
 interface Props {
-    show: Show;
+    show?: Show;
     visuals: VisualCollection;
+    hasProgress: boolean;
 }
 
-const PureShowDetailsView = ({show, visuals}: Props) => {
+const PureShowDetailsView = ({show, visuals, hasProgress}: Props) => {
     const [isCreating, setCreating] = useState(false);
+
+    if (!show) {
+        return <Redirect to='/shows'/>;
+    }
+
+    const disableChildren = hasProgress || isCreating;
 
     const visualCards = visuals.map(visual => ({
         id: visual.id,
@@ -29,7 +39,7 @@ const PureShowDetailsView = ({show, visuals}: Props) => {
     }));
 
     const addVisual = (
-        <Fab color='primary' onClick={() => setCreating(true)}>
+        <Fab color='primary' disabled={disableChildren} onClick={() => setCreating(true)}>
             <AddIcon/>
         </Fab>
     );
@@ -40,7 +50,11 @@ const PureShowDetailsView = ({show, visuals}: Props) => {
 
     return (
         <>
-            <ShowName show={show}/>
+            <Box display='flex'>
+                <ShowName isDisabled={disableChildren} show={show}/>
+                <Box flexGrow={1}/>
+                <DeleteShowButton isDisabled={disableChildren} showId={show.id}/>
+            </Box>
             <ShowDetailsFilterToolbar/>
             <CardGrid cards={visualCards} action={action}/>
         </>
@@ -53,7 +67,8 @@ interface WrapperProps {
 
 const mapStateToProps = (state: LightBullState, {showId}: WrapperProps) => ({
     show: selectShow(state, showId),
-    visuals: selectFilteredVisualsOfShow(state, showId)
+    visuals: selectFilteredVisualsOfShow(state, showId),
+    hasProgress: selectShowHasProgress(state, showId)
 });
 
 export const ShowDetailsView = connect(
