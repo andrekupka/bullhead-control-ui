@@ -14,7 +14,7 @@ import AddIcon from '@material-ui/icons/Add';
 import {CreateVisualCard} from './CreateVisualCard';
 import {DeleteShowButton} from './DeleteShowButton';
 import {Redirect} from 'react-router-dom';
-import {selectShowIsUpdating} from '../../../state/ui/show-details/selectors';
+import {selectShowHasProgress} from '../../../state/app/shows/selectors';
 
 interface Props {
     show?: Show;
@@ -66,7 +66,7 @@ interface WrapperProps {
 const mapStateToProps = (state: LightBullState, {showId}: WrapperProps) => ({
     show: selectShow(state, showId),
     visuals: selectFilteredVisualsOfShow(state, showId),
-    hasProgress: selectShowIsUpdating(state, showId)
+    hasProgress: selectShowHasProgress(state, showId)
 });
 
 export const ShowDetailsView = connect(

@@ -6,15 +6,17 @@ import {selectVisual} from '../../state/model/visuals/selectors';
 import {connect} from 'react-redux';
 import React from 'react';
 import {VisualName} from './VisualName';
+import {selectVisualHasProgress} from '../../state/app/visuals/selectors';
 
 interface Props {
     show: Show;
     visual: Visual;
+    hasProgress: boolean;
 }
 
-const PureVisualView = ({show, visual}: Props) => {
+const PureVisualView = ({show, visual, hasProgress}: Props) => {
     return <>
-        <VisualName visual={visual}/>
+        <VisualName isDisabled={hasProgress} visual={visual}/>
         <p>Show {show.name}</p>
         <p>Visual {visual.name}</p>
     </>;
@@ -27,7 +29,8 @@ interface WrapperProps {
 
 const mapStateToProps = (state: LightBullState, {showId, visualId}: WrapperProps) => ({
     show: selectShow(state, showId),
-    visual: selectVisual(state, visualId)
+    visual: selectVisual(state, visualId),
+    hasProgress: selectVisualHasProgress(state, visualId)
 });
 
 export const VisualView = connect(

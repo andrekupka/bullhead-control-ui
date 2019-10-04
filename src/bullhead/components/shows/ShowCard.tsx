@@ -8,9 +8,8 @@ import {Show} from '../../model/Show';
 import {LightBullState} from '../../state';
 import {LightBullThunkDispatch} from '../../types/redux';
 import {TitledActionCardGridItem} from '../common/card-grid/TitledActionCardGridItem';
-import {selectRequestIsPending} from '../../state/app/http/selectors';
-import {updateShowLabel, updateShowRequest} from '../../state/app/shows/requests';
-import {selectShowIsUpdating} from '../../state/ui/show-details/selectors';
+import {updateShowRequest} from '../../state/app/shows/requests';
+import {selectShowHasProgress} from '../../state/app/shows/selectors';
 
 interface Props {
     show: Show;
@@ -66,7 +65,7 @@ export const PureShowCard = ({show, hasProgress, isDisabled, toggleFavorite}: Pr
 type OwnProps = Pick<Props, 'show'>
 
 const mapStateToProps = (state: LightBullState, ownProps: OwnProps) => ({
-    hasProgress: selectShowIsUpdating(state, ownProps.show.id)
+    hasProgress: selectShowHasProgress(state, ownProps.show.id)
 });
 
 const mapDispatchToProps = (dispatch: LightBullThunkDispatch) => ({
