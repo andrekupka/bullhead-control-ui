@@ -11,7 +11,7 @@ describe('model reducer', () => {
             id: 'id1',
             name: 'Test Show',
             favorite: false,
-            visuals: []
+            visualIds: []
         }));
 
         const resetState = modelReducer(state, ResetActions.reset());

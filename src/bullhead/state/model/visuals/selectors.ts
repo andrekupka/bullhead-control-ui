@@ -24,7 +24,7 @@ export const selectVisualsOfShow = (state: LightBullState, showId: string) => {
         return [];
     }
     // TODO what happens if visual does not exist
-    return show.visuals.map(visualId => state.model.visuals[visualId]).sort(visualComparator);
+    return show.visualIds.map(visualId => state.model.visuals[visualId]).sort(visualComparator);
 };
 
 export const selectFilteredVisualsOfShow = (state: LightBullState, showId: string) => {

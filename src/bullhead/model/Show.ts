@@ -7,7 +7,7 @@ interface ShowBase {
 }
 
 export interface Show extends ShowBase {
-    visuals: Array<string>;
+    visualIds: Array<string>;
 }
 
 export interface ShowWithVisuals extends ShowBase {

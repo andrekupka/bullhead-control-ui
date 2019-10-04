@@ -7,4 +7,4 @@ export const SHOWS_LOADING_STATE_LABEL = 'get_shows';
 
 export const createShowsLoader = (dispatch: LightBullThunkDispatch) =>
     createHttpResourceLoader(dispatch, SHOWS_LOADING_STATE_LABEL, '/api/shows',
-        (shows: ShowCollection) => dispatch(ShowModelActions.setAll(shows)));
+        ({shows}: {shows: ShowCollection}) => dispatch(ShowModelActions.setAll(shows)));

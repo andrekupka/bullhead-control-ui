@@ -9,7 +9,7 @@ import {PasswordInput} from '../common/form/PasswordInput';
 import {ProgressAwareButton} from '../common/form/ProgressAwareButton';
 import {StandaloneContainer} from '../common/StandaloneContainer';
 import {AuthenticationLostInfo} from './AuthenticationLostInfo';
-import {createLoginRequest, LOGIN_LABEL} from '../../state/authentication/requests';
+import {loginRequest, LOGIN_LABEL} from '../../state/authentication/requests';
 import {selectRequestIsPending} from '../../state/app/http/selectors';
 
 interface Props extends RouteProps {
@@ -102,7 +102,7 @@ const mapStateToProps = (state: LightBullState) => ({
 });
 
 const mapDispatchToProps = (dispatch: LightBullThunkDispatch) => ({
-    signIn: (password: string) => dispatch(createLoginRequest(password))
+    signIn: (password: string) => dispatch(loginRequest(password))
 });
 
 export const SignInView = connect(

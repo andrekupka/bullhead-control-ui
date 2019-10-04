@@ -13,7 +13,7 @@ export const visualsReducer = createReducer<VisualsState, VisualModelAction>(INI
             return acc;
         }, {})
     )
-    .handleAction(VisualModelActions.set, (state, action) => ({
+    .handleAction([VisualModelActions.add, VisualModelActions.set], (state, action) => ({
         ...state,
         [action.payload.visual.id]: action.payload.visual
     }));

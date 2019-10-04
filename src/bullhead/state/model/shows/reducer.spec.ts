@@ -1,18 +1,19 @@
 import {ShowModelActions} from './actions';
 import {showsReducer} from './reducer';
+import {VisualModelActions} from '../visuals/actions';
 
 const firstShow = {
     id: '1',
     name: 'First Show',
     favorite: false,
-    visuals: ['v1']
+    visualIds: ['v1']
 };
 
 const secondShow = {
     id: '2',
     name: 'Second Show',
     favorite: true,
-    visuals: []
+    visualIds: []
 };
 
 describe('shows reducer', () => {
@@ -46,7 +47,7 @@ describe('shows reducer', () => {
             id: '1',
             name: 'Updated Show',
             favorite: true,
-            visuals: []
+            visualIds: []
         };
 
         const state = showsReducer({
@@ -61,14 +62,18 @@ describe('shows reducer', () => {
     it('should add visual to existing show on add visual action', () => {
         const state = showsReducer({
             [firstShow.id]: firstShow
-        }, ShowModelActions.addVisual(firstShow.id, 'v2'));
+        }, VisualModelActions.add({
+            id: 'v2',
+            showId: firstShow.id,
+            name: 'Visual 2'
+        }));
 
         expect(state).toEqual({
             [firstShow.id]: {
                 id: firstShow.id,
                 name: firstShow.name,
                 favorite: firstShow.favorite,
-                visuals: ['v1', 'v2']
+                visualIds: ['v1', 'v2']
             }
         });
     });
@@ -76,7 +81,11 @@ describe('shows reducer', () => {
     it('should ignore add visual action for unknown show id', () => {
         const state = showsReducer({
             [firstShow.id]: firstShow
-        }, ShowModelActions.addVisual('unknown', 'v2'));
+        }, VisualModelActions.add({
+            id: 'v3',
+            showId: 'unknown',
+            name: 'Visual 3'
+        }));
 
         expect(state).toEqual({
             [firstShow.id]: firstShow

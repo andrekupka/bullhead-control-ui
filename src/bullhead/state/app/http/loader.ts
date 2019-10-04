@@ -7,20 +7,18 @@ export interface HttpResourceLoader {
     reset: () => void;
 }
 
-export type ResourceConsumer<T> = (resource: T) => void;
+export type ResourceConsumer = (resource: any) => void;
 
-export const createHttpResourceLoader = <T, P>(dispatch: LightBullThunkDispatch,
-                                               label: string,
-                                               path: string,
-                                               consumer: ResourceConsumer<T>) => {
+export const createHttpResourceLoader = <P>(dispatch: LightBullThunkDispatch,
+                                            label: string,
+                                            path: string,
+                                            consumer: ResourceConsumer) => {
 
     return {
         load: () => dispatch(HttpActions.request(label, {
             method: 'get',
             path: path,
-            successHandler: (response) => {
-                consumer(response as T);
-            }
+            successHandler: response => consumer(response)
         })),
         reset: () => dispatch(HttpActions.reset(label))
     };
@@ -49,10 +47,10 @@ export interface ParameterizedHttpResourceLoader<P> {
     reset: (params: P) => void;
 }
 
-export const createParameterizedHttpResourceLoader = <T, P>(dispatch: LightBullThunkDispatch,
-                                                            labelSupplier: StringSupplier<P> | string,
-                                                            pathSupplier: StringSupplier<P> | string,
-                                                            consumer: ResourceConsumer<T>) => {
+export const createParameterizedHttpResourceLoader = <P>(dispatch: LightBullThunkDispatch,
+                                                         labelSupplier: StringSupplier<P> | string,
+                                                         pathSupplier: StringSupplier<P> | string,
+                                                         consumer: ResourceConsumer) => {
     const label = getStringSupplier(labelSupplier);
     const path = getStringSupplier(pathSupplier);
 
@@ -60,9 +58,7 @@ export const createParameterizedHttpResourceLoader = <T, P>(dispatch: LightBullT
         load: (params: P) => dispatch(HttpActions.request(label(params), {
             method: 'get',
             path: path(params),
-            successHandler: (response) => {
-                consumer(response as T);
-            }
+            successHandler: response => consumer(response)
         })),
         reset: (params: P) => dispatch(HttpActions.reset(label(params)))
     };

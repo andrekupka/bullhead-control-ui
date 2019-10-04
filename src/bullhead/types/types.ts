@@ -1,5 +1,5 @@
 export interface LightBullMessage {
-    type: string;
+    topic: string;
     payload?: any;
     meta?: any;
 }

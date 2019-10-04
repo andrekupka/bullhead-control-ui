@@ -1,12 +1,14 @@
 import {createReducer} from 'typesafe-actions';
 import {ShowMap} from '../../../model/Show';
-import {ShowModelAction, ShowModelActions} from './actions';
+import {ShowModelActions} from './actions';
+import {VisualModelActions} from '../visuals/actions';
+import {ModelAction} from '../actions';
 
 export type ShowsState = ShowMap;
 
 const INITIAL_STATE: ShowsState = {};
 
-export const showsReducer = createReducer<ShowsState, ShowModelAction>(INITIAL_STATE)
+export const showsReducer = createReducer<ShowsState, ModelAction>(INITIAL_STATE)
     .handleAction(ShowModelActions.setAll, (state, action) =>
         action.payload.shows.reduce((acc: ShowsState, show) => {
             acc[show.id] = show;
@@ -17,16 +19,17 @@ export const showsReducer = createReducer<ShowsState, ShowModelAction>(INITIAL_S
         ...state,
         [action.payload.show.id]: action.payload.show
     }))
-    .handleAction(ShowModelActions.addVisual, (state, action) => {
-        const showId = action.payload.showId;
+    .handleAction(VisualModelActions.add, (state, action) => {
+        const visual = action.payload.visual;
+        const showId = visual.showId;
         const show = state[showId];
         if (show) {
-            const newVisuals = [...show.visuals, action.payload.visualId];
+            const newVisuals = [...show.visualIds, visual.id];
             return {
                 ...state,
                 [showId]: {
                     ...show,
-                    visuals: newVisuals
+                    visualIds: newVisuals
                 }
             };
         }

@@ -3,15 +3,15 @@ import {AuthenticationActions} from './actions';
 
 export const LOGIN_LABEL = 'login';
 
-export const createLoginRequest = (password: string) => HttpActions.request(LOGIN_LABEL, {
+export const loginRequest = (password: string) => HttpActions.request(LOGIN_LABEL, {
     method: 'post',
-    path: '/api/login',
+    path: '/api/auth',
     body: {
         password: password
     },
     successHandler: (response: any, dispatch) => {
-        const {token} = response;
-        dispatch(AuthenticationActions.success(token));
+        const {jwt} = response;
+        dispatch(AuthenticationActions.success(jwt));
     },
     errorHandler: (error: any, dispatch) => {
         if (error.response) {
