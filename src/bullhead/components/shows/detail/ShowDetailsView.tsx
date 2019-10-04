@@ -29,6 +29,8 @@ const PureShowDetailsView = ({show, visuals, hasProgress}: Props) => {
         return <Redirect to='/shows'/>;
     }
 
+    const disableChildren = hasProgress || isCreating;
+
     const visualCards = visuals.map(visual => ({
         id: visual.id,
         element: <VisualCard showId={show.id}
@@ -37,7 +39,7 @@ const PureShowDetailsView = ({show, visuals, hasProgress}: Props) => {
     }));
 
     const addVisual = (
-        <Fab color='primary' disabled={hasProgress} onClick={() => setCreating(true)}>
+        <Fab color='primary' disabled={disableChildren} onClick={() => setCreating(true)}>
             <AddIcon/>
         </Fab>
     );
@@ -49,9 +51,9 @@ const PureShowDetailsView = ({show, visuals, hasProgress}: Props) => {
     return (
         <>
             <Box display='flex'>
-                <ShowName isDisabled={hasProgress} show={show}/>
+                <ShowName isDisabled={disableChildren} show={show}/>
                 <Box flexGrow={1}/>
-                <DeleteShowButton isDisabled={hasProgress} showId={show.id}/>
+                <DeleteShowButton isDisabled={disableChildren} showId={show.id}/>
             </Box>
             <ShowDetailsFilterToolbar/>
             <CardGrid cards={visualCards} action={action}/>
