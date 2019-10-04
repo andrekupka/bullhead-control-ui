@@ -1,25 +1,22 @@
 import {ShowsActions} from './actions';
-import {appShowsReducer} from './reducer';
+import {appShowsReducer, newShowIdReducer} from './reducer';
 
 describe('app shows reducer', () => {
-    it('should return no new show id as initial state', () => {
-        const state = appShowsReducer(undefined, {} as any);
-
-        expect(state).toEqual({});
-    });
-
-    it ('should set new show id on set show id action', () => {
-        const state = appShowsReducer(undefined, ShowsActions.setNewShowId('1'));
-        expect(state).toEqual({
-            newShowId: '1'
+    describe('new show id reducer', () => {
+        it('should return no new show id as initial state', () => {
+            const state = newShowIdReducer(undefined, {} as any);
+            expect(state).toEqual(null);
         });
-    });
 
-    it ('should reset show id on reset action', () => {
-        const state = appShowsReducer({
-            newShowId: 'id',
-        }, ShowsActions.resetNewShowId());
+        it ('should set new show id on set show id action', () => {
+            const state = newShowIdReducer(undefined, ShowsActions.setNewShowId('1'));
+            expect(state).toEqual('1')
+        });
 
-        expect(state).toEqual({});
-    });
+        it ('should reset show id on reset action', () => {
+            const state = newShowIdReducer('id', ShowsActions.resetNewShowId());
+            expect(state).toEqual(null);
+        });
+    })
+
 });

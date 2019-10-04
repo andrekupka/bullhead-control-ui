@@ -1,10 +1,11 @@
 import {LightBullThunkDispatch} from '../../../types/redux';
+import {LightBullState} from '../../index';
 
-export type ResponseSuccessHandler<T> = (response: T, dispatch: LightBullThunkDispatch) => void;
+export type ResponseSuccessHandler<T> = (response: T, dispatch: LightBullThunkDispatch, getState: () => LightBullState) => void;
 
-export type EmptyResponseSuccessHandler = (dispatch: LightBullThunkDispatch) => void;
+export type EmptyResponseSuccessHandler = (dispatch: LightBullThunkDispatch, getState: () => LightBullState) => void;
 
-export type ErrorHandler = (error: Error, dispatch: LightBullThunkDispatch) => void;
+export type ErrorHandler = (error: Error, dispatch: LightBullThunkDispatch, getState: () => LightBullState) => void;
 
 export interface RequestBase {
     path: string;

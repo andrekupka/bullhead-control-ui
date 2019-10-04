@@ -8,6 +8,10 @@ export const ShowModelActions = {
 
     set: createAction('@model/shows/SET', action => (show: Show) =>
         action({show})
+    ),
+
+    remove: createAction('@model/shows/REMOVE', action => (showId: string) =>
+        action({showId})
     )
 };
 

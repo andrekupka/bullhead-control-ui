@@ -9,17 +9,23 @@ import {CardGrid} from '../../common/card-grid/CardGrid';
 import {ShowDetailsFilterToolbar} from './ShowDetailsFilterToolbar';
 import {ShowName} from './ShowName';
 import {VisualCard} from './VisualCard';
-import {Fab} from '@material-ui/core';
+import {Box, Fab} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import {CreateVisualCard} from './CreateVisualCard';
+import {DeleteShowButton} from './DeleteShowButton';
+import { Redirect } from 'react-router-dom';
 
 interface Props {
-    show: Show;
+    show?: Show;
     visuals: VisualCollection;
 }
 
 const PureShowDetailsView = ({show, visuals}: Props) => {
     const [isCreating, setCreating] = useState(false);
+
+    if (!show) {
+        return <Redirect to='/shows'/>;
+    }
 
     const visualCards = visuals.map(visual => ({
         id: visual.id,
@@ -40,7 +46,11 @@ const PureShowDetailsView = ({show, visuals}: Props) => {
 
     return (
         <>
-            <ShowName show={show}/>
+            <Box display='flex'>
+                <ShowName show={show}/>
+                <Box flexGrow={1}/>
+                <DeleteShowButton showId={show.id}/>
+            </Box>
             <ShowDetailsFilterToolbar/>
             <CardGrid cards={visualCards} action={action}/>
         </>

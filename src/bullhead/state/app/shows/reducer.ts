@@ -1,14 +1,11 @@
 import {createReducer} from 'typesafe-actions';
 import {ShowsAction, ShowsActions} from './actions';
+import {combineReducers} from 'redux';
 
-export interface ShowsState {
-    newShowId?: string;
-}
+export const newShowIdReducer = createReducer<string | null, ShowsAction>(null)
+    .handleAction(ShowsActions.setNewShowId, (state, action) => action.payload.showId)
+    .handleAction(ShowsActions.resetNewShowId, () => null);
 
-const INITIAL_STATE: ShowsState = {};
-
-export const appShowsReducer = createReducer<ShowsState, ShowsAction>(INITIAL_STATE)
-    .handleAction(ShowsActions.setNewShowId, (state, action) => ({
-        newShowId: action.payload.showId
-    }))
-    .handleAction(ShowsActions.resetNewShowId, () => INITIAL_STATE);
+export const appShowsReducer = combineReducers({
+    newShowId: newShowIdReducer
+});
