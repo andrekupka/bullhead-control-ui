@@ -5,8 +5,11 @@ import {selectShow} from '../../state/model/shows/selectors';
 import {selectVisual} from '../../state/model/visuals/selectors';
 import {connect} from 'react-redux';
 import React from 'react';
+import {Redirect} from 'react-router-dom';
 import {VisualName} from './VisualName';
 import {selectVisualHasProgress} from '../../state/app/visuals/selectors';
+import {Box} from '@material-ui/core';
+import {DeleteVisualButton} from './DeleteVisualButton';
 
 interface Props {
     show: Show;
@@ -15,8 +18,16 @@ interface Props {
 }
 
 const PureVisualView = ({show, visual, hasProgress}: Props) => {
+    if (!visual) {
+        return <Redirect to={`/shows/${show.id}`}/>;
+    }
+
     return <>
-        <VisualName isDisabled={hasProgress} visual={visual}/>
+        <Box display='flex'>
+            <VisualName isDisabled={hasProgress} visual={visual}/>
+            <Box flexGrow={1}/>
+            <DeleteVisualButton isDisabled={hasProgress} showId={visual.showId} visualId={visual.id}/>
+        </Box>
         <p>Show {show.name}</p>
         <p>Visual {visual.name}</p>
     </>;

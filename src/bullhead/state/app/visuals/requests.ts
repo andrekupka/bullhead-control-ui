@@ -1,12 +1,16 @@
 import {HttpActions} from '../http/actions';
-import {showErrorMessage} from '../../ui/messages/thunks';
+import {showErrorMessage, showSuccessMessage} from '../../ui/messages/thunks';
 import {VisualModelActions} from '../../model/visuals/actions';
 import {Visual} from '../../../model/Visual';
 import {VisualCreationActions} from './creation/actions';
+import {selectVisual} from '../../model/visuals/selectors';
+import {ModelActions} from '../../model/actions';
 
 export const CREATE_VISUAL_LABEL = 'create_visual';
 
 export const updateVisualLabel = (visualId: string) => `update_visual_${visualId}`;
+
+export const deleteVisualLabel = (visualId: string) => `delete_visual_${visualId}`;
 
 export const createVisualRequest = (showId: string, name: string) => HttpActions.request(CREATE_VISUAL_LABEL, {
     method: 'post',
@@ -31,4 +35,16 @@ export const updateVisualRequest = (visual: Visual) => HttpActions.request(updat
     body: visual,
     successHandler: (response: any, dispatch) => dispatch(VisualModelActions.set(response as Visual)),
     errorHandler: (error: Error, dispatch) => dispatch(showErrorMessage(`Failed to update visual: ${error.message}`))
+});
+
+export const deleteVisualRequest = (visualId: string, showId: string) => HttpActions.request(deleteVisualLabel(visualId), {
+    method: 'delete',
+    path: `/api/visuals/${visualId}`,
+    successHandler: (dispatch, getState) => {
+        const visual = selectVisual(getState(), visualId);
+        dispatch(ModelActions.remove('visual', visualId, showId));
+        if (visual) {
+            dispatch(showSuccessMessage(`Visual ${visual.name} has been deleted`));
+        }
+    }
 });
