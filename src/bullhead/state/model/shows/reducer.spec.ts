@@ -5,14 +5,14 @@ const firstShow = {
     id: '1',
     name: 'First Show',
     favorite: false,
-    visuals: ['v1']
+    visualIds: ['v1']
 };
 
 const secondShow = {
     id: '2',
     name: 'Second Show',
     favorite: true,
-    visuals: []
+    visualIds: []
 };
 
 describe('shows reducer', () => {
@@ -46,7 +46,7 @@ describe('shows reducer', () => {
             id: '1',
             name: 'Updated Show',
             favorite: true,
-            visuals: []
+            visualIds: []
         };
 
         const state = showsReducer({
@@ -68,7 +68,7 @@ describe('shows reducer', () => {
                 id: firstShow.id,
                 name: firstShow.name,
                 favorite: firstShow.favorite,
-                visuals: ['v1', 'v2']
+                visualIds: ['v1', 'v2']
             }
         });
     });
