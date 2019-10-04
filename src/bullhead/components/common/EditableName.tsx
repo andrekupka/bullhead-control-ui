@@ -80,9 +80,11 @@ export const EditableName = ({label, name, updateName, isDisabled, isUpdating, i
     }
 
     const stopEditing = (reset: boolean = true) => {
-        setEditing(false);
-        if (reset) {
-            setInputValue(name);
+        if (!isDisabled) {
+            setEditing(false);
+            if (reset) {
+                setInputValue(name);
+            }
         }
     };
 
@@ -95,7 +97,7 @@ export const EditableName = ({label, name, updateName, isDisabled, isUpdating, i
     };
 
     const closeButton = <InputAdornment position='end'>
-        <IconButton onClick={() => stopEditing()}>
+        <IconButton disabled={isDisabled} onClick={() => stopEditing()}>
             <CloseIcon/>
         </IconButton>
     </InputAdornment>;
