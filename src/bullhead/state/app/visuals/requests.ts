@@ -1,7 +1,7 @@
 import {HttpActions} from '../http/actions';
 import {showErrorMessage, showSuccessMessage} from '../../ui/messages/thunks';
 import {VisualModelActions} from '../../model/visuals/actions';
-import {Visual} from '../../../model/Visual';
+import {toVisualWithGroupIds, VisualWithGroupIds, VisualWithGroups} from '../../../model/Visual';
 import {VisualCreationActions} from './creation/actions';
 import {selectVisual} from '../../model/visuals/selectors';
 import {ModelActions} from '../../model/actions';
@@ -20,7 +20,7 @@ export const createVisualRequest = (showId: string, name: string) => HttpActions
         name: name
     },
     successHandler: (response: any, dispatch) => {
-        const visual = response as Visual;
+        const visual = toVisualWithGroupIds(response as VisualWithGroups);
         dispatch(VisualModelActions.add(visual));
         dispatch(VisualCreationActions.setVisualId(visual.id));
     },
@@ -29,11 +29,12 @@ export const createVisualRequest = (showId: string, name: string) => HttpActions
     }
 });
 
-export const updateVisualRequest = (visual: Visual) => HttpActions.request(updateVisualLabel(visual.id), {
+export const updateVisualRequest = (visual: VisualWithGroupIds) => HttpActions.request(updateVisualLabel(visual.id), {
     method: 'put',
     path: `/api/visuals/${visual.id}`,
     body: visual,
-    successHandler: (response: any, dispatch) => dispatch(VisualModelActions.set(response as Visual)),
+    successHandler: (response: any, dispatch) =>
+        dispatch(VisualModelActions.set(toVisualWithGroupIds(response as VisualWithGroups))),
     errorHandler: (error: Error, dispatch) => dispatch(showErrorMessage(`Failed to update visual: ${error.message}`))
 });
 

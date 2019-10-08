@@ -1,5 +1,5 @@
 import {HttpActions} from '../http/actions';
-import {Show, ShowWithVisuals} from '../../../model/Show';
+import {Show, ShowWithVisuals, toShowWithVisualIds} from '../../../model/Show';
 import {ShowModelActions} from '../../model/shows/actions';
 import {ShowsActions} from './actions';
 import {showErrorMessage, showSuccessMessage} from '../../ui/messages/thunks';
@@ -32,13 +32,8 @@ export const updateShowRequest = (show: Show) => HttpActions.request(updateShowL
     method: 'put',
     path: `/api/shows/${show.id}`,
     body: show,
-    successHandler: (response: any, dispatch) => {
-        const show = response as ShowWithVisuals;
-        dispatch(ShowModelActions.set({
-            ...show,
-            visualIds: show.visuals.map(visual => visual.id)
-        }));
-    },
+    successHandler: (response: any, dispatch) =>
+        dispatch(ShowModelActions.set(toShowWithVisualIds(response as ShowWithVisuals))),
     errorHandler: (error: Error, dispatch) => dispatch(showErrorMessage(`Failed to update show: ${error.message}`))
 });
 
@@ -52,5 +47,8 @@ export const deleteShowReqeust = (showId: string) => HttpActions.request(deleteS
             dispatch(showSuccessMessage(`Show ${show.name} has been deleted`));
         }
     },
-    errorHandler: (error: Error, dispatch) => dispatch(showErrorMessage(`Failed to delete show: ${error.message}`))
+    errorHandler: (error: Error, dispatch) => {
+        console.log(error);
+        dispatch(showErrorMessage(`Failed to delete show: ${error.message}`))
+    }
 });

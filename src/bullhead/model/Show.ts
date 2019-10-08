@@ -1,4 +1,4 @@
-import {Visual} from "./Visual";
+import {Visual} from './Visual';
 
 interface ShowBase {
     id: string;
@@ -17,3 +17,10 @@ export interface ShowWithVisuals extends ShowBase {
 export type ShowCollection = Array<Show>;
 
 export type ShowMap = {[showId: string]: Show};
+
+export const toShowWithVisualIds = (show: ShowWithVisuals): Show => ({
+    id: show.id,
+    name: show.name,
+    favorite: show.favorite,
+    visualIds: show.visuals.map(visual => visual.id)
+});

@@ -1,8 +1,9 @@
 import {ShowModelAction} from './shows/actions';
 import {VisualModelAction} from './visuals/actions';
 import {ActionType, createAction} from 'typesafe-actions';
+import {GroupModelAction} from './groups/actions';
 
-export type ModelType = 'show' | 'visual';
+export type ModelType = 'show' | 'visual' | 'group';
 
 export interface IdWithParent {
     id: string;
@@ -23,4 +24,4 @@ export const ModelActions = {
             action({relatedIds, model, modelId, parentId}))
 };
 
-export type ModelAction = ShowModelAction | VisualModelAction | ActionType<typeof ModelActions>;
+export type ModelAction = ShowModelAction | VisualModelAction | GroupModelAction | ActionType<typeof ModelActions>;
