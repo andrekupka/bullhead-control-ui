@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {Visual} from '../../model/Visual';
+import {VisualWithGroupIds} from '../../model/Visual';
 import {EditableName} from '../common/EditableName';
 import {LightBullState} from '../../state';
 import {selectRequestIsPending} from '../../state/app/http/selectors';
@@ -8,10 +8,10 @@ import {updateVisualLabel, updateVisualRequest} from '../../state/app/visuals/re
 import {LightBullThunkDispatch} from '../../types/redux';
 
 interface Props {
-    visual: Visual;
+    visual: VisualWithGroupIds;
     isDisabled: boolean;
     isUpdating: boolean;
-    updateVisual: (visual: Visual) => void;
+    updateVisual: (visual: VisualWithGroupIds) => void;
 }
 
 export const PureVisualName = ({visual, isDisabled, isUpdating, updateVisual}: Props) => {
@@ -37,7 +37,7 @@ const mapStateToProps = (state: LightBullState, {visual}: OwnProps) => ({
 });
 
 const mapDispatchToProps = (dispatch: LightBullThunkDispatch) => ({
-    updateVisual: (visual: Visual) => dispatch(updateVisualRequest(visual))
+    updateVisual: (visual: VisualWithGroupIds) => dispatch(updateVisualRequest(visual))
 });
 
 export const VisualName = connect(

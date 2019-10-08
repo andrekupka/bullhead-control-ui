@@ -1,24 +1,24 @@
 import {Visual} from './Visual';
 
-interface ShowBase {
+export interface Show {
     id: string;
     name: string;
     favorite: boolean;
 }
 
-export interface Show extends ShowBase {
+export interface ShowWithVisualIds extends Show {
     visualIds: Array<string>;
 }
 
-export interface ShowWithVisuals extends ShowBase {
+export interface ShowWithVisuals extends Show {
     visuals: Array<Visual>
 }
 
-export type ShowCollection = Array<Show>;
+export type ShowCollection = Array<ShowWithVisualIds>;
 
-export type ShowMap = {[showId: string]: Show};
+export type ShowMap = {[showId: string]: ShowWithVisualIds};
 
-export const toShowWithVisualIds = (show: ShowWithVisuals): Show => ({
+export const toShowWithVisualIds = (show: ShowWithVisuals): ShowWithVisualIds => ({
     id: show.id,
     name: show.name,
     favorite: show.favorite,

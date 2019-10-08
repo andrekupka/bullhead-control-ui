@@ -1,6 +1,6 @@
 import {LightBullThunkDispatch} from '../../../types/redux';
 import {createParameterizedHttpResourceLoader} from '../../app/http/loader';
-import {Show, ShowWithVisuals, toShowWithVisualIds} from '../../../model/Show';
+import {ShowWithVisualIds, ShowWithVisuals, toShowWithVisualIds} from '../../../model/Show';
 import {ShowModelActions} from '../../model/shows/actions';
 import {VisualModelActions} from '../../model/visuals/actions';
 
@@ -12,7 +12,7 @@ export const createShowLoader = (dispatch: LightBullThunkDispatch) =>
         showId => `/api/shows/${showId}`,
         (response: any) => {
             const showWithVisuals = response as ShowWithVisuals;
-            const show: Show = toShowWithVisualIds(showWithVisuals)
+            const show: ShowWithVisualIds = toShowWithVisualIds(showWithVisuals)
             dispatch(ShowModelActions.set(show));
 
             const visuals = showWithVisuals.visuals.map(visual => ({

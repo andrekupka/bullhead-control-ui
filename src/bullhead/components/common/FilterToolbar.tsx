@@ -1,11 +1,9 @@
-import {Button, Card, createStyles, makeStyles, Theme, Toolbar} from '@material-ui/core';
+import {Button, createStyles, makeStyles, Theme} from '@material-ui/core';
 import ClearIcon from '@material-ui/icons/Clear';
 import React, {FunctionComponent} from 'react';
+import {LightBullToolbar} from './LightBullToolbar';
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
-    toolbar: {
-        display: 'flex'
-    },
     toolbarActions: {
         flexGrow: 1,
         '& > *': {
@@ -13,7 +11,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
         }
     },
     button: {
-        margin: theme.spacing(1),
+        margin: theme.spacing(1)
     },
     leftIcon: {
         marginRight: theme.spacing(1),
@@ -26,23 +24,19 @@ interface Props {
     onClear: () => void;
 }
 
-export const FilterToolbar: FunctionComponent<Props> = (props) => {
+export const FilterToolbar: FunctionComponent<Props> = props => {
     const classes = useStyles();
 
-    return (
-        <Card>
-            <Toolbar className={classes.toolbar}>
-                <div className={classes.toolbarActions}>
-                    {props.children}
-                </div>
-                <Button color='secondary' variant='contained'
-                        className={classes.button}
-                        disabled={!props.hasFilter}
-                        onClick={() => props.onClear()}>
-                    <ClearIcon className={classes.leftIcon}/>
-                    Clear
-                </Button>
-            </Toolbar>
-        </Card>
-    );
+    return <LightBullToolbar>
+        <div className={classes.toolbarActions}>
+            {props.children}
+        </div>
+        <Button color='secondary' variant='contained'
+                className={classes.button}
+                disabled={!props.hasFilter}
+                onClick={() => props.onClear()}>
+            <ClearIcon className={classes.leftIcon}/>
+            Clear
+        </Button>
+    </LightBullToolbar>;
 };

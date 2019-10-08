@@ -4,7 +4,7 @@ import StarBorderIcon from '@material-ui/icons/StarBorder';
 import React, {useState} from 'react';
 import {connect} from 'react-redux';
 import {Redirect} from 'react-router-dom';
-import {Show} from '../../model/Show';
+import {ShowWithVisualIds} from '../../model/Show';
 import {LightBullState} from '../../state';
 import {LightBullThunkDispatch} from '../../types/redux';
 import {TitledActionCardGridItem} from '../common/card-grid/TitledActionCardGridItem';
@@ -12,10 +12,10 @@ import {updateShowRequest} from '../../state/app/shows/requests';
 import {selectShowHasProgress} from '../../state/app/shows/selectors';
 
 interface Props {
-    show: Show;
+    show: ShowWithVisualIds;
     hasProgress: boolean;
     isDisabled: boolean;
-    toggleFavorite: (show: Show) => void;
+    toggleFavorite: (show: ShowWithVisualIds) => void;
 }
 
 export const PureShowCard = ({show, hasProgress, isDisabled, toggleFavorite}: Props) => {
@@ -69,7 +69,7 @@ const mapStateToProps = (state: LightBullState, ownProps: OwnProps) => ({
 });
 
 const mapDispatchToProps = (dispatch: LightBullThunkDispatch) => ({
-    toggleFavorite: (show: Show) => {
+    toggleFavorite: (show: ShowWithVisualIds) => {
         const updatedShow = {
             ...show,
             favorite: !show.favorite

@@ -1,5 +1,5 @@
 import {HttpActions} from '../http/actions';
-import {Show, ShowWithVisuals, toShowWithVisualIds} from '../../../model/Show';
+import {ShowWithVisualIds, ShowWithVisuals, toShowWithVisualIds} from '../../../model/Show';
 import {ShowModelActions} from '../../model/shows/actions';
 import {ShowsActions} from './actions';
 import {showErrorMessage, showSuccessMessage} from '../../ui/messages/thunks';
@@ -19,7 +19,7 @@ export const createShowRequest = (name: string) => HttpActions.request(CREATE_SH
         name: name
     },
     successHandler: (response: any, dispatch) => {
-        const show = response as Show;
+        const show = response as ShowWithVisualIds;
         dispatch(ShowModelActions.set(show));
         dispatch(ShowsActions.setNewShowId(show.id));
     },
@@ -28,7 +28,7 @@ export const createShowRequest = (name: string) => HttpActions.request(CREATE_SH
     }
 });
 
-export const updateShowRequest = (show: Show) => HttpActions.request(updateShowLabel(show.id), {
+export const updateShowRequest = (show: ShowWithVisualIds) => HttpActions.request(updateShowLabel(show.id), {
     method: 'put',
     path: `/api/shows/${show.id}`,
     body: show,

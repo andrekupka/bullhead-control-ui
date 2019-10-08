@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {connect} from 'react-redux';
-import {Show} from '../../../model/Show';
+import {ShowWithVisualIds} from '../../../model/Show';
 import {VisualCollection} from '../../../model/Visual';
 import {LightBullState} from '../../../state';
 import {selectShow} from '../../../state/model/shows/selectors';
@@ -17,7 +17,7 @@ import {Redirect} from 'react-router-dom';
 import {selectShowHasProgress} from '../../../state/app/shows/selectors';
 
 interface Props {
-    show?: Show;
+    show?: ShowWithVisualIds;
     visuals: VisualCollection;
     hasProgress: boolean;
 }

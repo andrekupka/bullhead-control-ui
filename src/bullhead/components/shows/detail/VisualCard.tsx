@@ -1,13 +1,13 @@
 import {Typography} from '@material-ui/core';
 import React, {useState} from 'react';
-import {Visual} from '../../../model/Visual';
+import {VisualWithGroupIds} from '../../../model/Visual';
 import {TitledActionCardGridItem} from '../../common/card-grid/TitledActionCardGridItem';
 import {Redirect} from 'react-router';
 
 interface Props {
     showId: string;
     isDisabled: boolean;
-    visual: Visual;
+    visual: VisualWithGroupIds;
 }
 
 export const VisualCard = ({showId, isDisabled, visual}: Props) => {
