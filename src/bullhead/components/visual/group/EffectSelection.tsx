@@ -1,8 +1,7 @@
 import React from 'react';
-import {List, ListItem, ListItemIcon, ListItemText, makeStyles} from '@material-ui/core';
+import {List} from '@material-ui/core';
 import {EffectMap} from '../../../model/Config';
-import DoneIcon from '@material-ui/icons/Done';
-import CloseIcon from '@material-ui/icons/Close';
+import {SelectionListItem} from './SelectionListItem';
 
 interface Props {
     effects: EffectMap;
@@ -10,18 +9,7 @@ interface Props {
     updateSelectedEffect: (effectType: string | null) => void;
 }
 
-const useStyles = makeStyles({
-    selectedIcon: {
-        color: 'green'
-    },
-    unselectedIcon: {
-        color: 'red'
-    }
-});
-
 export const EffectSelection = ({effects, selectedEffect, updateSelectedEffect}: Props) => {
-    const classes = useStyles();
-
     const selectEffect = (effectType: string) => {
         if (selectedEffect === effectType) {
             updateSelectedEffect(null);
@@ -33,18 +21,10 @@ export const EffectSelection = ({effects, selectedEffect, updateSelectedEffect}:
     return <div>
         <List>
             {Object.keys(effects).map(effectType =>
-                <ListItem button key={effectType}
-                          onClick={() => selectEffect(effectType)}
-                          selected={effectType === selectedEffect}>
-                    <ListItemText>
-                        {effects[effectType]}
-                    </ListItemText>
-                    <ListItemIcon>
-                        {effectType === selectedEffect ?
-                            <DoneIcon className={classes.selectedIcon}/> :
-                            <CloseIcon className={classes.unselectedIcon}/>}
-                    </ListItemIcon>
-                </ListItem>
+                <SelectionListItem key={effectType}
+                                   title={effects[effectType]}
+                                   selected={effectType === selectedEffect}
+                                   onSelect={() => selectEffect(effectType)}/>
             )}
         </List>
     </div>;
