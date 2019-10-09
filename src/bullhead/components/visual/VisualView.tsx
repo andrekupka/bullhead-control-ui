@@ -41,7 +41,8 @@ const PureVisualView = ({showId, visual, groups, availableParts, hasProgress}: P
     const actionsDisabled = hasProgress || isCreating;
 
     const content = isCreating ?
-        <CreateGroupCard availableParts={availableParts}
+        <CreateGroupCard visualId={visual.id}
+                         availableParts={availableParts}
                          close={() => setCreating(false)}/> :
         <>
             {groups.map((group, index) =>

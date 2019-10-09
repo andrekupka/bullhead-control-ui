@@ -19,21 +19,6 @@ export const visualsReducer = createReducer<VisualsState, ModelAction>(INITIAL_S
         ...state,
         [action.payload.visual.id]: action.payload.visual
     }))
-    .handleAction(GroupModelActions.add, (state, action) => {
-        const group = action.payload.group;
-        const visualId = group.visualId;
-        const visual = state[visualId];
-        if (visual) {
-            return {
-                ...state,
-                [visualId]: {
-                    ...visual,
-                    groupIds: [...visual.groupIds, group.id]
-                }
-            }
-        }
-        return state;
-    })
     .handleAction(ModelActions.removeRecursive, (state, action) => {
         const {relatedIds, model, modelId, parentId} = action.payload;
         if (model === 'group' && parentId) {
@@ -56,4 +41,19 @@ export const visualsReducer = createReducer<VisualsState, ModelAction>(INITIAL_S
             return newState;
         }
         return state;
-    });
+    })
+    .handleAction(GroupModelActions.add, (state, action) => {
+        const group = action.payload.group;
+        const visualId = group.visualId;
+        const visual = state[visualId];
+        if (visual) {
+            return {
+                ...state,
+                [visualId]: {
+                    ...visual,
+                    groupIds: [...visual.groupIds, group.id]
+                }
+            }
+        }
+        return state;
+    })

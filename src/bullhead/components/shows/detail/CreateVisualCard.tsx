@@ -2,7 +2,7 @@ import {connect} from 'react-redux';
 import {LightBullState} from '../../../state';
 import {LightBullThunkDispatch} from '../../../types/redux';
 import {CreateNamedResourceCard} from '../../common/CreateNamedResourceCard';
-import {VisualCreationActions} from '../../../state/app/visuals/creation/actions';
+import {VisualActions} from '../../../state/app/visuals/actions';
 import {selectRequestIsPending} from '../../../state/app/http/selectors';
 import {CREATE_VISUAL_LABEL, createVisualRequest} from '../../../state/app/visuals/requests';
 import {HttpActions} from '../../../state/app/http/actions';
@@ -12,7 +12,7 @@ interface OwnProps {
 }
 
 const mapStateToProps = (state: LightBullState, ownProps: OwnProps) => {
-    const newVisualId = state.app.visuals.creation.newVisualId;
+    const newVisualId = state.app.visuals.newVisualId;
 
     return {
         label: 'Visual Name',
@@ -26,7 +26,7 @@ const mapDispatchToProps = (dispatch: LightBullThunkDispatch, ownProps: OwnProps
     createResource: (name: string) => dispatch(createVisualRequest(ownProps.showId, name)),
     finishCreation: () => {
         dispatch(HttpActions.reset(CREATE_VISUAL_LABEL));
-        dispatch(VisualCreationActions.reset());
+        dispatch(VisualActions.resetNewVisualId());
     }
 });
 

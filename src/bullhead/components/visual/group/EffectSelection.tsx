@@ -4,31 +4,24 @@ import {EffectMap} from '../../../model/Config';
 
 interface Props {
     effects: EffectMap;
-    onSelect: (effectType: string) => void;
+    selectedEffect: string | null;
+    updateSelectedEffect: (effectType: string | null) => void;
 }
 
-export const EffectSelection = ({effects, onSelect}: Props) => {
-    const [selectedEffect, setSelectedEffect] = useState<string | null>(null);
-    const hasSelection = selectedEffect !== null;
+export const EffectSelection = ({effects, selectedEffect, updateSelectedEffect}: Props) => {
 
     const selectEffect = (effectType: string) => {
         if (selectedEffect === effectType) {
-            setSelectedEffect(null);
+            updateSelectedEffect(null);
         } else {
-            setSelectedEffect(effectType);
-        }
-    };
-
-    const publishSelection = () => {
-        if (selectedEffect !== null) {
-            onSelect(selectedEffect);
+            updateSelectedEffect(effectType);
         }
     };
 
     return <div>
         <List>
             {Object.keys(effects).map(effectType =>
-                <ListItem key={effectType}
+                <ListItem button key={effectType}
                           selected={effectType === selectedEffect}
                           onClick={() => selectEffect(effectType)}>
                     <ListItemText>
@@ -37,6 +30,5 @@ export const EffectSelection = ({effects, onSelect}: Props) => {
                 </ListItem>
             )}
         </List>
-        <Button disabled={!hasSelection} onClick={() => publishSelection()}>Create</Button>
     </div>;
 };

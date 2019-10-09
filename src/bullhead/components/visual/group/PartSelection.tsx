@@ -1,39 +1,32 @@
-import React, {useState} from 'react';
-import {Button, List, ListItem, ListItemText} from '@material-ui/core';
+import React from 'react';
+import {List, ListItem, ListItemText, Paper} from '@material-ui/core';
 
 interface Props {
     availableParts: Array<string>;
-    onSelect: (selectedParts: Array<string>) => void;
+    selectedParts: Array<string>;
+    updateSelectedParts: (selectedParts: Array<string>) => void;
 }
 
-export const PartSelection = ({availableParts, onSelect}: Props) => {
-    const [selectedParts, setSelectedParts] = useState(availableParts.map(() => false) as Array<boolean>);
+export const PartSelection = ({availableParts, selectedParts, updateSelectedParts}: Props) => {
+    const isSelected = (part: string) => selectedParts.indexOf(part) >= 0;
 
-    const hasSelection = selectedParts.find(value => value) !== undefined;
-
-    const toggle = (index: number) => {
-        setSelectedParts(selected => {
-            const updated = [...selected];
-            updated[index] = !updated[index];
-            return updated;
-        })
-    };
-
-    const selectParts = () => {
-        const parts = availableParts.filter((part, index) => selectedParts[index]);
-        onSelect(parts);
+    const togglePart = (part: string) => {
+        if (isSelected(part)) {
+            updateSelectedParts(selectedParts.filter(p => p !== part));
+        } else {
+            updateSelectedParts([...selectedParts, part])
+        }
     };
 
     return <div>
         <List>
-            {availableParts.map((part, index) =>
-                <ListItem key={part} onClick={() => toggle(index)} selected={selectedParts[index]}>
+            {availableParts.map((part) =>
+                <ListItem button key={part} onClick={() => togglePart(part)} selected={isSelected(part)}>
                     <ListItemText>
                         {part}
                     </ListItemText>
                 </ListItem>
             )}
         </List>
-        <Button disabled={!hasSelection} onClick={() => selectParts()}>Next</Button>
     </div>;
 };

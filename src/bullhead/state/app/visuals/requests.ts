@@ -2,7 +2,7 @@ import {HttpActions} from '../http/actions';
 import {showErrorMessage, showSuccessMessage} from '../../ui/messages/thunks';
 import {VisualModelActions} from '../../model/visuals/actions';
 import {toVisualWithGroupIds, VisualWithGroupIds, VisualWithGroups} from '../../../model/Visual';
-import {VisualCreationActions} from './creation/actions';
+import {VisualActions} from './actions';
 import {selectVisual} from '../../model/visuals/selectors';
 import {ModelActions} from '../../model/actions';
 
@@ -22,7 +22,7 @@ export const createVisualRequest = (showId: string, name: string) => HttpActions
     successHandler: (response: any, dispatch) => {
         const visual = toVisualWithGroupIds(response as VisualWithGroups);
         dispatch(VisualModelActions.add(visual));
-        dispatch(VisualCreationActions.setVisualId(visual.id));
+        dispatch(VisualActions.setNewVisualId(visual.id));
     },
     errorHandler: (error, dispatch) => {
         dispatch(showErrorMessage(`Failed to add visual: ${error.message}`));
