@@ -1,6 +1,8 @@
 import React from 'react';
-import {List, ListItem, ListItemText} from '@material-ui/core';
+import {List, ListItem, ListItemIcon, ListItemText, makeStyles} from '@material-ui/core';
 import {EffectMap} from '../../../model/Config';
+import DoneIcon from '@material-ui/icons/Done';
+import CloseIcon from '@material-ui/icons/Close';
 
 interface Props {
     effects: EffectMap;
@@ -8,7 +10,17 @@ interface Props {
     updateSelectedEffect: (effectType: string | null) => void;
 }
 
+const useStyles = makeStyles({
+    selectedIcon: {
+        color: 'green'
+    },
+    unselectedIcon: {
+        color: 'red'
+    }
+});
+
 export const EffectSelection = ({effects, selectedEffect, updateSelectedEffect}: Props) => {
+    const classes = useStyles();
 
     const selectEffect = (effectType: string) => {
         if (selectedEffect === effectType) {
@@ -22,11 +34,16 @@ export const EffectSelection = ({effects, selectedEffect, updateSelectedEffect}:
         <List>
             {Object.keys(effects).map(effectType =>
                 <ListItem button key={effectType}
-                          selected={effectType === selectedEffect}
-                          onClick={() => selectEffect(effectType)}>
+                          onClick={() => selectEffect(effectType)}
+                          selected={effectType === selectedEffect}>
                     <ListItemText>
                         {effects[effectType]}
                     </ListItemText>
+                    <ListItemIcon>
+                        {effectType === selectedEffect ?
+                            <DoneIcon className={classes.selectedIcon}/> :
+                            <CloseIcon className={classes.unselectedIcon}/>}
+                    </ListItemIcon>
                 </ListItem>
             )}
         </List>
