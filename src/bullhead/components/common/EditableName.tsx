@@ -69,7 +69,7 @@ export const EditableName = ({label, name, updateName, isDisabled, isUpdating, i
                 {iconAction}
             </div>}
             <span onClick={startEditing}
-                  className={classNames(classes.title, (isUpdating || isDisabled) && classes.darken)}>
+                  className={classNames(!isDisabled && classes.title, (isUpdating || isDisabled) && classes.darken)}>
                 {name}
                 </span>
             <IconButton disabled={isDisabled} onClick={startEditing}>
