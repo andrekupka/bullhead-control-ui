@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Button, List, ListItem, ListItemText} from '@material-ui/core';
+import React from 'react';
+import {List, ListItem, ListItemText} from '@material-ui/core';
 import {EffectMap} from '../../../model/Config';
 
 interface Props {

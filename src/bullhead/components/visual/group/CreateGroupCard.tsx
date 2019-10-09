@@ -1,15 +1,5 @@
 import {connect} from 'react-redux';
-import {
-    Card,
-    CardContent,
-    CardHeader,
-    ClickAwayListener,
-    Button,
-    Box,
-    Grid,
-    Typography,
-    Paper
-} from '@material-ui/core';
+import {Button, Card, CardContent, ClickAwayListener, Grid, Typography} from '@material-ui/core';
 import React, {useState} from 'react';
 import {PartSelection} from './PartSelection';
 import {EffectSelection} from './EffectSelection';
@@ -55,7 +45,6 @@ const PureCreateGroupCard = ({visualId, close, availableParts, effects, createGr
             createGroup(visualId, selectedEffect as string, selectedParts);
         }
     };
-
 
     return <ClickAwayListener onClickAway={() => close()}>
         <Card>

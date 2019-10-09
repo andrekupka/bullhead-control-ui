@@ -1,5 +1,5 @@
 import React from 'react';
-import {List, ListItem, ListItemText, Paper} from '@material-ui/core';
+import {List, ListItem, ListItemText} from '@material-ui/core';
 
 interface Props {
     availableParts: Array<string>;
