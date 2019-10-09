@@ -10,7 +10,7 @@ import {
     Theme,
     Typography
 } from '@material-ui/core';
-import React, {useState} from 'react';
+import React, {FunctionComponent, useState} from 'react';
 import {PartSelection} from './PartSelection';
 import {EffectSelection} from './EffectSelection';
 import {EffectMap} from '../../../model/Config';
@@ -34,6 +34,25 @@ interface Props {
     isPending: boolean;
     newGroupId: string | null;
 }
+
+const useGridStyles = makeStyles({
+    card: {
+        height: '100%'
+    },
+});
+
+const SelectionGridItem: FunctionComponent<{title: string}> = ({title, children}) => {
+    const classes = useGridStyles();
+
+    return <Grid item xs={6}>
+        <Card className={classes.card}>
+            <CardContent>
+                <Typography variant='h6'>{title}</Typography>
+                {children}
+            </CardContent>
+        </Card>
+    </Grid>;
+};
 
 const useStyles = makeStyles((theme: Theme) => createStyles({
     card: {
@@ -69,26 +88,16 @@ const PureCreateGroupCard = ({visualId, close, availableParts, effects, createGr
 
     return <>
         <Grid container spacing={2}>
-            <Grid item xs={6}>
-                <Card className={classes.card}>
-                    <CardContent>
-                        <Typography variant='h6'>Parts</Typography>
-                        <PartSelection availableParts={availableParts}
-                                       selectedParts={selectedParts}
-                                       updateSelectedParts={parts => setSelectedParts(parts)}/>
-                    </CardContent>
-                </Card>
-            </Grid>
-            <Grid item xs={6}>
-                <Card className={classes.card}>
-                    <CardContent>
-                        <Typography variant='h6'>Effects</Typography>
-                        <EffectSelection effects={effects}
-                                         selectedEffect={selectedEffect}
-                                         updateSelectedEffect={effect => setSelectedEffect(effect)}/>
-                    </CardContent>
-                </Card>
-            </Grid>
+            <SelectionGridItem title='Parts'>
+                <PartSelection availableParts={availableParts}
+                               selectedParts={selectedParts}
+                               updateSelectedParts={parts => setSelectedParts(parts)}/>
+            </SelectionGridItem>
+            <SelectionGridItem title='Effects'>
+                <EffectSelection effects={effects}
+                                 selectedEffect={selectedEffect}
+                                 updateSelectedEffect={effect => setSelectedEffect(effect)}/>
+            </SelectionGridItem>
         </Grid>
         <div>
             <Button variant='contained'
