@@ -38,15 +38,11 @@ const PureShowDetailsView = ({show, visuals, hasProgress}: Props) => {
                              visual={visual}/>
     }));
 
-    const addVisual = (
+    const action = isCreating ?
+        <CreateVisualCard showId={show.id} close={() => setCreating(false)}/> :
         <Fab color='primary' disabled={disableChildren} onClick={() => setCreating(true)}>
             <AddIcon/>
-        </Fab>
-    );
-
-    const createVisualCard = <CreateVisualCard showId={show.id} close={() => setCreating(false)}/>;
-
-    const action = isCreating ? createVisualCard : addVisual;
+        </Fab>;
 
     return (
         <>
