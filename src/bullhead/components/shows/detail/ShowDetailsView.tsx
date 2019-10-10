@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {connect} from 'react-redux';
-import {Show} from '../../../model/Show';
+import {ShowWithVisualIds} from '../../../model/Show';
 import {VisualCollection} from '../../../model/Visual';
 import {LightBullState} from '../../../state';
 import {selectShow} from '../../../state/model/shows/selectors';
@@ -17,7 +17,7 @@ import {Redirect} from 'react-router-dom';
 import {selectShowHasProgress} from '../../../state/app/shows/selectors';
 
 interface Props {
-    show?: Show;
+    show?: ShowWithVisualIds;
     visuals: VisualCollection;
     hasProgress: boolean;
 }
@@ -26,7 +26,7 @@ const PureShowDetailsView = ({show, visuals, hasProgress}: Props) => {
     const [isCreating, setCreating] = useState(false);
 
     if (!show) {
-        return <Redirect to='/shows'/>;
+        return <Redirect push to='/shows'/>;
     }
 
     const disableChildren = hasProgress || isCreating;
@@ -38,15 +38,11 @@ const PureShowDetailsView = ({show, visuals, hasProgress}: Props) => {
                              visual={visual}/>
     }));
 
-    const addVisual = (
+    const action = isCreating ?
+        <CreateVisualCard showId={show.id} close={() => setCreating(false)}/> :
         <Fab color='primary' disabled={disableChildren} onClick={() => setCreating(true)}>
             <AddIcon/>
-        </Fab>
-    );
-
-    const createVisualCard = <CreateVisualCard showId={show.id} close={() => setCreating(false)}/>;
-
-    const action = isCreating ? createVisualCard : addVisual;
+        </Fab>;
 
     return (
         <>

@@ -3,7 +3,7 @@ import StarIcon from '@material-ui/icons/Star';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import React from 'react';
 import {connect} from 'react-redux';
-import {Show} from '../../../model/Show';
+import {ShowWithVisualIds} from '../../../model/Show';
 import {LightBullState} from '../../../state';
 import {LightBullThunkDispatch} from '../../../types/redux';
 import {EditableName} from '../../common/EditableName';
@@ -11,10 +11,10 @@ import {selectRequestIsPending} from '../../../state/app/http/selectors';
 import {updateShowLabel, updateShowRequest} from '../../../state/app/shows/requests';
 
 interface Props {
-    show: Show;
+    show: ShowWithVisualIds;
     isDisabled: boolean;
     isUpdating: boolean;
-    updateShow: (show: Show) => void;
+    updateShow: (show: ShowWithVisualIds) => void;
 }
 
 export const PureShowName = ({show, isDisabled, isUpdating, updateShow}: Props) => {
@@ -61,7 +61,7 @@ const mapStateToProps = (state: LightBullState, {show}: OwnProps) => ({
 });
 
 const mapDispatchToProps = (dispatch: LightBullThunkDispatch) => ({
-    updateShow: (show: Show) => dispatch(updateShowRequest(show))
+    updateShow: (show: ShowWithVisualIds) => dispatch(updateShowRequest(show))
 });
 
 export const ShowName = connect(

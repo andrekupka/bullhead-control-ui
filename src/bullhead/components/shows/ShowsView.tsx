@@ -8,7 +8,7 @@ import {selectFilteredShows} from '../../state/model/shows/selectors';
 import {CardGrid} from '../common/card-grid/CardGrid';
 import {ShowCard} from './ShowCard';
 import {ShowFilterToolbar} from './ShowFilterToolbar';
-import {CreateShowCard} from "./CreateShowCard";
+import {CreateShowCard} from './CreateShowCard';
 
 interface Props {
     shows: ShowCollection;
@@ -22,15 +22,11 @@ const PureShowsView = (props: Props) => {
         element: <ShowCard isDisabled={isCreating} show={show}/>
     }));
 
-    const addShow = (
+    const action = isCreating ?
+        <CreateShowCard close={() => setCreating(false)}/> :
         <Fab color='primary' onClick={() => setCreating(true)}>
             <AddIcon/>
-        </Fab>
-    );
-
-    const createShowCard = <CreateShowCard close={() => setCreating(false)}/>;
-
-    const action = isCreating ? createShowCard : addShow;
+        </Fab>;
 
     return (
         <>

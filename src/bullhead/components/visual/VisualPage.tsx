@@ -35,7 +35,7 @@ const PureVisualPage = (props: Props) => {
     if (succeeded) {
         return <VisualView showId={showId} visualId={visualId}/>;
     } else if (failed) {
-        return <Redirect to={`/shows/${showId}`}/>;
+        return <Redirect push to={`/shows/${showId}`}/>;
     }
     return <LoadingPage title='Loading visual details'/>;
 };

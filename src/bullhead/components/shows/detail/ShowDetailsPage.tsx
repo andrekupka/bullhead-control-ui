@@ -7,7 +7,7 @@ import {Redirect, RouteComponentProps} from 'react-router';
 import {LoadingPage} from '../../common/LoadingPage';
 import {selectRequestError, selectRequestHasSucceeded} from '../../../state/app/http/selectors';
 import {ParameterizedHttpResourceLoader, useParameterizedHttpLoader} from '../../../state/app/http/loader';
-import {getShowLabel, createShowLoader} from '../../../state/ui/show-details/loader';
+import {createShowLoader, getShowLabel} from '../../../state/ui/show-details/loader';
 
 
 interface Params {
@@ -32,7 +32,7 @@ const PureShowDetailsPage = (props: Props) => {
         return <ShowDetailsView showId={showId}/>;
         // TODO 404 handling or retry
     } else if (error) {
-        return <Redirect to='/shows'/>;
+        return <Redirect push to='/shows'/>;
     }
     return <LoadingPage title='Loading show details'/>;
 };

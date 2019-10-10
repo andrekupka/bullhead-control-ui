@@ -1,10 +1,10 @@
 import {createSelector} from 'reselect';
-import {Show} from '../../../model/Show';
+import {ShowWithVisualIds} from '../../../model/Show';
 import {LightBullState} from '../../index';
 import {selectShowsFavoritesOnly, selectShowsFilter} from '../../ui/shows/selectors';
 
 
-type ShowFilter = (show: Show) => boolean;
+type ShowFilter = (show: ShowWithVisualIds) => boolean;
 
 const getShowFilter = (filter?: string): ShowFilter => {
     if (filter) {
@@ -13,7 +13,7 @@ const getShowFilter = (filter?: string): ShowFilter => {
     return () => true;
 };
 
-const showComparator = (show1: Show, show2: Show): number => {
+const showComparator = (show1: ShowWithVisualIds, show2: ShowWithVisualIds): number => {
     if (show1.favorite !== show2.favorite) {
         return show1.favorite ? -1 : 1;
     }

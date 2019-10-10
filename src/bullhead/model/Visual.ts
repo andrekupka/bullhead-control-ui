@@ -1,9 +1,26 @@
+import {Group} from './Group';
+
 export interface Visual {
     id: string;
-    name: string;
     showId: string;
+    name: string;
 }
 
-export type VisualCollection = Array<Visual>;
+export interface VisualWithGroupIds extends Visual {
+    groupIds: Array<string>;
+}
 
-export type VisualMap = {[visualId: string]: Visual};
+export interface VisualWithGroups extends Visual {
+    groups: Array<Group>;
+}
+
+export type VisualCollection = Array<VisualWithGroupIds>;
+
+export type VisualMap = {[visualId: string]: VisualWithGroupIds};
+
+export const toVisualWithGroupIds = (visual: VisualWithGroups): VisualWithGroupIds => ({
+    id: visual.id,
+    showId: visual.showId,
+    name: visual.name,
+    groupIds: visual.groups.map(group => group.id)
+});

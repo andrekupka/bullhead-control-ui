@@ -1,9 +1,9 @@
-import {Visual} from '../../../model/Visual';
+import {VisualWithGroupIds} from '../../../model/Visual';
 import {LightBullState} from '../../index';
 import {selectVisualsFilter} from '../../ui/show-details/selectors';
 import {selectShow} from '../shows/selectors';
 
-type VisualFilter = (visual: Visual) => boolean;
+type VisualFilter = (visual: VisualWithGroupIds) => boolean;
 
 const getVisualFilter = (filter?: string): VisualFilter => {
     if (filter) {
@@ -12,7 +12,7 @@ const getVisualFilter = (filter?: string): VisualFilter => {
     return () => true;
 };
 
-const visualComparator = (visual1: Visual, visual2: Visual): number => {
+const visualComparator = (visual1: VisualWithGroupIds, visual2: VisualWithGroupIds): number => {
     return visual1.name.localeCompare(visual2.name);
 };
 
@@ -24,7 +24,7 @@ export const selectVisualsOfShow = (state: LightBullState, showId: string) => {
         return [];
     }
     // TODO what happens if visual does not exist
-    return show.visualIds.map(visualId => state.model.visuals[visualId]).sort(visualComparator);
+    return show.visualIds.map(visualId => selectVisual(state, visualId)).sort(visualComparator);
 };
 
 export const selectFilteredVisualsOfShow = (state: LightBullState, showId: string) => {

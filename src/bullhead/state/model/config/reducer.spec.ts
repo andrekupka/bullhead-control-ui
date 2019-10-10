@@ -22,5 +22,7 @@ describe('config reducer', () => {
         };
 
         const state = configReducer(undefined, ConfigModelActions.initialize(config));
+
+        expect(state).toEqual(config);
     })
 });
