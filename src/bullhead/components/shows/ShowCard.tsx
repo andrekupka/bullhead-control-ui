@@ -22,7 +22,7 @@ export const PureShowCard = ({show, hasProgress, isDisabled, toggleFavorite}: Pr
     const [shouldOpen, setShouldOpen] = useState(false);
 
     if (shouldOpen) {
-        return <Redirect to={`/shows/${show.id}`}/>;
+        return <Redirect push to={`/shows/${show.id}`}/>;
     }
 
     const disabled = isDisabled || hasProgress;

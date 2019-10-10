@@ -35,7 +35,7 @@ const PureVisualView = ({showId, visual, groups, availableParts, hasProgress}: P
     const [isCreating, setCreating] = useState(false);
 
     if (!visual) {
-        return <Redirect to={`/shows/${showId}`}/>;
+        return <Redirect push to={`/shows/${showId}`}/>;
     }
 
     const actionsDisabled = hasProgress || isCreating;

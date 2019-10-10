@@ -21,6 +21,7 @@ import {CREATE_GROUP_LABEL, createGroupRequest} from '../../../state/app/groups/
 import {LightBullThunkDispatch} from '../../../types/redux';
 import {HttpActions} from '../../../state/app/http/actions';
 import {GroupActions} from '../../../state/app/groups/actions';
+import {useReset} from '../../../utils/hooks/useReset';
 
 interface Props {
     visualId: string;
@@ -29,7 +30,7 @@ interface Props {
     effects: EffectMap;
 
     createGroup: (visualId: string, effectType: string, parts: Array<string>) => void;
-    finishCreation: () => void;
+    reset: () => void;
 
     isPending: boolean;
     newGroupId: string | null;
@@ -63,14 +64,15 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     }
 }));
 
-const PureCreateGroupCard = ({visualId, close, availableParts, effects, createGroup, finishCreation, isPending, newGroupId}: Props) => {
+const PureCreateGroupCard = ({visualId, close, availableParts, effects, createGroup, reset, isPending, newGroupId}: Props) => {
     const classes = useStyles();
 
     const [selectedParts, setSelectedParts] = useState<Array<string>>([]);
     const [selectedEffect, setSelectedEffect] = useState<string | null>(null);
 
+    useReset(reset);
+
     if (newGroupId !== null) {
-        finishCreation();
         close();
         return null;
     }
@@ -126,7 +128,7 @@ const mapStateToProps = (state: LightBullState) => ({
 const mapDispatchToProps = (dispatch: LightBullThunkDispatch) => ({
     createGroup: (visualId: string, effectType: string, parts: Array<string>) =>
         dispatch(createGroupRequest(visualId, effectType, parts)),
-    finishCreation: () => {
+    reset: () => {
         dispatch(HttpActions.reset(CREATE_GROUP_LABEL));
         dispatch(GroupActions.resetNewGroupId());
     }

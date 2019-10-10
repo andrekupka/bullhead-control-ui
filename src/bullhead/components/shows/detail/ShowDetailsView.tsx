@@ -26,7 +26,7 @@ const PureShowDetailsView = ({show, visuals, hasProgress}: Props) => {
     const [isCreating, setCreating] = useState(false);
 
     if (!show) {
-        return <Redirect to='/shows'/>;
+        return <Redirect push to='/shows'/>;
     }
 
     const disableChildren = hasProgress || isCreating;

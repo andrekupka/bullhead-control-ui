@@ -12,6 +12,7 @@ import {Redirect} from 'react-router';
 import {handleEscape} from '../../utils';
 import CloseIcon from '@material-ui/icons/Close';
 import {CardGridItem} from './card-grid/CardGridItem';
+import {useReset} from '../../utils/hooks/useReset';
 
 interface Props {
     close: () => void;
@@ -21,7 +22,7 @@ interface Props {
     isPending: boolean;
     successRedirect?: string;
 
-    finishCreation: () => void;
+    reset: () => void;
     createResource: (name: string) => void;
 }
 
@@ -39,15 +40,15 @@ export const CreateNamedResourceCard = (props: Props) => {
     const classes = useStyles();
 
     const [name, setName] = useState('');
+    useReset(props.reset);
 
     const close = () => {
         props.close();
-        props.finishCreation();
     };
 
     if (props.successRedirect) {
         close();
-        return <Redirect to={props.successRedirect}/>;
+        return <Redirect push to={props.successRedirect}/>;
     }
 
     const canSubmit = !!name;

@@ -13,7 +13,7 @@ interface Props {
 export const VisualCard = ({showId, isDisabled, visual}: Props) => {
     const [shouldOpen, setShouldOpen] = useState(false);
     if (shouldOpen) {
-        return <Redirect to={`/shows/${showId}/visuals/${visual.id}`}/>;
+        return <Redirect push to={`/shows/${showId}/visuals/${visual.id}`}/>;
     }
 
     const open = () => {

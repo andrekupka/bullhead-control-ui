@@ -24,7 +24,7 @@ const mapStateToProps = (state: LightBullState, ownProps: OwnProps) => {
 
 const mapDispatchToProps = (dispatch: LightBullThunkDispatch, ownProps: OwnProps) => ({
     createResource: (name: string) => dispatch(createVisualRequest(ownProps.showId, name)),
-    finishCreation: () => {
+    reset: () => {
         dispatch(HttpActions.reset(CREATE_VISUAL_LABEL));
         dispatch(VisualActions.resetNewVisualId());
     }

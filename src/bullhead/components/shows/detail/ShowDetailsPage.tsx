@@ -32,7 +32,7 @@ const PureShowDetailsPage = (props: Props) => {
         return <ShowDetailsView showId={showId}/>;
         // TODO 404 handling or retry
     } else if (error) {
-        return <Redirect to='/shows'/>;
+        return <Redirect push to='/shows'/>;
     }
     return <LoadingPage title='Loading show details'/>;
 };

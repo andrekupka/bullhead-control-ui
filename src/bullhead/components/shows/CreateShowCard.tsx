@@ -20,7 +20,7 @@ const mapStateToProps = (state: LightBullState) => {
 
 const mapDispatchToProps = (dispatch: LightBullThunkDispatch) => ({
     createResource: (name: string) => dispatch(createShowRequest(name)),
-    finishCreation: () => {
+    reset: () => {
         dispatch(HttpActions.reset(CREATE_SHOW_LABEL));
         dispatch(ShowsActions.resetNewShowId());
     }
