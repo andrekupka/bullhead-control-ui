@@ -18,7 +18,6 @@ const useStyles = makeStyles({
     }
 });
 
-
 export const SelectionListItem = ({title, selected, onSelect}: Props) => {
     const classes = useStyles();
 

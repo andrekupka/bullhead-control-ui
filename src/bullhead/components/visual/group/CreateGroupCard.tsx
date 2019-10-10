@@ -1,15 +1,5 @@
 import {connect} from 'react-redux';
-import {
-    Button,
-    Card,
-    CardContent,
-    ClickAwayListener,
-    createStyles,
-    Grid,
-    makeStyles,
-    Theme,
-    Typography
-} from '@material-ui/core';
+import {Button, Card, CardContent, createStyles, Grid, makeStyles, Theme, Typography} from '@material-ui/core';
 import React, {FunctionComponent, useState} from 'react';
 import {PartSelection} from './PartSelection';
 import {EffectSelection} from './EffectSelection';
