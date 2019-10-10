@@ -1,5 +1,12 @@
 import {Group} from '../../../model/Group';
-import {ExpansionPanel, ExpansionPanelDetails, ExpansionPanelSummary, Typography} from '@material-ui/core';
+import {
+    Button,
+    ExpansionPanel,
+    ExpansionPanelActions,
+    ExpansionPanelDetails,
+    ExpansionPanelSummary,
+    Typography
+} from '@material-ui/core';
 import React from 'react';
 import {connect} from 'react-redux';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -21,6 +28,11 @@ const PureGroupPanel = ({group, effectName}: Props) => {
         <ExpansionPanelDetails>
             Effect: {group.effect.type}
         </ExpansionPanelDetails>
+        <ExpansionPanelActions>
+            <Button variant='contained' color='secondary'>
+                Delete
+            </Button>
+        </ExpansionPanelActions>
     </ExpansionPanel>;
 };
 
