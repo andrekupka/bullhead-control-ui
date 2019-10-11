@@ -5,22 +5,35 @@ import {LightBullThunkDispatch} from '../../types/redux';
 import {LightBullState} from '../../state';
 import {selectRequestIsPending} from '../../state/app/http/selectors';
 import {ConfirmingActionButton} from '../common/ConfirmingActionButton';
+import React from 'react';
 
-interface WrapperProps {
-    showId: string;
+interface Props {
     visualId: string;
+    isDisabled?: boolean;
+
+    hasProgress: boolean;
+    deleteVisual: (visualId: string) => void;
 }
 
-const mapStateToProps = (state: LightBullState, {visualId}: WrapperProps) => ({
-    hasProgress: selectRequestIsPending(state, deleteVisualLabel(visualId)),
-    actionIcon: DeleteIcon
+const PureDeleteVisualButton = ({visualId, isDisabled, hasProgress, deleteVisual}: Props) =>
+    <ConfirmingActionButton hasProgress={hasProgress}
+                            performAction={() => deleteVisual(visualId)}
+                            actionIcon={DeleteIcon}
+                            isDisabled={isDisabled}/>;
+
+type OwnProps = Pick<Props, 'visualId' | 'isDisabled'>;
+
+const mapStateToProps = (state: LightBullState, {visualId, isDisabled}: OwnProps) => ({
+    visualId: visualId,
+    isDisabled: isDisabled,
+    hasProgress: selectRequestIsPending(state, deleteVisualLabel(visualId))
 });
 
-const mapDispatchToProps = (dispatch: LightBullThunkDispatch, {showId, visualId}: WrapperProps) => ({
-    performAction: () => dispatch(deleteVisualRequest(visualId, showId))
+const mapDispatchToProps = (dispatch: LightBullThunkDispatch) => ({
+    deleteVisual: (visualId: string) => dispatch(deleteVisualRequest(visualId))
 });
 
 export const DeleteVisualButton = connect(
     mapStateToProps,
     mapDispatchToProps
-)(ConfirmingActionButton);
+)(PureDeleteVisualButton);

@@ -3,25 +3,27 @@ import {Button, Card, CardContent, createStyles, Grid, makeStyles, Theme, Typogr
 import React, {FunctionComponent, useState} from 'react';
 import {PartSelection} from './PartSelection';
 import {EffectSelection} from './EffectSelection';
-import {EffectMap} from '../../../model/Config';
-import {LightBullState} from '../../../state';
 import {selectEffects} from '../../../state/model/config/selectors';
 import {selectRequestIsPending} from '../../../state/app/http/selectors';
 import {CREATE_GROUP_LABEL, createGroupRequest} from '../../../state/app/groups/requests';
-import {LightBullThunkDispatch} from '../../../types/redux';
 import {HttpActions} from '../../../state/app/http/actions';
 import {GroupActions} from '../../../state/app/groups/actions';
 import {useReset} from '../../../utils/hooks/useReset';
+import {selectNewGroupId} from '../../../state/app/groups/selectors';
+import {LightBullState} from '../../../state';
+import {LightBullThunkDispatch} from '../../../types/redux';
+import {EffectMap} from '../../../model/Config';
 
 interface Props {
     visualId: string;
-    close: () => void;
-    availableParts: Array<string>;
-    effects: EffectMap;
 
     createGroup: (visualId: string, effectType: string, parts: Array<string>) => void;
     reset: () => void;
 
+    effects: EffectMap;
+    availableParts: Array<string>;
+
+    close: () => void;
     isPending: boolean;
     newGroupId: string | null;
 }
@@ -29,10 +31,10 @@ interface Props {
 const useGridStyles = makeStyles({
     card: {
         height: '100%'
-    },
+    }
 });
 
-const SelectionGridItem: FunctionComponent<{title: string}> = ({title, children}) => {
+const SelectionGridItem: FunctionComponent<{ title: string }> = ({title, children}) => {
     const classes = useGridStyles();
 
     return <Grid item xs={6}>
@@ -54,7 +56,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     }
 }));
 
-const PureCreateGroupCard = ({visualId, close, availableParts, effects, createGroup, reset, isPending, newGroupId}: Props) => {
+const PureCreateGroupCard = ({visualId, createGroup, reset, effects, isPending, newGroupId, close, availableParts}: Props) => {
     const classes = useStyles();
 
     const [selectedParts, setSelectedParts] = useState<Array<string>>([]);
@@ -71,12 +73,8 @@ const PureCreateGroupCard = ({visualId, close, availableParts, effects, createGr
 
     const createDisabled = !canCreate || isPending;
 
-    const handleCreate = () => {
-        if (canCreate) {
-            // selected effect is not null because of canCreate condition
-            createGroup(visualId, selectedEffect as string, selectedParts);
-        }
-    };
+    // selected effect is not null because of canCreate condition
+    const handleCreate = () => createGroup(visualId, selectedEffect as string, selectedParts);
 
     return <>
         <Grid container spacing={2}>
@@ -102,7 +100,7 @@ const PureCreateGroupCard = ({visualId, close, availableParts, effects, createGr
                     color='primary'
                     className={classes.button}
                     disabled={createDisabled}
-                    onClick={() => handleCreate()}>
+                    onClick={handleCreate}>
                 Create group
             </Button>
         </div>
@@ -112,12 +110,13 @@ const PureCreateGroupCard = ({visualId, close, availableParts, effects, createGr
 const mapStateToProps = (state: LightBullState) => ({
     effects: selectEffects(state),
     isPending: selectRequestIsPending(state, CREATE_GROUP_LABEL),
-    newGroupId: state.app.groups.newGroupId
+    newGroupId: selectNewGroupId(state)
 });
 
 const mapDispatchToProps = (dispatch: LightBullThunkDispatch) => ({
-    createGroup: (visualId: string, effectType: string, parts: Array<string>) =>
-        dispatch(createGroupRequest(visualId, effectType, parts)),
+    createGroup: (visualId: string, effectType: string, parts: Array<string>) => {
+        dispatch(createGroupRequest(visualId, effectType, parts));
+    },
     reset: () => {
         dispatch(HttpActions.reset(CREATE_GROUP_LABEL));
         dispatch(GroupActions.resetNewGroupId());

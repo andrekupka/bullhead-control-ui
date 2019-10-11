@@ -1,10 +1,18 @@
 import {Group} from '../../../model/Group';
-import {ExpansionPanel, ExpansionPanelDetails, ExpansionPanelSummary, Typography} from '@material-ui/core';
+import {
+    Button,
+    ExpansionPanel,
+    ExpansionPanelActions,
+    ExpansionPanelDetails,
+    ExpansionPanelSummary,
+    Typography
+} from '@material-ui/core';
 import React from 'react';
 import {connect} from 'react-redux';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {LightBullState} from '../../../state';
 import {selectEffectName} from '../../../state/model/config/selectors';
+import {DeleteGroupButton} from './DeleteGroupButton';
 
 interface Props {
     group: Group;
@@ -21,6 +29,9 @@ const PureGroupPanel = ({group, effectName}: Props) => {
         <ExpansionPanelDetails>
             Effect: {group.effect.type}
         </ExpansionPanelDetails>
+        <ExpansionPanelActions>
+            <DeleteGroupButton groupId={group.id}/>
+        </ExpansionPanelActions>
     </ExpansionPanel>;
 };
 

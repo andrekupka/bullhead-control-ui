@@ -6,24 +6,42 @@ import {VisualActions} from '../../../state/app/visuals/actions';
 import {selectRequestIsPending} from '../../../state/app/http/selectors';
 import {CREATE_VISUAL_LABEL, createVisualRequest} from '../../../state/app/visuals/requests';
 import {HttpActions} from '../../../state/app/http/actions';
+import React, {useCallback} from 'react';
+import {selectNewVisualId} from '../../../state/app/visuals/selectors';
 
-interface OwnProps {
+interface Props {
     showId: string;
+
+    createVisual: (showId: string, name: string) => void;
+    reset: () => void;
+
+    close: () => void;
+    isPending: boolean;
+    newVisualId: string | null;
 }
 
-const mapStateToProps = (state: LightBullState, ownProps: OwnProps) => {
-    const newVisualId = state.app.visuals.newVisualId;
+const PureCreateVisualCard = ({showId, reset, createVisual, close, isPending, newVisualId}: Props) => {
+    const createVisualForShow = useCallback((name: string) => createVisual(showId, name),
+        [showId, createVisual]);
 
-    return {
-        label: 'Visual Name',
+    const successRedirect = newVisualId ? `/shows/${showId}/visuals/${newVisualId}` : undefined;
 
-        isPending: selectRequestIsPending(state, CREATE_VISUAL_LABEL),
-        successRedirect: (newVisualId ? `/shows/${ownProps.showId}/visuals/${newVisualId}`: undefined),
-    }
+    return <CreateNamedResourceCard label='Visual Name'
+                                    createResource={createVisualForShow}
+                                    close={close}
+                                    reset={reset}
+                                    isPending={isPending}
+                                    successRedirect={successRedirect}/>;
 };
 
-const mapDispatchToProps = (dispatch: LightBullThunkDispatch, ownProps: OwnProps) => ({
-    createResource: (name: string) => dispatch(createVisualRequest(ownProps.showId, name)),
+const mapStateToProps = (state: LightBullState, {showId}: { showId: string }) => ({
+    showId: showId,
+    isPending: selectRequestIsPending(state, CREATE_VISUAL_LABEL),
+    newVisualId: selectNewVisualId(state)
+});
+
+const mapDispatchToProps = (dispatch: LightBullThunkDispatch) => ({
+    createVisual: (showId: string, name: string) => dispatch(createVisualRequest(showId, name)),
     reset: () => {
         dispatch(HttpActions.reset(CREATE_VISUAL_LABEL));
         dispatch(VisualActions.resetNewVisualId());
@@ -33,4 +51,4 @@ const mapDispatchToProps = (dispatch: LightBullThunkDispatch, ownProps: OwnProps
 export const CreateVisualCard = connect(
     mapStateToProps,
     mapDispatchToProps
-)(CreateNamedResourceCard);
+)(PureCreateVisualCard);
