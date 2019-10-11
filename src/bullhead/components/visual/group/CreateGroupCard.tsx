@@ -1,26 +1,29 @@
 import {connect} from 'react-redux';
 import {Button, Card, CardContent, createStyles, Grid, makeStyles, Theme, Typography} from '@material-ui/core';
-import React, {FunctionComponent, useCallback, useState} from 'react';
+import React, {FunctionComponent, useState} from 'react';
 import {PartSelection} from './PartSelection';
 import {EffectSelection} from './EffectSelection';
-import {EffectMap} from '../../../model/Config';
-import {LightBullState} from '../../../state';
 import {selectEffects} from '../../../state/model/config/selectors';
 import {selectRequestIsPending} from '../../../state/app/http/selectors';
 import {CREATE_GROUP_LABEL, createGroupRequest} from '../../../state/app/groups/requests';
-import {LightBullThunkDispatch} from '../../../types/redux';
 import {HttpActions} from '../../../state/app/http/actions';
 import {GroupActions} from '../../../state/app/groups/actions';
 import {useReset} from '../../../utils/hooks/useReset';
+import {selectNewGroupId} from '../../../state/app/groups/selectors';
+import {LightBullState} from '../../../state';
+import {LightBullThunkDispatch} from '../../../types/redux';
+import {EffectMap} from '../../../model/Config';
 
 interface Props {
     visualId: string;
-    close: () => void;
-    availableParts: Array<string>;
+
+    createGroup: (visualId: string, effectType: string, parts: Array<string>) => void;
+    reset: () => void;
+
     effects: EffectMap;
+    availableParts: Array<string>;
 
-    dispatch: LightBullThunkDispatch;
-
+    close: () => void;
     isPending: boolean;
     newGroupId: string | null;
 }
@@ -53,20 +56,11 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
     }
 }));
 
-const PureCreateGroupCard = ({visualId, close, availableParts, effects, dispatch, isPending, newGroupId}: Props) => {
+const PureCreateGroupCard = ({visualId, createGroup, reset, effects, isPending, newGroupId, close, availableParts}: Props) => {
     const classes = useStyles();
 
     const [selectedParts, setSelectedParts] = useState<Array<string>>([]);
     const [selectedEffect, setSelectedEffect] = useState<string | null>(null);
-
-    const reset = useCallback(() => {
-        dispatch(HttpActions.reset(CREATE_GROUP_LABEL));
-        dispatch(GroupActions.resetNewGroupId());
-    }, [dispatch]);
-
-    const createGroup = useCallback((visualId: string, effectType: string, parts: Array<string>) => {
-        dispatch(createGroupRequest(visualId, effectType, parts));
-    }, [dispatch]);
 
     useReset(reset);
 
@@ -116,9 +110,20 @@ const PureCreateGroupCard = ({visualId, close, availableParts, effects, dispatch
 const mapStateToProps = (state: LightBullState) => ({
     effects: selectEffects(state),
     isPending: selectRequestIsPending(state, CREATE_GROUP_LABEL),
-    newGroupId: state.app.groups.newGroupId
+    newGroupId: selectNewGroupId(state)
+});
+
+const mapDispatchToProps = (dispatch: LightBullThunkDispatch) => ({
+    createGroup: (visualId: string, effectType: string, parts: Array<string>) => {
+        dispatch(createGroupRequest(visualId, effectType, parts));
+    },
+    reset: () => {
+        dispatch(HttpActions.reset(CREATE_GROUP_LABEL));
+        dispatch(GroupActions.resetNewGroupId());
+    }
 });
 
 export const CreateGroupCard = connect(
-    mapStateToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(PureCreateGroupCard);

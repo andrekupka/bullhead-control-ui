@@ -6,40 +6,45 @@ import {CreateNamedResourceCard} from '../common/CreateNamedResourceCard';
 import {selectRequestIsPending} from '../../state/app/http/selectors';
 import {HttpActions} from '../../state/app/http/actions';
 import {CREATE_SHOW_LABEL, createShowRequest} from '../../state/app/shows/requests';
-import React, {useCallback} from 'react';
+import React from 'react';
+import {selectNewShowId} from '../../state/app/shows/selectors';
 
 interface Props {
-    dispatch: LightBullThunkDispatch;
+    createShow: (name: string) => void;
+    reset: () => void;
+
     close: () => void;
     isPending: boolean;
     newShowId: string | null;
 }
 
-const PureCreateShowCard = ({dispatch, close, isPending, newShowId}: Props) => {
-    const reset = useCallback(() => {
-        dispatch(HttpActions.reset(CREATE_SHOW_LABEL));
-        dispatch(ShowsActions.resetNewShowId());
-    }, [dispatch]);
-
-    const createShow = useCallback((name: string) => dispatch(createShowRequest(name)), [dispatch]);
-
+const PureCreateShowCard = ({createShow, reset, close, isPending, newShowId}: Props) => {
     const successRedirect = newShowId ? `/shows/${newShowId}` : undefined;
 
     return <CreateNamedResourceCard label='Show Name'
                                     createResource={createShow}
                                     close={close}
                                     reset={reset}
-                                    isPending={isPending
-                                    } successRedirect={successRedirect}/>;
+                                    isPending={isPending}
+                                    successRedirect={successRedirect}/>;
 };
 
 
 const mapStateToProps = (state: LightBullState) => ({
     label: 'Show Name',
     isPending: selectRequestIsPending(state, CREATE_SHOW_LABEL),
-    newShowId: state.app.shows.newShowId
+    newShowId: selectNewShowId(state)
+});
+
+const mapDispatchToProps = (dispatch: LightBullThunkDispatch) => ({
+    createShow: (name: string) => dispatch(createShowRequest(name)),
+    reset: () => {
+        dispatch(HttpActions.reset(CREATE_SHOW_LABEL));
+        dispatch(ShowsActions.resetNewShowId());
+    }
 });
 
 export const CreateShowCard = connect(
-    mapStateToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(PureCreateShowCard);
