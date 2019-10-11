@@ -1,10 +1,12 @@
 import {HttpActions} from '../http/actions';
-import {Group} from '../../../model/Group';
+import {GroupWithParameters, toGroupWithParameterIds} from '../../../model/Group';
 import {GroupModelActions} from '../../model/groups/actions';
 import {GroupActions} from './actions';
 import {showErrorMessage, showSuccessMessage} from '../../ui/messages/thunks';
 import {selectGroup} from '../../model/groups/selectors';
 import {ModelActions} from '../../model/actions';
+import {ParameterCollection} from '../../../model/Parameter';
+import {ParameterModelActions} from '../../model/parameters/actions';
 
 export const CREATE_GROUP_LABEL = 'create_group';
 
@@ -20,8 +22,16 @@ export const createGroupRequest = (visualId: string, effectType: string, parts: 
             parts: parts
         },
         successHandler: (response, dispatch) => {
-            const group = response as Group;
+            const groupWithParameters = response as GroupWithParameters;
+            const group = toGroupWithParameterIds(groupWithParameters);
+
+            const parameters: ParameterCollection = [];
+            groupWithParameters.effect.parameters.forEach(parameter =>
+                parameters.push(parameter)
+            );
+
             dispatch(GroupModelActions.add(group));
+            dispatch(ParameterModelActions.addAll(parameters));
             dispatch(GroupActions.setNewGroupId(group.id));
         },
         errorHandler: (error, dispatch) => {
@@ -33,7 +43,7 @@ export const deleteGroupRequest = (groupId: string) =>
     HttpActions.request(deleteGroupLabel(groupId), {
         method: 'delete',
         path: `/api/groups/${groupId}`,
-        successHandler: (dispatch, getState)=> {
+        successHandler: (dispatch, getState) => {
             const group = selectGroup(getState(), groupId);
             if (group) {
                 dispatch(ModelActions.remove('group', groupId, group.visualId));

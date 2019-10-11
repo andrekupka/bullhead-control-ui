@@ -1,4 +1,4 @@
-import {Group} from './Group';
+import {Group, GroupWithParameters} from './Group';
 
 export interface Visual {
     id: string;
@@ -11,7 +11,7 @@ export interface VisualWithGroupIds extends Visual {
 }
 
 export interface VisualWithGroups extends Visual {
-    groups: Array<Group>;
+    groups: Array<GroupWithParameters>;
 }
 
 export type VisualCollection = Array<VisualWithGroupIds>;

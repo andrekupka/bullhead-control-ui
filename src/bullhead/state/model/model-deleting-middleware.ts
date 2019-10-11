@@ -5,6 +5,7 @@ import {LightBullThunkDispatch} from '../../types/redux';
 import {isActionOf} from 'typesafe-actions';
 import {selectShow} from './shows/selectors';
 import {selectVisual} from './visuals/selectors';
+import {selectGroup} from './groups/selectors';
 
 type MDAction = ModelAction;
 type MDDispatch = LightBullThunkDispatch;
@@ -52,6 +53,16 @@ export const modelDeletingMiddleware = () => {
             if (visual && visual.groupIds.length > 0) {
                 return ['group', visual.groupIds.map(groupId => ({
                     id: groupId,
+                    parentId: modelId
+                }))];
+            }
+            return undefined;
+        },
+        group: (state: LightBullState, modelId: string) => {
+            const group = selectGroup(state, modelId);
+            if (group && group.effect.parameterIds.length > 0) {
+                return ['parameter', group.effect.parameterIds.map(parameterId => ({
+                    id: parameterId,
                     parentId: modelId
                 }))];
             }

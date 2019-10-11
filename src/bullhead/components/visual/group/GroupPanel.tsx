@@ -1,4 +1,4 @@
-import {Group} from '../../../model/Group';
+import {Group, GroupWithParameterIds} from '../../../model/Group';
 import {
     Button,
     ExpansionPanel,
@@ -15,7 +15,7 @@ import {selectEffectName} from '../../../state/model/config/selectors';
 import {DeleteGroupButton} from './DeleteGroupButton';
 
 interface Props {
-    group: Group;
+    group: GroupWithParameterIds;
     effectName: string;
 }
 
@@ -27,7 +27,6 @@ const PureGroupPanel = ({group, effectName}: Props) => {
             </Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
-            Effect: {group.effect.type}
         </ExpansionPanelDetails>
         <ExpansionPanelActions>
             <DeleteGroupButton groupId={group.id}/>
@@ -36,7 +35,7 @@ const PureGroupPanel = ({group, effectName}: Props) => {
 };
 
 interface WrapperProps {
-    group: Group;
+    group: GroupWithParameterIds;
 }
 
 const mapStateToProps = (state: LightBullState, {group}: WrapperProps) => ({
