@@ -12,6 +12,7 @@ import {connect} from 'react-redux';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {LightBullState} from '../../../state';
 import {selectEffectName} from '../../../state/model/config/selectors';
+import {DeleteGroupButton} from './DeleteGroupButton';
 
 interface Props {
     group: Group;
@@ -29,9 +30,7 @@ const PureGroupPanel = ({group, effectName}: Props) => {
             Effect: {group.effect.type}
         </ExpansionPanelDetails>
         <ExpansionPanelActions>
-            <Button variant='contained' color='secondary'>
-                Delete
-            </Button>
+            <DeleteGroupButton groupId={group.id}/>
         </ExpansionPanelActions>
     </ExpansionPanel>;
 };

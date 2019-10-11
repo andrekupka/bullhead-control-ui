@@ -59,7 +59,7 @@ const PureVisualView = ({showId, visual, groups, availableParts, hasProgress}: P
         <Box display='flex'>
             <VisualName isDisabled={actionsDisabled} visual={visual}/>
             <Box flexGrow={1}/>
-            <DeleteVisualButton isDisabled={actionsDisabled} showId={visual.showId} visualId={visual.id}/>
+            <DeleteVisualButton isDisabled={actionsDisabled} visualId={visual.id}/>
         </Box>
 
         <Grid container spacing={2}>
